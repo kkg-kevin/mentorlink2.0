@@ -4,6 +4,7 @@ const Mentee = require('../models/Mentee');
 const Session = require('../models/Session');
 const Feedback = require('../models/Feedback');
 const User = require('../models/User');
+const { getMentorRatingMap, getMentorReviews } = require('../utils/mentorRatings');
 
 exports.dashboard = async (req,res)=> {
   if(!req.user || req.user.role !== 'mentor') return res.redirect('/auth/login');
@@ -101,7 +102,10 @@ exports.analytics = async (req,res)=> {
 exports.profile = async (req,res)=> {
   if(!req.user || req.user.role !== 'mentor') return res.redirect('/auth/login');
   const mentor = await Mentor.findOne({ user: req.user._id }).lean().catch(()=>null);
-  res.render('mentor/mentor-profile', { user: req.user, mentor });
+  const mentorRatingMap = await getMentorRatingMap([req.user._id]);
+  const mentorRating = mentorRatingMap.get(req.user._id.toString()) || { avgRating: 0, ratingCount: 0 };
+  const recentReviews = await getMentorReviews(req.user._id, 4);
+  res.render('mentor/mentor-profile', { user: req.user, mentor, mentorRating, recentReviews, hasRecentReviews: recentReviews.length > 0 });
 };
 
 exports.updateProfile = async (req,res)=>{

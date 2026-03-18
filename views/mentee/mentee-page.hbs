@@ -387,6 +387,34 @@
       margin-top: 18px;
     }
 
+    .mentor-rating {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(255, 193, 7, 0.16), rgba(255, 255, 255, 0.96));
+      border: 1px solid rgba(255, 193, 7, 0.32);
+    }
+
+    .mentor-rating-value {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 4px;
+    }
+
+    .mentor-rating-value i {
+      color: #f4b400;
+    }
+
+    .mentor-rating-meta {
+      color: var(--muted-text);
+      font-size: 0.88rem;
+      margin-bottom: 0;
+    }
+
     .card-actions > * {
       flex: 1;
     }
@@ -628,6 +656,21 @@
               <h5 class="card-title">{{name}}</h5>
               <p class="detail-line"><strong>Expertise:</strong> {{expertise}}</p>
               <p>{{bio}}</p>
+              <div class="mentor-rating">
+                {{#if ratingCount}}
+                  <div class="mentor-rating-value">
+                    <i class="bi bi-star-fill"></i>
+                    <span>{{avgRating}} / 5</span>
+                  </div>
+                  <p class="mentor-rating-meta">{{ratingCount}} total reviews from mentees</p>
+                {{else}}
+                  <div class="mentor-rating-value">
+                    <i class="bi bi-star"></i>
+                    <span>No ratings yet</span>
+                  </div>
+                  <p class="mentor-rating-meta">Be the first mentee to leave feedback after a completed session.</p>
+                {{/if}}
+              </div>
               <div class="card-actions">
                 <span class="btn btn-available status-pill">{{availability}}</span>
                 <button type="button" class="btn btn-request" data-bs-toggle="modal" data-bs-target="#mentorModal{{@index}}">Request</button>
