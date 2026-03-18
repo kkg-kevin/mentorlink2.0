@@ -5,6 +5,7 @@ const Mentee = require('../models/Mentee');
 const Session = require('../models/Session');
 const Feedback = require('../models/Feedback');
 const User = require('../models/User');
+const { getMentorRatingMap } = require('../utils/mentorRatings');
 
 function parseScheduledAt(value) {
   const scheduledAt = new Date(value);
@@ -28,8 +29,22 @@ exports.dashboard = async (req,res)=>{
   const sessions = mentee
     ? await Session.find({ mentee: mentee._id }).populate('mentor').populate({path:'mentor', populate:{path:'user'}}).lean().catch(()=>[])
     : [];
+  const mentorRatings = await getMentorRatingMap(mentors.map((mentor) => mentor.user?._id));
   
-  const mentorList = mentors.map(m=>({ id:m._id, name: m.user?m.user.name:'Mentor', expertise: m.specialization||m.industry, bio: m.bio||'', photo:getProfilePicture(m.user), availability: m.availability||'Available'}));
+  const mentorList = mentors.map((m) => {
+    const rating = mentorRatings.get(m.user?._id?.toString()) || { avgRating: 0, ratingCount: 0 };
+
+    return {
+      id: m._id,
+      name: m.user ? m.user.name : 'Mentor',
+      expertise: m.specialization || m.industry,
+      bio: m.bio || '',
+      photo: getProfilePicture(m.user),
+      availability: m.availability || 'Available',
+      avgRating: rating.avgRating,
+      ratingCount: rating.ratingCount
+    };
+  });
   const companyList = companies.map(c=>({ id:c._id, name: c.programName||c.user?.name||'Company', field: c.website||'', logo:getProfilePicture(c.user), description: c.description||'' }));
   
   res.render('mentee/mentee-page', { mentors: mentorList, companies: companyList, user: req.user, sessions: sessions.slice(0, 3) });
