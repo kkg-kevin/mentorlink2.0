@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organization Sessions - MentorLink</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #003049;
+      --secondary-color: #0077b6;
+      --accent-color: #2a9d8f;
+      --surface-border: #d8e8f0;
+      --muted-text: #61727c;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: var(--primary-color);
+      background:
+        radial-gradient(circle at top right, rgba(42, 157, 143, 0.10), transparent 24%),
+        radial-gradient(circle at bottom left, rgba(0, 119, 182, 0.10), transparent 28%),
+        #fbfeff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page-shell {
+      width: 100%;
+      max-width: none;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page-shell .container {
+      max-width: min(1760px, calc(100vw - 24px));
+    }
+
+    .navbar {
+      margin: 12px 6px 0;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid rgba(216, 232, 240, 0.95);
+      box-shadow: 0 14px 34px rgba(0, 48, 73, 0.08);
+      backdrop-filter: blur(10px);
+      border-radius: 22px;
+      padding: 14px 0;
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      color: var(--secondary-color) !important;
+      display: flex;
+      align-items: center;
+    }
+
+    .navbar-brand img {
+      margin-right: 10px;
+      border-radius: 14px !important;
+      box-shadow: 0 8px 18px rgba(0, 48, 73, 0.12);
+    }
+
+    .nav-link {
+      color: var(--primary-color) !important;
+      font-weight: 500;
+      margin: 0 6px;
+      padding: 8px 14px !important;
+      border-radius: 999px;
+      transition: all 0.25s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: var(--secondary-color) !important;
+      background: rgba(0, 119, 182, 0.08);
+    }
+
+    .btn-logout {
+      border-radius: 999px;
+      font-weight: 600;
+      border: none;
+      color: #fff;
+      background: linear-gradient(135deg, var(--secondary-color), #005f89);
+      box-shadow: 0 12px 22px rgba(0, 119, 182, 0.18);
+      transition: all 0.25s ease;
+    }
+
+    .btn-logout:hover {
+      transform: translateY(-2px);
+    }
+
+    .page-hero {
+      margin-top: 26px;
+      padding: 38px 0;
+      border-radius: 30px;
+      background:
+        radial-gradient(circle at top right, rgba(42, 157, 143, 0.16), transparent 22%),
+        linear-gradient(135deg, rgba(0, 119, 182, 0.08) 0%, rgba(232, 246, 252, 0.9) 48%, rgba(255, 255, 255, 0.98) 100%);
+      border: 1px solid rgba(216, 232, 240, 0.95);
+      box-shadow: 0 24px 60px rgba(0, 48, 73, 0.10);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      width: 250px;
+      height: 250px;
+      right: -70px;
+      top: -90px;
+      background: rgba(0, 119, 182, 0.08);
+      border-radius: 36px;
+      transform: rotate(18deg);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(216, 232, 240, 0.95);
+      padding: 10px 16px;
+      color: var(--muted-text);
+      font-size: 0.92rem;
+      box-shadow: 0 10px 20px rgba(0, 48, 73, 0.06);
+    }
+
+    .page-hero h1 {
+      margin: 16px 0 12px;
+      font-weight: 700;
+      font-size: 2.8rem;
+      line-height: 1.08;
+    }
+
+    .page-hero h1 span {
+      color: var(--secondary-color);
+    }
+
+    .page-hero p {
+      color: var(--muted-text);
+      max-width: 980px;
+      line-height: 1.8;
+      margin: 0;
+    }
+
+    .sessions-section {
+      margin-top: 24px;
+    }
+
+    .sessions-card,
+    .session-card,
+    .session-item,
+    .empty-state {
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid rgba(216, 232, 240, 0.95);
+      border-radius: 28px;
+      box-shadow: 0 18px 40px rgba(0, 48, 73, 0.08);
+    }
+
+    .sessions-card {
+      padding: 28px;
+    }
+
+    .section-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 119, 182, 0.08);
+      color: var(--secondary-color);
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .section-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .section-top h3 {
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .section-top p {
+      color: var(--muted-text);
+      margin: 0;
+    }
+
+    .session-card {
+      padding: 22px;
+      height: 100%;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    .session-card:hover,
+    .session-item:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 22px 40px rgba(0, 48, 73, 0.10);
+      border-color: #bfdbe9;
+    }
+
+    .session-card label {
+      display: block;
+      font-weight: 600;
+      color: var(--secondary-color);
+      margin-bottom: 4px;
+    }
+
+    .session-card p {
+      margin-bottom: 12px;
+      color: var(--muted-text);
+    }
+
+    .session-list {
+      margin-top: 26px;
+    }
+
+    .session-item {
+      padding: 20px;
+      margin-bottom: 14px;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    .session-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .session-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 12px;
+      gap: 12px;
+    }
+
+    .session-item-name {
+      font-weight: 700;
+      color: var(--primary-color);
+    }
+
+    .session-item-details {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      color: var(--muted-text);
+    }
+
+    .detail-chip,
+    .session-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-weight: 600;
+    }
+
+    .detail-chip {
+      background: rgba(0, 119, 182, 0.07);
+      color: var(--primary-color);
+      font-size: 0.9rem;
+    }
+
+    .session-status {
+      font-size: 0.78rem;
+    }
+
+    .status-pending { background-color: rgba(255, 193, 7, 0.16); color: #8a6a00; }
+    .status-confirmed, .status-accepted { background-color: rgba(0, 119, 182, 0.10); color: #0c5a7a; }
+    .status-completed { background-color: rgba(42, 157, 143, 0.14); color: #17675e; }
+
+    .empty-state {
+      padding: 36px 24px;
+      text-align: center;
+    }
+
+    .empty-state i {
+      font-size: 2.4rem;
+      color: var(--secondary-color);
+      margin-bottom: 14px;
+      display: inline-block;
+    }
+
+    .empty-state h5 {
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .empty-state p {
+      color: var(--muted-text);
+      margin: 0;
+    }
+
+    footer {
+      background: rgba(255, 255, 255, 0.88);
+      border-top: 1px solid rgba(216, 232, 240, 0.95);
+      text-align: center;
+      padding: 20px 0;
+      font-size: 0.92rem;
+      color: var(--muted-text);
+      margin-top: auto;
+    }
+
+    @media (max-width: 768px) {
+      .page-shell .container {
+        max-width: calc(100vw - 12px);
+      }
+
+      .navbar {
+        border-radius: 18px;
+        margin: 8px 4px 0;
+      }
+
+      .page-hero {
+        border-radius: 24px;
+        padding: 32px 0;
+      }
+
+      .page-hero h1 {
+        font-size: 2rem;
+      }
+
+      .sessions-card {
+        padding: 20px;
+      }
+
+      .section-top,
+      .session-item-header,
+      .session-item-details {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+      <div class="container-fluid px-3 px-lg-4 px-xl-5">
+        <a class="navbar-brand d-flex align-items-center" href="/org/dashboard">
+          <img src="/images/Logo 1.png" alt="MentorLink Logo" width="40" height="40" class="me-2">
+          MentorLink
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="menu">
+          <ul class="navbar-nav align-items-lg-center mb-2 mb-lg-0">
+            <li class="nav-item"><a href="/org/dashboard" class="nav-link">Dashboard</a></li>
+            <li class="nav-item"><a href="/org/sessions" class="nav-link active">Sessions</a></li>
+            <li class="nav-item"><a href="/org/analytics" class="nav-link">Analytics</a></li>
+            <li class="nav-item"><a href="/org/profile" class="nav-link">Profile</a></li>
+          </ul>
+          <form method="POST" action="/auth/logout" style="display:inline;">
+            <button type="submit" class="btn btn-logout ms-lg-3 mt-2 mt-lg-0">Log out</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <section class="container page-hero">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <i class="bi bi-calendar2-week-fill"></i>
+          Session Management
+        </div>
+        <h1>Review program sessions and track mentorship <span>through completion.</span></h1>
+        <p>This page gives your organization a cleaner view of pending, accepted, and completed sessions while preserving the same approval and completion flow.</p>
+      </div>
+    </section>
+
+    <section class="container sessions-section">
+      <div class="sessions-card">
+        <div class="section-top">
+          <div>
+            <div class="section-kicker"><i class="bi bi-hourglass-split"></i> Pending Sessions</div>
+            <h3>Requests awaiting approval</h3>
+            <p>Approve new requests here, then review the complete session history below.</p>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          {{#if sessions}}
+            {{#each sessions}}
+              {{#ifEq status "pending"}}
+              <div class="col-md-6 col-xl-4">
+                <div class="session-card">
+                  <div>
+                    <label>Mentee</label>
+                    <p>{{#if mentee.user}}{{mentee.user.name}}{{else}}Mentee{{/if}}</p>
+                    <label>Mentor</label>
+                    <p>{{#if mentor.user}}{{mentor.user.name}}{{else}}Mentor{{/if}}</p>
+                    <label>Date</label>
+                    <p>{{formatDate scheduledAt}}</p>
+                    <label>Time</label>
+                    <p>{{formatTime scheduledAt}}</p>
+                    {{#if notes}}
+                    <label>Notes</label>
+                    <p>{{notes}}</p>
+                    {{/if}}
+                  </div>
+                  <form method="POST" action="/org/session/{{_id}}/accept" style="display:inline;">
+                    <button type="submit" class="btn btn-success w-100" style="border-radius:999px;">Accept Session</button>
+                  </form>
+                </div>
+              </div>
+              {{/ifEq}}
+            {{/each}}
+          {{else}}
+            <div class="col-12">
+              <div class="empty-state">
+                <i class="bi bi-inbox"></i>
+                <h5>No pending sessions</h5>
+                <p>New mentorship program requests will appear here when participants join.</p>
+              </div>
+            </div>
+          {{/if}}
+        </div>
+
+        <div class="session-list">
+          <div class="section-kicker"><i class="bi bi-list-check"></i> Session Log</div>
+          <h3 class="mb-2">All Sessions</h3>
+          <p class="text-muted mb-4">Track every mentorship session by participant, mentor, time, and current status.</p>
+          {{#if sessions}}
+            {{#each sessions}}
+            <div class="session-item">
+              <div class="session-item-header">
+                <span class="session-item-name">{{#if mentee.user}}{{mentee.user.name}}{{else}}Mentee{{/if}} - {{#if mentor.user}}{{mentor.user.name}}{{else}}Mentor{{/if}}</span>
+                <span class="session-status status-{{status}}">{{status}}</span>
+              </div>
+              <div class="session-item-details">
+                <span class="detail-chip"><i class="bi bi-calendar-event"></i> {{formatDate scheduledAt}}</span>
+                <span class="detail-chip"><i class="bi bi-clock"></i> {{formatTime scheduledAt}}</span>
+                {{#if notes}}
+                <span class="detail-chip"><i class="bi bi-sticky"></i> {{notes}}</span>
+                {{/if}}
+              </div>
+              {{#ifEq status "accepted"}}
+              <form method="POST" action="/org/session/{{_id}}/complete" style="display:inline-block; margin-top:10px;">
+                <button type="submit" class="btn btn-sm btn-success" style="border-radius:999px;">Mark as Completed</button>
+              </form>
+              {{/ifEq}}
+            </div>
+            {{/each}}
+          {{else}}
+            <div class="empty-state">
+              <i class="bi bi-calendar2-x"></i>
+              <h5>No sessions yet</h5>
+              <p>Your organization’s mentorship history will appear here as sessions are created.</p>
+            </div>
+          {{/if}}
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      &copy; 2025 MentorLink. All rights reserved.
+    </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MentorLink | Mentor Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #003049;
+      --secondary-color: #0077b6;
+      --accent-color: #2a9d8f;
+      --surface-border: #d8e8f0;
+      --muted-text: #61727c;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: var(--primary-color);
+      background:
+        radial-gradient(circle at top right, rgba(42, 157, 143, 0.10), transparent 24%),
+        radial-gradient(circle at bottom left, rgba(0, 119, 182, 0.10), transparent 28%),
+        #fbfeff;
+      min-height: 100vh;
+    }
+
+    .page-shell {
+      width: 100%;
+      max-width: none;
+      padding-bottom: 36px;
+    }
+
+    .page-shell .container {
+      max-width: min(1680px, calc(100vw - 36px));
+    }
+
+    .navbar {
+      margin: 18px auto 0;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid rgba(216, 232, 240, 0.95);
+      box-shadow: 0 14px 34px rgba(0, 48, 73, 0.08);
+      backdrop-filter: blur(10px);
+      border-radius: 22px;
+      padding: 14px 0;
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      color: var(--secondary-color) !important;
+      display: flex;
+      align-items: center;
+    }
+
+    .navbar-brand img {
+      margin-right: 10px;
+      border-radius: 14px !important;
+      box-shadow: 0 8px 18px rgba(0, 48, 73, 0.12);
+    }
+
+    .nav-link {
+      color: var(--primary-color) !important;
+      font-weight: 500;
+      margin: 0 6px;
+      padding: 8px 14px !important;
+      border-radius: 999px;
+      transition: all 0.25s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: var(--secondary-color) !important;
+      background: rgba(0, 119, 182, 0.08);
+    }
+
+    .btn-logout,
+    .btn-accept,
+    .btn-view-profile {
+      border-radius: 999px;
+      font-weight: 600;
+      border: none;
+      transition: all 0.25s ease;
+    }
+
+    .btn-logout,
+    .btn-view-profile {
+      color: #fff;
+      background: linear-gradient(135deg, var(--secondary-color), #005f89);
+      box-shadow: 0 12px 22px rgba(0, 119, 182, 0.18);
+    }
+
+    .btn-accept {
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent-color), #1f877b);
+      box-shadow: 0 12px 22px rgba(42, 157, 143, 0.18);
+    }
+
+    .btn-logout:hover,
+    .btn-accept:hover,
+    .btn-view-profile:hover {
+      transform: translateY(-2px);
+    }
+
+    .page-hero {
+      margin-top: 26px;
+      padding: 42px 0;
+      border-radius: 30px;
+      background:
+        radial-gradient(circle at top right, rgba(42, 157, 143, 0.16), transparent 22%),
+        linear-gradient(135deg, rgba(0, 119, 182, 0.08) 0%, rgba(232, 246, 252, 0.9) 48%, rgba(255, 255, 255, 0.98) 100%);
+      border: 1px solid rgba(216, 232, 240, 0.95);
+      box-shadow: 0 24px 60px rgba(0, 48, 73, 0.10);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      right: -70px;
+      top: -80px;
+      background: rgba(0, 119, 182, 0.08);
+      border-radius: 34px;
+      transform: rotate(16deg);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-grid {
+      align-items: center;
+      gap: 24px 0;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(216, 232, 240, 0.95);
+      padding: 10px 16px;
+      color: var(--muted-text);
+      font-size: 0.92rem;
+      box-shadow: 0 10px 20px rgba(0, 48, 73, 0.06);
+    }
+
+    .page-hero h1 {
+      margin: 16px 0 14px;
+      font-weight: 700;
+      font-size: 3rem;
+      line-height: 1.08;
+    }
+
+    .page-hero h1 span {
+      color: var(--secondary-color);
+    }
+
+    .hero-copy p {
+      color: var(--muted-text);
+      line-height: 1.8;
+      font-size: 1.02rem;
+      margin-bottom: 0;
+      max-width: 720px;
+    }
+
+    .hero-aside {
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid rgba(216, 232, 240, 0.95);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 16px 32px rgba(0, 48, 73, 0.06);
+    }
+
+    .hero-aside h5 {
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .hero-aside-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .hero-aside-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      color: var(--muted-text);
+      margin-bottom: 12px;
+    }
+
+    .hero-aside-list i {
+      color: var(--accent-color);
+      margin-top: 2px;
+    }
+
+    .sessions-panel,
+    .session-card,
+    .empty-state {
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid rgba(216, 232, 240, 0.95);
+      border-radius: 28px;
+      box-shadow: 0 18px 40px rgba(0, 48, 73, 0.08);
+    }
+
+    .sessions-panel {
+      margin-top: 24px;
+      padding: 28px;
+    }
+
+    .section-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .section-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 119, 182, 0.08);
+      color: var(--secondary-color);
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .section-top h3 {
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .section-top p {
+      margin: 0;
+      color: var(--muted-text);
+    }
+
+    .session-card {
+      height: 100%;
+      padding: 24px;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .session-card::before {
+      content: '';
+      position: absolute;
+      inset: 0 auto auto 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+      opacity: 0.9;
+    }
+
+    .session-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 22px 40px rgba(0, 48, 73, 0.10);
+      border-color: #bfdbe9;
+    }
+
+    .session-head {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .session-avatar {
+      width: 62px;
+      height: 62px;
+      border-radius: 20px;
+      object-fit: cover;
+      box-shadow: 0 12px 22px rgba(0, 48, 73, 0.10);
+      flex-shrink: 0;
+    }
+
+    .session-title {
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .session-subtitle {
+      color: var(--muted-text);
+      margin: 0;
+      font-size: 0.92rem;
+    }
+
+    .detail-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .detail-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(0, 119, 182, 0.07);
+      color: var(--primary-color);
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .mentee-info {
+      background: linear-gradient(180deg, rgba(246, 251, 253, 0.94), rgba(255, 255, 255, 0.98));
+      border: 1px solid rgba(216, 232, 240, 0.95);
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+
+    .mentee-info p {
+      margin: 0 0 8px;
+      color: var(--muted-text);
+      line-height: 1.65;
+      font-size: 0.92rem;
+    }
+
+    .mentee-info p:last-child {
+      margin-bottom: 0;
+    }
+
+    .info-label {
+      color: var(--secondary-color);
+      font-weight: 600;
+      margin-right: 5px;
+    }
+
+    .empty-state {
+      padding: 36px 24px;
+      text-align: center;
+    }
+
+    .empty-state i {
+      font-size: 2.4rem;
+      color: var(--secondary-color);
+      margin-bottom: 14px;
+      display: inline-block;
+    }
+
+    .empty-state h5 {
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .empty-state p {
+      color: var(--muted-text);
+      margin: 0;
+    }
+
+    .modal-content {
+      border-radius: 28px;
+      border: 1px solid rgba(216, 232, 240, 0.95);
+      box-shadow: 0 22px 50px rgba(0, 48, 73, 0.15);
+      overflow: hidden;
+    }
+
+    .modal-header {
+      border-bottom: none;
+      padding: 22px 24px 12px;
+      background: linear-gradient(135deg, rgba(0, 119, 182, 0.09), rgba(42, 157, 143, 0.08));
+    }
+
+    .modal-title {
+      font-weight: 700;
+      color: var(--primary-color);
+    }
+
+    .modal-body {
+      padding: 24px;
+    }
+
+    .modal-footer {
+      border-top: none;
+      padding: 0 24px 24px;
+    }
+
+    footer {
+      background: rgba(255, 255, 255, 0.88);
+      border-top: 1px solid rgba(216, 232, 240, 0.95);
+      text-align: center;
+      padding: 20px 0;
+      font-size: 0.92rem;
+      color: var(--muted-text);
+      margin-top: 42px;
+    }
+
+    @media (max-width: 992px) {
+      .page-hero h1 {
+        font-size: 2.5rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .page-shell .container {
+        max-width: calc(100vw - 18px);
+      }
+
+      .navbar {
+        border-radius: 18px;
+      }
+
+      .page-hero {
+        border-radius: 24px;
+        padding: 34px 0;
+      }
+
+      .page-hero h1 {
+        font-size: 2rem;
+      }
+
+      .sessions-panel {
+        padding: 20px;
+      }
+
+      .section-top {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+      <div class="container-fluid px-3 px-lg-4 px-xl-5">
+        <a class="navbar-brand d-flex align-items-center" href="/mentor/dashboard">
+          <img src="/images/Logo 1.png" alt="MentorLink Logo" width="40" height="40" class="me-2">
+          MentorLink
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="menu">
+          <ul class="navbar-nav align-items-lg-center mb-2 mb-lg-0">
+            <li class="nav-item"><a href="/mentor/dashboard" class="nav-link active">Dashboard</a></li>
+            <li class="nav-item"><a href="/mentor/sessions" class="nav-link">Sessions</a></li>
+            <li class="nav-item"><a href="/mentor/analytics" class="nav-link">Analytics</a></li>
+            <li class="nav-item"><a href="/mentor/profile" class="nav-link">Profile</a></li>
+          </ul>
+          <form method="POST" action="/auth/logout" style="display:inline;">
+            <button type="submit" class="btn btn-logout ms-lg-3 mt-2 mt-lg-0">Log out</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <section class="container page-hero">
+      <div class="hero-content">
+        <div class="row hero-grid">
+          <div class="col-lg-8 hero-copy">
+            <div class="hero-badge">
+              <i class="bi bi-lightbulb-fill"></i>
+              Mentor Workspace
+            </div>
+            <h1>Review requests and turn your <span>experience into guidance.</span></h1>
+            <p>Welcome, {{#if user}}{{user.name}}{{else}}Mentor{{/if}}. This space helps you understand who is reaching out, what they need, and when they want to meet, all without changing your current session flow.</p>
+          </div>
+          <div class="col-lg-4">
+            <div class="hero-aside">
+              <h5>What you can do here</h5>
+              <ul class="hero-aside-list">
+                <li><i class="bi bi-person-check-fill"></i><span>Review pending mentorship requests with full mentee context.</span></li>
+                <li><i class="bi bi-chat-dots-fill"></i><span>Open each mentee profile before deciding to accept or reject.</span></li>
+                <li><i class="bi bi-calendar2-check-fill"></i><span>Manage your mentorship queue with the same working actions.</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container">
+      <div class="sessions-panel">
+        <div class="section-top">
+          <div>
+            <div class="section-kicker"><i class="bi bi-hourglass-split"></i> Pending Requests</div>
+            <h3>Sessions waiting for your response</h3>
+            <p>Each request includes the mentee’s background, goals, and timing so you can respond with confidence.</p>
+          </div>
+        </div>
+
+        {{#if pendingSessions}}
+          <div class="row g-4">
+            {{#each pendingSessions}}
+              <div class="col-md-6">
+                <div class="session-card">
+                  <div class="session-head">
+                    <img class="session-avatar" src="{{#if this.mentee.user.profilePicture}}{{this.mentee.user.profilePicture}}{{else}}/images/Logo 1.png{{/if}}" alt="{{#if this.mentee.user}}{{this.mentee.user.name}}{{else}}Mentee{{/if}}">
+                    <div>
+                      <div class="session-title">{{#if this.mentee.user}}{{this.mentee.user.name}}{{else}}Unknown{{/if}}</div>
+                      <p class="session-subtitle">{{#if this.mentee.user}}{{this.mentee.user.email}}{{/if}}</p>
+                    </div>
+                  </div>
+
+                  <div class="detail-row">
+                    <span class="detail-chip"><i class="bi bi-calendar-event"></i> {{formatDate this.scheduledAt}}</span>
+                    <span class="detail-chip"><i class="bi bi-clock"></i> {{formatTime this.scheduledAt}}</span>
+                  </div>
+
+                  {{#if this.notes}}
+                  <div class="mentee-info">
+                    <p><span class="info-label"><i class="bi bi-chat-left-text me-1"></i>Message:</span></p>
+                    <p style="margin-left: 20px; font-style: italic;">"{{this.notes}}"</p>
+                  </div>
+                  {{/if}}
+
+                  <div class="mentee-info">
+                    <p><span class="info-label"><i class="bi bi-book me-1"></i>Education:</span> {{#if this.mentee.educationLevel}}{{this.mentee.educationLevel}}{{else}}Not specified{{/if}}</p>
+                    {{#if this.mentee.goals}}
+                    <p><span class="info-label"><i class="bi bi-bullseye me-1"></i>Goals:</span> {{this.mentee.goals}}</p>
+                    {{/if}}
+                    {{#if this.mentee.skills}}
+                    <p><span class="info-label"><i class="bi bi-star me-1"></i>Skills:</span> {{#each this.mentee.skills}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}</p>
+                    {{/if}}
+                    {{#if this.mentee.phone}}
+                    <p><span class="info-label"><i class="bi bi-telephone me-1"></i>Phone:</span> {{this.mentee.phone}}</p>
+                    {{/if}}
+                  </div>
+
+                  <button type="button" class="btn btn-view-profile w-100 py-2" data-bs-toggle="modal" data-bs-target="#menteeModal{{@index}}">
+                    <i class="bi bi-person-lines-fill me-2"></i>View Full Profile
+                  </button>
+
+                  <div class="d-flex gap-2 mt-3">
+                    <form method="POST" action="/mentor/session/{{this._id}}/accept" style="flex:1;">
+                      <button type="submit" class="btn btn-accept w-100 py-2"><i class="bi bi-check-circle me-2"></i>Accept</button>
+                    </form>
+                    <form method="POST" action="/mentor/session/{{this._id}}/reject" style="flex:1;">
+                      <button type="submit" class="btn btn-outline-danger w-100 py-2" style="border-radius:999px;"><i class="bi bi-x-circle me-2"></i>Reject</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            {{/each}}
+          </div>
+        {{else}}
+          <div class="empty-state">
+            <i class="bi bi-inbox"></i>
+            <h5>No pending sessions right now</h5>
+            <p>New mentorship requests will appear here when mentees reach out to you.</p>
+          </div>
+        {{/if}}
+      </div>
+    </section>
+
+    <footer>
+      &copy; 2025 MentorLink. All rights reserved.
+    </footer>
+  </div>
+
+  {{#each pendingSessions}}
+  <div class="modal fade" id="menteeModal{{@index}}" tabindex="-1" aria-labelledby="menteeModalLabel{{@index}}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="menteeModalLabel{{@index}}"><i class="bi bi-person-badge me-2"></i>Mentee Profile</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-4">
+            <h6 class="text-primary mb-3"><i class="bi bi-info-circle me-2"></i>Basic Information</h6>
+            <div class="row">
+              <div class="col-md-6 mb-2">
+                <strong><i class="bi bi-person me-2"></i>Name:</strong> {{#if this.mentee.user}}{{this.mentee.user.name}}{{else}}Unknown{{/if}}
+              </div>
+              <div class="col-md-6 mb-2">
+                <strong><i class="bi bi-envelope me-2"></i>Email:</strong> {{#if this.mentee.user}}{{this.mentee.user.email}}{{else}}Not available{{/if}}
+              </div>
+              <div class="col-md-6 mb-2">
+                <strong><i class="bi bi-telephone me-2"></i>Phone:</strong> {{#if this.mentee.phone}}{{this.mentee.phone}}{{else}}Not provided{{/if}}
+              </div>
+              <div class="col-md-6 mb-2">
+                <strong><i class="bi bi-book me-2"></i>Education:</strong> {{#if this.mentee.educationLevel}}{{this.mentee.educationLevel}}{{else}}Not specified{{/if}}
+              </div>
+            </div>
+          </div>
+
+          {{#if this.mentee.goals}}
+          <div class="mb-4">
+            <h6 class="text-primary mb-3"><i class="bi bi-bullseye me-2"></i>Goals & Aspirations</h6>
+            <p style="background: rgba(0, 119, 182, 0.05); padding: 15px; border-radius: 14px;">{{this.mentee.goals}}</p>
+          </div>
+          {{/if}}
+
+          {{#if this.mentee.skills}}
+          <div class="mb-4">
+            <h6 class="text-primary mb-3"><i class="bi bi-star me-2"></i>Skills</h6>
+            <div class="d-flex flex-wrap gap-2">
+              {{#each this.mentee.skills}}
+              <span class="badge" style="background: var(--accent-color); padding: 8px 15px; font-size: 0.9rem; font-weight: 500;">{{this}}</span>
+              {{/each}}
+            </div>
+          </div>
+          {{/if}}
+
+          <div class="mb-2">
+            <h6 class="text-primary mb-3"><i class="bi bi-calendar-check me-2"></i>Session Details</h6>
+            <div style="background: rgba(0, 119, 182, 0.05); padding: 15px; border-radius: 14px;">
+              <p class="mb-2"><strong>Requested Date:</strong> {{formatDate this.scheduledAt}}</p>
+              <p class="mb-2"><strong>Requested Time:</strong> {{formatTime this.scheduledAt}}</p>
+              {{#if this.notes}}
+              <p class="mb-0"><strong>Message:</strong><br><em style="color: #555;">"{{this.notes}}"</em></p>
+              {{/if}}
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" style="border-radius:999px;">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{/each}}
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

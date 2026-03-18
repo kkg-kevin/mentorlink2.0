@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MentorLink | Mentee Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #003049;
+      --secondary-color: #0077b6;
+      --accent-color: #2a9d8f;
+      --surface-color: #ffffff;
+      --surface-soft: #f5fbfd;
+      --surface-border: #d8e8f0;
+      --muted-text: #61727c;
+      --shadow-soft: 0 18px 40px rgba(0, 48, 73, 0.08);
+      --shadow-card: 0 16px 32px rgba(0, 48, 73, 0.06);
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: var(--primary-color);
+      background:
+        radial-gradient(circle at top right, rgba(42, 157, 143, 0.10), transparent 24%),
+        radial-gradient(circle at bottom left, rgba(0, 119, 182, 0.10), transparent 28%),
+        #fbfeff;
+      min-height: 100vh;
+    }
+
+    .page-shell {
+      width: 100%;
+      max-width: none;
+      padding-bottom: 36px;
+    }
+
+    .page-shell .container {
+      max-width: min(1820px, calc(100vw - 24px));
+    }
+
+    .navbar {
+      margin: 18px auto 0;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid rgba(216, 232, 240, 0.95);
+      box-shadow: 0 14px 34px rgba(0, 48, 73, 0.08);
+      backdrop-filter: blur(10px);
+      border-radius: 22px;
+      padding: 14px 0;
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      color: var(--secondary-color) !important;
+      display: flex;
+      align-items: center;
+    }
+
+    .navbar-brand img {
+      margin-right: 10px;
+      border-radius: 14px !important;
+      box-shadow: 0 8px 18px rgba(0, 48, 73, 0.12);
+    }
+
+    .nav-link {
+      color: var(--primary-color) !important;
+      font-weight: 500;
+      margin: 0 6px;
+      padding: 8px 14px !important;
+      border-radius: 999px;
+      transition: all 0.25s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: var(--secondary-color) !important;
+      background: rgba(0, 119, 182, 0.08);
+    }
+
+    .btn-logout,
+    .btn-search,
+    .btn-available,
+    .btn-request,
+    .btn-modal-primary,
+    .btn-modal-secondary {
+      border-radius: 999px;
+      font-weight: 600;
+      transition: all 0.25s ease;
+      border: none;
+    }
+
+    .btn-logout:hover,
+    .btn-search:hover,
+    .btn-available:hover,
+    .btn-request:hover,
+    .btn-modal-primary:hover,
+    .btn-modal-secondary:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-logout,
+    .btn-search,
+    .btn-available,
+    .btn-modal-primary {
+      color: #fff;
+      background: linear-gradient(135deg, var(--secondary-color), #005f89);
+      box-shadow: 0 12px 22px rgba(0, 119, 182, 0.18);
+    }
+
+    .btn-request {
+      color: var(--primary-color);
+      background: linear-gradient(135deg, rgba(42, 157, 143, 0.14), rgba(0, 119, 182, 0.10));
+      box-shadow: 0 10px 18px rgba(0, 48, 73, 0.08);
+    }
+
+    .btn-modal-secondary {
+      color: var(--primary-color);
+      background: rgba(233, 244, 249, 0.95);
+      border: 1px solid var(--surface-border);
+    }
+
+    .page-hero {
+      margin-top: 26px;
+      padding: 42px 0;
+      position: relative;
+      overflow: hidden;
+      border-radius: 30px;
+      background:
+        radial-gradient(circle at top right, rgba(42, 157, 143, 0.16), transparent 22%),
+        linear-gradient(135deg, rgba(0, 119, 182, 0.08) 0%, rgba(232, 246, 252, 0.9) 48%, rgba(255, 255, 255, 0.98) 100%);
+      border: 1px solid rgba(216, 232, 240, 0.95);
+      box-shadow: 0 24px 60px rgba(0, 48, 73, 0.10);
+    }
+
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      right: -70px;
+      top: -80px;
+      background: rgba(0, 119, 182, 0.08);
+      border-radius: 34px;
+      transform: rotate(16deg);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-grid {
+      align-items: center;
+      gap: 24px 0;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(216, 232, 240, 0.95);
+      padding: 10px 16px;
+      color: var(--muted-text);
+      font-size: 0.92rem;
+      box-shadow: 0 10px 20px rgba(0, 48, 73, 0.06);
+    }
+
+    .page-hero h1 {
+      margin: 16px 0 14px;
+      font-weight: 700;
+      font-size: 3rem;
+      line-height: 1.08;
+    }
+
+    .page-hero h1 span {
+      color: var(--secondary-color);
+    }
+
+    .hero-copy p {
+      color: var(--muted-text);
+      line-height: 1.8;
+      font-size: 1.02rem;
+      margin-bottom: 0;
+      max-width: 920px;
+    }
+
+    .hero-aside {
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid rgba(216, 232, 240, 0.95);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .hero-aside h5 {
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .hero-aside-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .hero-aside-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      color: var(--muted-text);
+      margin-bottom: 12px;
+    }
+
+    .hero-aside-list i {
+      color: var(--accent-color);
+      margin-top: 2px;
+    }
+
+    .section-card,
+    .directory-card,
+    .empty-state {
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid rgba(216, 232, 240, 0.95);
+      border-radius: 26px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .filters-wrap {
+      margin-top: 24px;
+      padding: 28px;
+    }
+
+    .filters-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: flex-start;
+      margin-bottom: 22px;
+    }
+
+    .section-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 119, 182, 0.08);
+      color: var(--secondary-color);
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .section-description {
+      color: var(--muted-text);
+      margin: 0;
+      max-width: 980px;
+      line-height: 1.7;
+    }
+
+    .filters .form-control,
+    .filters .form-select,
+    .modal .form-control,
+    .modal textarea {
+      border-radius: 18px;
+      border: 1px solid var(--surface-border);
+      padding: 13px 16px;
+      background: #fbfeff;
+      transition: all 0.25s ease;
+    }
+
+    .filters .form-control:focus,
+    .filters .form-select:focus,
+    .modal .form-control:focus,
+    .modal textarea:focus {
+      border-color: rgba(0, 119, 182, 0.45);
+      box-shadow: 0 0 0 0.2rem rgba(0, 119, 182, 0.12);
+      background: #fff;
+    }
+
+    #resultsCount {
+      color: var(--secondary-color);
+      font-weight: 500;
+    }
+
+    .directory-section {
+      margin-top: 28px;
+    }
+
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .section-heading p {
+      color: var(--muted-text);
+      margin: 8px 0 0;
+    }
+
+    .directory-card {
+      height: 100%;
+      padding: 28px 24px 24px;
+      transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .directory-card::before {
+      content: '';
+      position: absolute;
+      inset: 0 auto auto 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+      opacity: 0.9;
+    }
+
+    .directory-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 22px 40px rgba(0, 48, 73, 0.12);
+      border-color: #bfdbe9;
+    }
+
+    .profile-frame {
+      width: 104px;
+      height: 104px;
+      border-radius: 28px;
+      padding: 8px;
+      background: linear-gradient(135deg, rgba(0, 119, 182, 0.14), rgba(42, 157, 143, 0.14));
+      margin: 4px auto 18px;
+      box-shadow: 0 14px 28px rgba(0, 48, 73, 0.10);
+    }
+
+    .profile-frame img {
+      width: 100%;
+      height: 100%;
+      border-radius: 22px;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      background: #fff;
+    }
+
+    .card-meta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(0, 119, 182, 0.07);
+      color: var(--secondary-color);
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+
+    .card-title {
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .directory-card p {
+      color: var(--muted-text);
+      line-height: 1.7;
+      margin-bottom: 10px;
+    }
+
+    .detail-line strong {
+      color: var(--primary-color);
+      margin-right: 4px;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .card-actions > * {
+      flex: 1;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+    }
+
+    .empty-state {
+      padding: 38px 24px;
+      text-align: center;
+    }
+
+    .empty-state i {
+      font-size: 2.4rem;
+      color: var(--secondary-color);
+      margin-bottom: 14px;
+      display: inline-block;
+    }
+
+    .empty-state h5 {
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .empty-state p {
+      color: var(--muted-text);
+      margin: 0;
+    }
+
+    .modal-content {
+      border-radius: 26px;
+      border: 1px solid rgba(216, 232, 240, 0.95);
+      box-shadow: 0 22px 50px rgba(0, 48, 73, 0.15);
+      overflow: hidden;
+    }
+
+    .modal-header {
+      border-bottom: none;
+      padding: 22px 24px 12px;
+      background: linear-gradient(135deg, rgba(0, 119, 182, 0.09), rgba(42, 157, 143, 0.08));
+    }
+
+    .modal-title {
+      font-weight: 700;
+      color: var(--primary-color);
+    }
+
+    .modal-body {
+      padding: 24px;
+    }
+
+    .modal-footer {
+      border-top: none;
+      padding: 0 24px 24px;
+      gap: 10px;
+    }
+
+    .form-label {
+      font-weight: 600;
+      color: var(--primary-color);
+      margin-bottom: 8px;
+    }
+
+    footer {
+      background: rgba(255, 255, 255, 0.88);
+      border-top: 1px solid rgba(216, 232, 240, 0.95);
+      text-align: center;
+      padding: 20px 0;
+      font-size: 0.92rem;
+      color: var(--muted-text);
+      margin-top: 42px;
+    }
+
+    @media (max-width: 992px) {
+      .page-hero h1 {
+        font-size: 2.5rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .page-shell .container {
+        max-width: calc(100vw - 12px);
+      }
+
+      .navbar {
+        border-radius: 18px;
+      }
+
+      .page-hero {
+        padding: 34px 0;
+        border-radius: 24px;
+      }
+
+      .page-hero h1 {
+        font-size: 2.1rem;
+      }
+
+      .filters-wrap,
+      .directory-card {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      .filters-top,
+      .section-heading {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .page-hero h1 {
+        font-size: 1.9rem;
+      }
+
+      .card-actions {
+        flex-direction: column;
+      }
+
+      .btn-logout,
+      .btn-search,
+      .btn-available,
+      .btn-request,
+      .btn-modal-primary,
+      .btn-modal-secondary {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+      <div class="container-fluid px-3 px-lg-4 px-xl-5">
+        <a class="navbar-brand d-flex align-items-center" href="/mentee/dashboard">
+          <img src="/images/Logo 1.png" alt="MentorLink Logo" width="40" height="40" class="me-2">
+          MentorLink
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu"
+          aria-controls="menu" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="menu">
+          <ul class="navbar-nav align-items-lg-center mb-2 mb-lg-0">
+            <li class="nav-item"><a href="/mentee/dashboard" class="nav-link active">Dashboard</a></li>
+            <li class="nav-item"><a href="/mentee/sessions" class="nav-link">Sessions</a></li>
+            <li class="nav-item"><a href="/mentee/feedback" class="nav-link">Feedback</a></li>
+            <li class="nav-item"><a href="/mentee/profile" class="nav-link">Profile</a></li>
+          </ul>
+          <form method="POST" action="/auth/logout" style="display:inline;">
+            <button type="submit" class="btn btn-logout ms-lg-3 mt-2 mt-lg-0">Log out</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <section class="container page-hero">
+      <div class="hero-content">
+        <div class="row hero-grid">
+          <div class="col-lg-8 hero-copy">
+            <div class="hero-badge">
+              <i class="bi bi-mortarboard-fill"></i>
+              Mentee Workspace
+            </div>
+            <h1>Find the <span>right guidance</span> and start strong.</h1>
+            <p>Welcome, {{#if user}}{{user.name}}{{else}}Mentee{{/if}}. Explore mentors and partner organizations, filter by what matters to you, and start conversations that move your goals forward.</p>
+          </div>
+          <div class="col-lg-4">
+            <div class="hero-aside">
+              <h5>What you can do here</h5>
+              <ul class="hero-aside-list">
+                <li><i class="bi bi-search-heart-fill"></i><span>Browse mentors by expertise, bio, and availability.</span></li>
+                <li><i class="bi bi-buildings-fill"></i><span>Join structured organization programs that fit your interests.</span></li>
+                <li><i class="bi bi-calendar-check-fill"></i><span>Request sessions directly without changing your current flow.</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container">
+      <div class="section-card filters-wrap filters">
+        <div class="filters-top">
+          <div>
+            <div class="section-kicker"><i class="bi bi-sliders"></i> Discovery Filters</div>
+            <h3 class="section-title">Search mentors and organizations</h3>
+            <p class="section-description">Narrow the directory by keyword, type, or availability to quickly find the right mentorship opportunity.</p>
+          </div>
+        </div>
+        <form class="row g-3 align-items-center" id="searchForm" onsubmit="return false;">
+          <div class="col-md-4 col-sm-6">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search by name, expertise, or keyword..." oninput="filterResults()">
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <select id="typeFilter" class="form-select" onchange="filterResults()">
+              <option value="">All Types...</option>
+              <option value="mentor">Mentors Only</option>
+              <option value="organization">Organizations Only</option>
+            </select>
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <select id="availabilityFilter" class="form-select" onchange="filterResults()">
+              <option value="">All Availability...</option>
+              <option value="Available">Available</option>
+              <option value="Busy">Busy</option>
+            </select>
+          </div>
+          <div class="col-md-2 d-grid">
+            <button type="button" class="btn btn-search" onclick="resetFilters()">Reset</button>
+          </div>
+        </form>
+        <div id="resultsCount" class="mt-3 text-center"></div>
+      </div>
+    </section>
+
+    <section class="container directory-section">
+      <div class="section-heading">
+        <div>
+          <div class="section-kicker"><i class="bi bi-people-fill"></i> Mentor Directory</div>
+          <h3 class="section-title">Mentors you can learn from</h3>
+          <p>Browse experience, availability, and focus areas before sending a session request.</p>
+        </div>
+      </div>
+
+      <div id="mentorsContainer" class="row g-4 justify-content-center">
+        {{#if mentors}}
+          {{#each mentors}}
+          <div class="col-md-6 col-xl-4 mentor-card" data-name="{{name}}" data-expertise="{{expertise}}" data-availability="{{availability}}" data-type="mentor" data-bio="{{bio}}">
+            <div class="directory-card text-center">
+              <div class="profile-frame">
+                <img src="{{photo}}" alt="{{name}}">
+              </div>
+              <div class="card-meta"><i class="bi bi-stars"></i> Mentor Profile</div>
+              <h5 class="card-title">{{name}}</h5>
+              <p class="detail-line"><strong>Expertise:</strong> {{expertise}}</p>
+              <p>{{bio}}</p>
+              <div class="card-actions">
+                <span class="btn btn-available status-pill">{{availability}}</span>
+                <button type="button" class="btn btn-request" data-bs-toggle="modal" data-bs-target="#mentorModal{{@index}}">Request</button>
+              </div>
+            </div>
+          </div>
+          {{/each}}
+        {{else}}
+          <div class="col-12">
+            <div class="empty-state">
+              <i class="bi bi-person-workspace"></i>
+              <h5>No mentors available right now</h5>
+              <p>Check back soon or adjust your filters once new mentors are available.</p>
+            </div>
+          </div>
+        {{/if}}
+      </div>
+    </section>
+
+    {{#if companies}}
+    <section class="container directory-section">
+      <div class="section-heading">
+        <div>
+          <div class="section-kicker"><i class="bi bi-buildings-fill"></i> Program Partners</div>
+          <h3 class="section-title" id="companiesHeader">Organizations you can join</h3>
+          <p>Explore structured mentorship programs from organizations aligned with your interests.</p>
+        </div>
+      </div>
+      <div id="companiesContainer" class="row g-4 justify-content-center">
+        {{#each companies}}
+        <div class="col-md-6 col-xl-4 organization-card" data-name="{{name}}" data-expertise="{{field}}" data-type="organization" data-description="{{description}}">
+          <div class="directory-card text-center">
+            <div class="profile-frame">
+              <img src="{{logo}}" alt="{{name}}">
+            </div>
+            <div class="card-meta"><i class="bi bi-diagram-3-fill"></i> Partner Organization</div>
+            <h5 class="card-title">{{name}}</h5>
+            <p class="detail-line"><strong>Area:</strong> {{field}}</p>
+            <p>{{description}}</p>
+            <div class="card-actions">
+              <button type="button" class="btn btn-available" data-bs-toggle="modal" data-bs-target="#orgModal{{@index}}">Join Program</button>
+            </div>
+          </div>
+        </div>
+        {{/each}}
+      </div>
+    </section>
+    {{/if}}
+
+    <footer>
+      &copy; 2025 MentorLink. All rights reserved.
+    </footer>
+  </div>
+
+  {{#each mentors}}
+  <div class="modal fade" id="mentorModal{{@index}}" tabindex="-1" aria-labelledby="mentorModalLabel{{@index}}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="mentorModalLabel{{@index}}">Request Session with {{name}}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form method="POST" action="/mentee/session/request">
+          <div class="modal-body">
+            <input type="hidden" name="mentorId" value="{{id}}">
+            <div class="mb-3">
+              <label for="scheduledAt{{@index}}" class="form-label"><i class="bi bi-calendar-event me-2"></i>Select Date & Time</label>
+              <input type="datetime-local" class="form-control" id="scheduledAt{{@index}}" name="scheduledAt" required>
+            </div>
+            <div class="mb-0">
+              <label for="notes{{@index}}" class="form-label"><i class="bi bi-chat-left-text me-2"></i>Message (Optional)</label>
+              <textarea class="form-control" id="notes{{@index}}" name="notes" rows="3" placeholder="Tell {{name}} what you'd like to learn..."></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-modal-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-modal-primary">Send Request</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  {{/each}}
+
+  {{#each companies}}
+  <div class="modal fade" id="orgModal{{@index}}" tabindex="-1" aria-labelledby="orgModalLabel{{@index}}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="orgModalLabel{{@index}}">Join {{name}} Program</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form method="POST" action="/mentee/session/organization/request">
+          <div class="modal-body">
+            <input type="hidden" name="organizationId" value="{{id}}">
+            <div class="mb-3">
+              <label for="orgScheduledAt{{@index}}" class="form-label"><i class="bi bi-calendar-event me-2"></i>Preferred Start Date & Time</label>
+              <input type="datetime-local" class="form-control" id="orgScheduledAt{{@index}}" name="scheduledAt" required>
+            </div>
+            <div class="mb-0">
+              <label for="orgNotes{{@index}}" class="form-label"><i class="bi bi-chat-left-text me-2"></i>Why join this program?</label>
+              <textarea class="form-control" id="orgNotes{{@index}}" name="notes" rows="3" placeholder="Tell us about your goals and interests..."></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-modal-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-modal-primary">Join Program</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  {{/each}}
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const now = new Date();
+      now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+      const minDateTime = now.toISOString().slice(0, 16);
+      document.querySelectorAll('input[type="datetime-local"]').forEach(input => {
+        input.min = minDateTime;
+      });
+
+      updateResultsCount();
+    });
+
+    function filterResults() {
+      const searchInput = document.getElementById('searchInput').value.toLowerCase();
+      const typeFilter = document.getElementById('typeFilter').value.toLowerCase();
+      const availabilityFilter = document.getElementById('availabilityFilter').value.toLowerCase();
+
+      const mentorCards = document.querySelectorAll('.mentor-card');
+      const organizationCards = document.querySelectorAll('.organization-card');
+
+      let visibleCount = 0;
+
+      mentorCards.forEach(card => {
+        const name = (card.dataset.name || '').toLowerCase();
+        const expertise = (card.dataset.expertise || '').toLowerCase();
+        const availability = (card.dataset.availability || '').toLowerCase();
+        const bio = (card.dataset.bio || '').toLowerCase();
+        const type = card.dataset.type;
+
+        let show = true;
+
+        if (searchInput && !name.includes(searchInput) && !expertise.includes(searchInput) && !bio.includes(searchInput)) {
+          show = false;
+        }
+
+        if (typeFilter && type !== typeFilter) {
+          show = false;
+        }
+
+        if (availabilityFilter && !availability.includes(availabilityFilter)) {
+          show = false;
+        }
+
+        card.style.display = show ? 'block' : 'none';
+        if (show) visibleCount++;
+      });
+
+      organizationCards.forEach(card => {
+        const name = (card.dataset.name || '').toLowerCase();
+        const expertise = (card.dataset.expertise || '').toLowerCase();
+        const description = (card.dataset.description || '').toLowerCase();
+        const type = card.dataset.type;
+
+        let show = true;
+
+        if (searchInput && !name.includes(searchInput) && !expertise.includes(searchInput) && !description.includes(searchInput)) {
+          show = false;
+        }
+
+        if (typeFilter && type !== typeFilter) {
+          show = false;
+        }
+
+        card.style.display = show ? 'block' : 'none';
+        if (show) visibleCount++;
+      });
+
+      const companiesHeader = document.getElementById('companiesHeader');
+      const visibleOrgs = Array.from(organizationCards).filter(card => card.style.display !== 'none').length;
+      if (companiesHeader) {
+        companiesHeader.style.display = visibleOrgs > 0 ? 'block' : 'none';
+      }
+
+      updateResultsCount(visibleCount);
+      showNoResultsMessage(visibleCount);
+    }
+
+    function resetFilters() {
+      document.getElementById('searchInput').value = '';
+      document.getElementById('typeFilter').value = '';
+      document.getElementById('availabilityFilter').value = '';
+      filterResults();
+    }
+
+    function updateResultsCount(count) {
+      const resultsCount = document.getElementById('resultsCount');
+      const totalMentors = document.querySelectorAll('.mentor-card').length;
+      const totalOrgs = document.querySelectorAll('.organization-card').length;
+      const total = totalMentors + totalOrgs;
+
+      if (count === undefined) {
+        count = total;
+      }
+
+      if (count > 0) {
+        resultsCount.innerHTML = `<i class="bi bi-funnel me-2"></i>Showing ${count} of ${total} results`;
+        resultsCount.style.color = '#0077b6';
+        resultsCount.style.fontWeight = '500';
+      } else if (total > 0) {
+        resultsCount.innerHTML = '<i class="bi bi-search me-2"></i>No results match your filters. Try adjusting your search.';
+        resultsCount.style.color = '#dc3545';
+        resultsCount.style.fontWeight = '500';
+      } else {
+        resultsCount.innerHTML = '';
+      }
+    }
+
+    function showNoResultsMessage(visibleCount) {
+      const existingMessages = document.querySelectorAll('.no-results-message');
+      existingMessages.forEach(msg => msg.remove());
+
+      if (visibleCount === 0) {
+        const mentorsContainer = document.getElementById('mentorsContainer');
+        const noResultsDiv = document.createElement('div');
+        noResultsDiv.className = 'col-12 no-results-message';
+        noResultsDiv.innerHTML = `
+          <div class="empty-state">
+            <i class="bi bi-search"></i>
+            <h5>No Results Found</h5>
+            <p>We couldn't find any mentors or organizations matching your criteria.</p>
+            <button onclick="resetFilters()" class="btn btn-search mt-3">Clear Filters</button>
+          </div>
+        `;
+        mentorsContainer.appendChild(noResultsDiv);
+      }
+    }
+  </script>
+</body>
+</html>

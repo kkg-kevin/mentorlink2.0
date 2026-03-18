@@ -1,0 +1,132 @@
+
+<nav class="navbar navbar-expand-lg navbar-primary bg-primary navbar-dark shadow sticky-top">
+  <div class="container-fluid px-3 px-lg-4 px-xl-5">
+    <a class="navbar-brand fw-bold" href="dashboard.html">MentorLink</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="modulesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Modules</a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="modulesDropdown">
+            <li><a class="dropdown-item" href="dashboard.html">Dashboard</a></li>
+            <li><a class="dropdown-item active" href="mentor-search.html">Search Mentors</a></li>
+            <li><a class="dropdown-item" href="session-management.html">Sessions</a></li>
+            <li><a class="dropdown-item" href="analytics.html">Analytics</a></li>
+            <li><a class="dropdown-item" href="feedback.html">Feedback</a></li>
+            <li><a class="dropdown-item" href="admin.html">Admin</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+        <li class="nav-item"><a class="nav-link" href="register.html">Register</a></li>
+        <li class="nav-item dropdown ms-2">
+          <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-person-circle"></i> Profile</a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<header class="bg-gradient-primary text-white py-4 text-center">
+  <div class="container">
+    <h2 class="display-6">Explore & Connect with Mentors</h2>
+    <p class="lead">Filter by expertise, experience, and availability</p>
+  </div>
+</header>
+<section class="container py-4">
+  <!-- Filters Section -->
+  <form class="row g-3 align-items-center mb-4">
+    <div class="col-sm-12 col-md-4 mb-2 mb-md-0">
+      <input type="search" class="form-control" placeholder="Search by name or keyword">
+    </div>
+    <div class="col-6 col-md-2">
+      <select class="form-select">
+        <option selected>Expertise</option>
+        <option>Software Engineering</option>
+        <option>Data Science</option>
+        <option>Business</option>
+        <option>Design</option>
+      </select>
+    </div>
+    <div class="col-6 col-md-2">
+      <select class="form-select">
+        <option selected>Rating</option>
+        <option>5 Stars</option>
+        <option>4+ Stars</option>
+        <option>3+ Stars</option>
+      </select>
+    </div>
+    <div class="col-6 col-md-2">
+      <select class="form-select">
+        <option selected>Availability</option>
+        <option>Available</option>
+        <option>Weekends</option>
+        <option>Weekdays</option>
+      </select>
+    </div>
+    <div class="col-6 col-md-2 d-grid">
+      <button class="btn btn-primary rounded-pill" type="submit">Search</button>
+    </div>
+  </form>
+  <!-- Mentor Cards Grid -->
+  <div class="row g-4">
+    <!-- Card example, repeat as needed or use JS -->
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="card mentor-card h-100 shadow-sm border-0">
+        <div class="card-body text-center">
+          <img src="../assets/avatar-default.png" class="rounded-circle shadow mb-3" width="70" height="70" alt="Mentor Photo">
+          <h5 class="card-title">Alex Kimani</h5>
+          <p class="card-text text-muted fw-semibold mb-1">Software Engineering</p>
+          <p class="mb-2 small">5 years experience | <span class="badge bg-success">Available</span></p>
+          <p class="small">Empowering developers through code mentorship and agile coaching.</p>
+          <div class="mb-2">
+            <span class="text-warning"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i></span>
+            <span class="small">4.0 (35)</span>
+          </div>
+          <button class="btn btn-outline-primary w-100 rounded-pill">Request Session</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="card mentor-card h-100 shadow-sm border-0">
+        <div class="card-body text-center">
+          <img src="../assets/avatar-default.png" class="rounded-circle shadow mb-3" width="70" height="70" alt="Mentor Photo">
+          <h5 class="card-title">Beatrice Wambui</h5>
+          <p class="card-text text-muted fw-semibold mb-1">Data Science</p>
+          <p class="mb-2 small">3 years experience | <span class="badge bg-secondary">Weekends</span></p>
+          <p class="small">Turning data into insights for academic and career growth.</p>
+          <div class="mb-2">
+            <span class="text-warning"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i><i class="bi bi-star"></i></span>
+            <span class="small">3.0 (18)</span>
+          </div>
+          <button class="btn btn-outline-primary w-100 rounded-pill">Request Session</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="card mentor-card h-100 shadow-sm border-0">
+        <div class="card-body text-center">
+          <img src="../assets/avatar-default.png" class="rounded-circle shadow mb-3" width="70" height="70" alt="Mentor Photo">
+          <h5 class="card-title">Joy Muthoni</h5>
+          <p class="card-text text-muted fw-semibold mb-1">Business Strategy</p>
+          <p class="mb-2 small">8 years experience | <span class="badge bg-success">Available</span></p>
+          <p class="small">Supporting students in building leadership and business acumen.</p>
+          <div class="mb-2">
+            <span class="text-warning"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></span>
+            <span class="small">5.0 (50)</span>
+          </div>
+          <button class="btn btn-outline-primary w-100 rounded-pill">Request Session</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<footer class="bg-primary text-white text-center py-4">
+  <div class="container">&copy; 2025 MentorLink. All rights reserved.</div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

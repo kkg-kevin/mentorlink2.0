@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MentorLink | View User</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #003049;
+      --secondary-color: #0077b6;
+      --accent-color: #2a9d8f;
+      --surface-border: #d8e8f0;
+      --muted-text: #61727c;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: var(--primary-color);
+      background:
+        radial-gradient(circle at top right, rgba(42, 157, 143, 0.10), transparent 24%),
+        radial-gradient(circle at bottom left, rgba(0, 119, 182, 0.10), transparent 28%),
+        #fbfeff;
+      min-height: 100vh;
+    }
+
+    .page-shell {
+      width: 100%;
+      max-width: none;
+      padding-bottom: 36px;
+    }
+
+    .page-shell .container {
+      max-width: min(1680px, calc(100vw - 24px));
+    }
+
+    .navbar {
+      margin: 12px 6px 0;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid rgba(216, 232, 240, 0.95);
+      box-shadow: 0 14px 34px rgba(0, 48, 73, 0.08);
+      backdrop-filter: blur(10px);
+      border-radius: 22px;
+      padding: 14px 0;
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      color: var(--secondary-color) !important;
+      display: flex;
+      align-items: center;
+    }
+
+    .navbar-brand img {
+      margin-right: 10px;
+      border-radius: 14px !important;
+      box-shadow: 0 8px 18px rgba(0, 48, 73, 0.12);
+    }
+
+    .nav-link {
+      color: var(--primary-color) !important;
+      font-weight: 500;
+      margin: 0 6px;
+      padding: 8px 14px !important;
+      border-radius: 999px;
+      transition: all 0.25s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: var(--secondary-color) !important;
+      background: rgba(0, 119, 182, 0.08);
+    }
+
+    .btn-logout,
+    .btn-back,
+    .btn-delete {
+      border-radius: 999px;
+      font-weight: 600;
+      border: none;
+      transition: all 0.25s ease;
+    }
+
+    .btn-logout {
+      color: #fff;
+      background: linear-gradient(135deg, var(--secondary-color), #005f89);
+      box-shadow: 0 12px 22px rgba(0, 119, 182, 0.18);
+    }
+
+    .btn-back {
+      color: #fff;
+      background: linear-gradient(135deg, #6c757d, #495057);
+    }
+
+    .btn-delete {
+      color: #fff;
+      background: linear-gradient(135deg, #dc3545, #c82333);
+    }
+
+    .btn-logout:hover,
+    .btn-back:hover,
+    .btn-delete:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.16);
+    }
+
+    .page-hero {
+      margin-top: 26px;
+      padding: 38px 0;
+      border-radius: 30px;
+      background:
+        radial-gradient(circle at top right, rgba(42, 157, 143, 0.16), transparent 22%),
+        linear-gradient(135deg, rgba(0, 119, 182, 0.08) 0%, rgba(232, 246, 252, 0.9) 48%, rgba(255, 255, 255, 0.98) 100%);
+      border: 1px solid rgba(216, 232, 240, 0.95);
+      box-shadow: 0 24px 60px rgba(0, 48, 73, 0.10);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      width: 250px;
+      height: 250px;
+      right: -70px;
+      top: -90px;
+      background: rgba(0, 119, 182, 0.08);
+      border-radius: 36px;
+      transform: rotate(18deg);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(216, 232, 240, 0.95);
+      padding: 10px 16px;
+      color: var(--muted-text);
+      font-size: 0.92rem;
+      box-shadow: 0 10px 20px rgba(0, 48, 73, 0.06);
+    }
+
+    .page-hero h1 {
+      margin: 16px 0 12px;
+      font-weight: 700;
+      font-size: 2.8rem;
+      line-height: 1.08;
+    }
+
+    .page-hero h1 span {
+      color: var(--secondary-color);
+    }
+
+    .page-hero p {
+      color: var(--muted-text);
+      max-width: 980px;
+      line-height: 1.8;
+      margin: 0;
+    }
+
+    .profile-card {
+      margin-top: 26px;
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid rgba(216, 232, 240, 0.95);
+      border-radius: 28px;
+      box-shadow: 0 18px 40px rgba(0, 48, 73, 0.08);
+      overflow: hidden;
+    }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 340px minmax(0, 1fr);
+      gap: 0;
+    }
+
+    .profile-sidebar {
+      padding: 34px 28px;
+      background: linear-gradient(180deg, rgba(246, 251, 253, 0.96), rgba(255, 255, 255, 0.94));
+      border-right: 1px solid rgba(216, 232, 240, 0.95);
+      text-align: center;
+    }
+
+    .avatar-frame {
+      width: 148px;
+      height: 148px;
+      border-radius: 34px;
+      padding: 10px;
+      margin: 0 auto 18px;
+      background: linear-gradient(135deg, rgba(0, 119, 182, 0.14), rgba(42, 157, 143, 0.14));
+      box-shadow: 0 16px 32px rgba(0, 48, 73, 0.10);
+    }
+
+    .profile-avatar {
+      width: 100%;
+      height: 100%;
+      border-radius: 26px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      color: #6f96ab;
+      overflow: hidden;
+    }
+
+    .profile-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .profile-name {
+      font-weight: 700;
+      font-size: 1.5rem;
+      margin-bottom: 6px;
+    }
+
+    .profile-email {
+      color: var(--muted-text);
+      margin-bottom: 18px;
+      word-break: break-word;
+    }
+
+    .role-badge {
+      font-size: 0.95rem;
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+
+    .sidebar-note {
+      margin-top: 20px;
+      color: var(--muted-text);
+      line-height: 1.7;
+      font-size: 0.94rem;
+    }
+
+    .details-panel {
+      padding: 34px 34px 30px;
+    }
+
+    .info-section {
+      margin-bottom: 30px;
+    }
+
+    .section-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 119, 182, 0.08);
+      color: var(--secondary-color);
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .info-section h3,
+    .info-section h4 {
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .info-intro {
+      color: var(--muted-text);
+      margin-bottom: 22px;
+      line-height: 1.7;
+    }
+
+    .info-row {
+      display: flex;
+      gap: 16px;
+      padding: 16px 18px;
+      margin-bottom: 12px;
+      background: linear-gradient(180deg, rgba(246, 251, 253, 0.94), rgba(255, 255, 255, 0.98));
+      border: 1px solid rgba(216, 232, 240, 0.95);
+      border-radius: 18px;
+    }
+
+    .info-label {
+      font-weight: 600;
+      min-width: 150px;
+      color: var(--primary-color);
+    }
+
+    .info-value {
+      color: var(--muted-text);
+      line-height: 1.7;
+      word-break: break-word;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 15px;
+      margin-top: 30px;
+    }
+
+    footer {
+      background: rgba(255, 255, 255, 0.88);
+      border-top: 1px solid rgba(216, 232, 240, 0.95);
+      text-align: center;
+      padding: 20px 0;
+      font-size: 0.92rem;
+      color: var(--muted-text);
+      margin-top: 42px;
+    }
+
+    @media (max-width: 992px) {
+      .page-hero h1 {
+        font-size: 2.3rem;
+      }
+
+      .profile-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .profile-sidebar {
+        border-right: none;
+        border-bottom: 1px solid rgba(216, 232, 240, 0.95);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .page-shell .container {
+        max-width: calc(100vw - 12px);
+      }
+
+      .navbar {
+        border-radius: 18px;
+        margin: 8px 4px 0;
+      }
+
+      .page-hero {
+        border-radius: 24px;
+        padding: 32px 0;
+      }
+
+      .page-hero h1 {
+        font-size: 2rem;
+      }
+
+      .details-panel,
+      .profile-sidebar {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .info-row,
+      .action-buttons {
+        flex-direction: column;
+      }
+
+      .info-label {
+        min-width: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+      <div class="container-fluid px-3 px-lg-4 px-xl-5">
+        <a class="navbar-brand d-flex align-items-center" href="/admin/dashboard">
+          <img src="/images/Logo 1.png" alt="MentorLink Logo" width="40" height="40" class="me-2">
+          MentorLink
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="menu">
+          <ul class="navbar-nav align-items-lg-center mb-2 mb-lg-0">
+            <li class="nav-item"><a href="/admin/dashboard" class="nav-link active">Dashboard</a></li>
+          </ul>
+          <form method="POST" action="/auth/logout" style="display:inline;">
+            <button type="submit" class="btn btn-logout ms-lg-3 mt-2 mt-lg-0">Log out</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <section class="container page-hero">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <i class="bi bi-person-vcard-fill"></i>
+          Admin User View
+        </div>
+        <h1>Review user details with a <span>clearer administrative view.</span></h1>
+        <p>This page helps you inspect account details and role-specific profile information before taking any administrative action, while keeping the same back and delete behavior already in place.</p>
+      </div>
+    </section>
+
+    <section class="container">
+      <div class="profile-card">
+        <div class="profile-grid">
+          <aside class="profile-sidebar">
+            <div class="avatar-frame">
+              <div class="profile-avatar">
+                {{#if viewUser.profilePicture}}
+                  <img src="{{viewUser.profilePicture}}" alt="{{viewUser.name}}">
+                {{else}}
+                  {{#ifEq viewUser.role "organization"}}
+                    <i class="bi bi-building"></i>
+                  {{else}}
+                    <i class="bi bi-person-fill"></i>
+                  {{/ifEq}}
+                {{/if}}
+              </div>
+            </div>
+            <div class="profile-name">{{viewUser.name}}</div>
+            <div class="profile-email">{{viewUser.email}}</div>
+            {{#ifEq viewUser.role "mentor"}}
+              <span class="role-badge badge bg-success">Mentor</span>
+            {{else}}{{#ifEq viewUser.role "mentee"}}
+              <span class="role-badge badge bg-primary">Mentee</span>
+            {{else}}{{#ifEq viewUser.role "organization"}}
+              <span class="role-badge badge bg-warning text-dark">Organization</span>
+            {{else}}
+              <span class="role-badge badge bg-secondary">{{viewUser.role}}</span>
+            {{/ifEq}}{{/ifEq}}{{/ifEq}}
+            <p class="sidebar-note">This admin view combines the account basics with role-specific profile details so you can make administrative decisions with context.</p>
+          </aside>
+
+          <div class="details-panel">
+            <div class="info-section">
+              <div class="section-kicker"><i class="bi bi-person-badge"></i> Basic Information</div>
+              <h3>Account details</h3>
+              <p class="info-intro">These are the core account details stored for the selected platform user.</p>
+
+              <div class="info-row">
+                <div class="info-label">User ID</div>
+                <div class="info-value">{{viewUser._id}}</div>
+              </div>
+              <div class="info-row">
+                <div class="info-label">Name</div>
+                <div class="info-value">{{viewUser.name}}</div>
+              </div>
+              <div class="info-row">
+                <div class="info-label">Email</div>
+                <div class="info-value">{{viewUser.email}}</div>
+              </div>
+              <div class="info-row">
+                <div class="info-label">Role</div>
+                <div class="info-value">{{viewUser.role}}</div>
+              </div>
+              <div class="info-row">
+                <div class="info-label">Joined</div>
+                <div class="info-value">{{formatDate viewUser.createdAt}}</div>
+              </div>
+            </div>
+
+            {{#if profile}}
+              <div class="info-section">
+                <div class="section-kicker"><i class="bi bi-info-circle"></i> Profile Details</div>
+                <h4>Role-specific information</h4>
+
+                {{#ifEq viewUser.role "mentor"}}
+                  {{#if profile.phone}}
+                    <div class="info-row">
+                      <div class="info-label">Phone</div>
+                      <div class="info-value">{{profile.phone}}</div>
+                    </div>
+                  {{/if}}
+                  {{#if profile.industry}}
+                    <div class="info-row">
+                      <div class="info-label">Industry</div>
+                      <div class="info-value">{{profile.industry}}</div>
+                    </div>
+                  {{/if}}
+                  {{#if profile.specialization}}
+                    <div class="info-row">
+                      <div class="info-label">Specialization</div>
+                      <div class="info-value">{{profile.specialization}}</div>
+                    </div>
+                  {{/if}}
+                  {{#if profile.experienceYears}}
+                    <div class="info-row">
+                      <div class="info-label">Experience</div>
+                      <div class="info-value">{{profile.experienceYears}} years</div>
+                    </div>
+                  {{/if}}
+                  {{#if profile.availability}}
+                    <div class="info-row">
+                      <div class="info-label">Availability</div>
+                      <div class="info-value">{{profile.availability}}</div>
+                    </div>
+                  {{/if}}
+                  {{#if profile.bio}}
+                    <div class="info-row">
+                      <div class="info-label">Bio</div>
+                      <div class="info-value">{{profile.bio}}</div>
+                    </div>
+                  {{/if}}
+                {{/ifEq}}
+
+                {{#ifEq viewUser.role "mentee"}}
+                  {{#if profile.phone}}
+                    <div class="info-row">
+                      <div class="info-label">Phone</div>
+                      <div class="info-value">{{profile.phone}}</div>
+                    </div>
+                  {{/if}}
+                  {{#if profile.educationLevel}}
+                    <div class="info-row">
+                      <div class="info-label">Education</div>
+                      <div class="info-value">{{profile.educationLevel}}</div>
+                    </div>
+                  {{/if}}
+                  {{#if profile.goals}}
+                    <div class="info-row">
+                      <div class="info-label">Goals</div>
+                      <div class="info-value">{{profile.goals}}</div>
+                    </div>
+                  {{/if}}
+                  {{#if profile.skills}}
+                    <div class="info-row">
+                      <div class="info-label">Skills</div>
+                      <div class="info-value">{{profile.skills}}</div>
+                    </div>
+                  {{/if}}
+                {{/ifEq}}
+
+                {{#ifEq viewUser.role "organization"}}
+                  {{#if profile.programName}}
+                    <div class="info-row">
+                      <div class="info-label">Program Name</div>
+                      <div class="info-value">{{profile.programName}}</div>
+                    </div>
+                  {{/if}}
+                  {{#if profile.website}}
+                    <div class="info-row">
+                      <div class="info-label">Website</div>
+                      <div class="info-value"><a href="{{profile.website}}" target="_blank">{{profile.website}}</a></div>
+                    </div>
+                  {{/if}}
+                  {{#if profile.description}}
+                    <div class="info-row">
+                      <div class="info-label">Description</div>
+                      <div class="info-value">{{profile.description}}</div>
+                    </div>
+                  {{/if}}
+                {{/ifEq}}
+              </div>
+            {{/if}}
+
+            <div class="action-buttons">
+              <a href="/admin/dashboard" class="btn btn-back flex-fill">
+                <i class="bi bi-arrow-left me-2"></i>Back to Dashboard
+              </a>
+              <form method="POST" action="/admin/user/{{viewUser._id}}/delete" style="flex: 1;" onsubmit="return confirm('Are you sure you want to delete this user? This action cannot be undone.');">
+                <button type="submit" class="btn btn-delete w-100">
+                  <i class="bi bi-trash me-2"></i>Delete User
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      &copy; 2025 MentorLink. All rights reserved.
+    </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

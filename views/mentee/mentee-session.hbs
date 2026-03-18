@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MentorLink | Mentee Sessions</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #003049;
+      --secondary-color: #0077b6;
+      --accent-color: #2a9d8f;
+      --surface-border: #d8e8f0;
+      --muted-text: #61727c;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: var(--primary-color);
+      background:
+        radial-gradient(circle at top right, rgba(42, 157, 143, 0.10), transparent 24%),
+        radial-gradient(circle at bottom left, rgba(0, 119, 182, 0.10), transparent 28%),
+        #fbfeff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page-shell {
+      width: 100%;
+      max-width: none;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page-shell .container {
+      max-width: min(1760px, calc(100vw - 24px));
+    }
+
+    .navbar {
+      margin: 12px 6px 0;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid rgba(216, 232, 240, 0.95);
+      box-shadow: 0 14px 34px rgba(0, 48, 73, 0.08);
+      backdrop-filter: blur(10px);
+      border-radius: 22px;
+      padding: 14px 0;
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      color: var(--secondary-color) !important;
+      display: flex;
+      align-items: center;
+    }
+
+    .navbar-brand img {
+      margin-right: 10px;
+      border-radius: 14px !important;
+      box-shadow: 0 8px 18px rgba(0, 48, 73, 0.12);
+    }
+
+    .nav-link {
+      color: var(--primary-color) !important;
+      font-weight: 500;
+      margin: 0 6px;
+      padding: 8px 14px !important;
+      border-radius: 999px;
+      transition: all 0.25s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: var(--secondary-color) !important;
+      background: rgba(0, 119, 182, 0.08);
+    }
+
+    .btn-logout,
+    .btn-outline-danger {
+      border-radius: 999px;
+      font-weight: 600;
+    }
+
+    .btn-logout {
+      border: none;
+      color: #fff;
+      background: linear-gradient(135deg, var(--secondary-color), #005f89);
+      box-shadow: 0 12px 22px rgba(0, 119, 182, 0.18);
+      transition: all 0.25s ease;
+    }
+
+    .btn-logout:hover {
+      transform: translateY(-2px);
+    }
+
+    .page-hero {
+      margin-top: 26px;
+      padding: 38px 0;
+      border-radius: 30px;
+      background:
+        radial-gradient(circle at top right, rgba(42, 157, 143, 0.16), transparent 22%),
+        linear-gradient(135deg, rgba(0, 119, 182, 0.08) 0%, rgba(232, 246, 252, 0.9) 48%, rgba(255, 255, 255, 0.98) 100%);
+      border: 1px solid rgba(216, 232, 240, 0.95);
+      box-shadow: 0 24px 60px rgba(0, 48, 73, 0.10);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      width: 250px;
+      height: 250px;
+      right: -70px;
+      top: -90px;
+      background: rgba(0, 119, 182, 0.08);
+      border-radius: 36px;
+      transform: rotate(18deg);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(216, 232, 240, 0.95);
+      padding: 10px 16px;
+      color: var(--muted-text);
+      font-size: 0.92rem;
+      box-shadow: 0 10px 20px rgba(0, 48, 73, 0.06);
+    }
+
+    .page-hero h1 {
+      margin: 16px 0 12px;
+      font-weight: 700;
+      font-size: 2.8rem;
+      line-height: 1.08;
+    }
+
+    .page-hero h1 span {
+      color: var(--secondary-color);
+    }
+
+    .page-hero p {
+      color: var(--muted-text);
+      max-width: 980px;
+      line-height: 1.8;
+      margin: 0;
+    }
+
+    .stats-section,
+    .sessions-panel {
+      margin-top: 24px;
+    }
+
+    .stat-card,
+    .sessions-card,
+    .session-card,
+    .empty-state {
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid rgba(216, 232, 240, 0.95);
+      border-radius: 26px;
+      box-shadow: 0 18px 40px rgba(0, 48, 73, 0.08);
+    }
+
+    .stat-card {
+      padding: 26px 22px;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      inset: 0 auto auto 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+    }
+
+    .stat-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 16px;
+    }
+
+    .stat-label {
+      color: var(--muted-text);
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .stat-card h4 {
+      font-weight: 700;
+      font-size: 2.2rem;
+      margin-bottom: 8px;
+    }
+
+    .stat-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.55rem;
+      color: #fff;
+      box-shadow: 0 14px 28px rgba(0, 48, 73, 0.10);
+    }
+
+    .stat-icon.blue {
+      background: linear-gradient(135deg, var(--secondary-color), #005f89);
+    }
+
+    .stat-icon.green {
+      background: linear-gradient(135deg, var(--accent-color), #1f877b);
+    }
+
+    .sessions-card {
+      padding: 28px;
+    }
+
+    .section-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .section-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 119, 182, 0.08);
+      color: var(--secondary-color);
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .section-top h3 {
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .section-top p,
+    .section-link {
+      color: var(--muted-text);
+      margin: 0;
+    }
+
+    .section-link {
+      text-decoration: none;
+      font-weight: 600;
+      color: var(--secondary-color);
+    }
+
+    .session-card {
+      padding: 22px;
+      margin-bottom: 16px;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    .session-card:last-child {
+      margin-bottom: 0;
+    }
+
+    .session-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 22px 40px rgba(0, 48, 73, 0.10);
+      border-color: #bfdbe9;
+    }
+
+    .session-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: start;
+      margin-bottom: 16px;
+    }
+
+    .session-main {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .session-avatar {
+      width: 58px;
+      height: 58px;
+      border-radius: 20px;
+      object-fit: cover;
+      box-shadow: 0 12px 22px rgba(0, 48, 73, 0.10);
+      flex-shrink: 0;
+    }
+
+    .session-title {
+      font-weight: 700;
+      font-size: 1.02rem;
+      margin-bottom: 6px;
+    }
+
+    .session-subtitle {
+      color: var(--muted-text);
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    .session-details {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      color: var(--muted-text);
+      font-size: 0.92rem;
+      margin-bottom: 14px;
+    }
+
+    .detail-chip,
+    .session-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-weight: 600;
+    }
+
+    .detail-chip {
+      background: rgba(0, 119, 182, 0.07);
+      color: var(--primary-color);
+    }
+
+    .session-status {
+      font-size: 0.82rem;
+      white-space: nowrap;
+    }
+
+    .status-pending,
+    .status-upcoming {
+      background: rgba(0, 119, 182, 0.10);
+      color: #0c5a7a;
+    }
+
+    .status-accepted,
+    .status-completed {
+      background: rgba(42, 157, 143, 0.14);
+      color: #17675e;
+    }
+
+    .status-cancelled {
+      background: rgba(220, 53, 69, 0.12);
+      color: #8a2230;
+    }
+
+    .empty-state {
+      padding: 36px 24px;
+      text-align: center;
+    }
+
+    .empty-state i {
+      font-size: 2.4rem;
+      color: var(--secondary-color);
+      margin-bottom: 14px;
+      display: inline-block;
+    }
+
+    .empty-state h5 {
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .empty-state p {
+      color: var(--muted-text);
+      margin: 0;
+    }
+
+    footer {
+      background: rgba(255, 255, 255, 0.88);
+      border-top: 1px solid rgba(216, 232, 240, 0.95);
+      text-align: center;
+      padding: 20px 0;
+      font-size: 0.92rem;
+      color: var(--muted-text);
+      margin-top: auto;
+    }
+
+    @media (max-width: 768px) {
+      .page-shell .container {
+        max-width: calc(100vw - 12px);
+      }
+
+      .navbar {
+        border-radius: 18px;
+        margin: 8px 4px 0;
+      }
+
+      .page-hero {
+        border-radius: 24px;
+        padding: 32px 0;
+      }
+
+      .page-hero h1 {
+        font-size: 2rem;
+      }
+
+      .sessions-card {
+        padding: 20px;
+      }
+
+      .section-top,
+      .session-head {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .session-details {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+      <div class="container-fluid px-3 px-lg-4 px-xl-5">
+        <a class="navbar-brand fw-bold d-flex align-items-center" href="/mentee/dashboard">
+          <img src="/images/Logo 1.png" alt="MentorLink Logo" width="40" height="40" class="me-2">
+          MentorLink
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="menu">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item"><a href="/mentee/dashboard" class="nav-link">Dashboard</a></li>
+            <li class="nav-item"><a href="/mentee/sessions" class="nav-link active">Sessions</a></li>
+            <li class="nav-item"><a href="/mentee/feedback" class="nav-link">Feedback</a></li>
+            <li class="nav-item"><a href="/mentee/profile" class="nav-link">Profile</a></li>
+          </ul>
+          <form method="POST" action="/auth/logout" style="display:inline;">
+            <button type="submit" class="btn btn-logout ms-lg-3 mt-2 mt-lg-0">Log out</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <section class="container page-hero">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <i class="bi bi-calendar2-week-fill"></i>
+          Session Overview
+        </div>
+        <h1>Stay organized across every <span>mentorship session.</span></h1>
+        <p>Track upcoming requests, accepted sessions, and completed mentorship conversations in one clean workspace without changing any session functionality.</p>
+      </div>
+    </section>
+
+    <section class="container stats-section">
+      <div class="row g-4">
+        <div class="col-md-6">
+          <div class="stat-card">
+            <div class="stat-top">
+              <div>
+                <div class="stat-label">Active Mentors</div>
+                <h4>{{#if stats}}{{stats.activeMentors}}{{else}}0{{/if}}</h4>
+                <p class="mb-0 text-muted">Mentors currently connected to your journey.</p>
+              </div>
+              <div class="stat-icon blue"><i class="bi bi-people-fill"></i></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="stat-card">
+            <div class="stat-top">
+              <div>
+                <div class="stat-label">Sessions Completed</div>
+                <h4>{{#if stats}}{{stats.completedSessions}}{{else}}0{{/if}}</h4>
+                <p class="mb-0 text-muted">Mentorship conversations finished so far.</p>
+              </div>
+              <div class="stat-icon green"><i class="bi bi-graph-up-arrow"></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container sessions-panel">
+      <div class="sessions-card">
+        <div class="section-top">
+          <div>
+            <div class="section-kicker"><i class="bi bi-chat-dots-fill"></i> Your Timeline</div>
+            <h3>Your Active Sessions</h3>
+            <p>Review who you are meeting, when the session is scheduled, and what stage the session is in.</p>
+          </div>
+          <a href="/mentee/sessions" class="section-link">View all sessions</a>
+        </div>
+
+        {{#if sessions}}
+          {{#each sessions}}
+          <div class="session-card">
+            <div class="session-head">
+              <div class="session-main">
+                <img class="session-avatar" src="{{#if mentor.user.profilePicture}}{{mentor.user.profilePicture}}{{else}}{{#if organization.user.profilePicture}}{{organization.user.profilePicture}}{{else}}/images/Logo 1.png{{/if}}{{/if}}" alt="Profile">
+                <div>
+                  <div class="session-title">{{#if mentor.user}}{{mentor.user.name}}{{else}}{{#if organization.user}}{{organization.user.name}}{{else}}Session{{/if}}{{/if}}{{#if notes}} - {{notes}}{{/if}}</div>
+                  <p class="session-subtitle">Stay up to date on your mentorship progress and next touchpoint.</p>
+                </div>
+              </div>
+              <span class="session-status status-{{status}}">{{status}}</span>
+            </div>
+
+            <div class="session-details">
+              <span class="detail-chip"><i class="bi bi-calendar-event"></i> {{formatDate scheduledAt}}</span>
+              <span class="detail-chip"><i class="bi bi-clock"></i> {{formatTime scheduledAt}}</span>
+              {{#if mentor.user}}
+              <span class="detail-chip"><i class="bi bi-person"></i> {{mentor.user.name}}</span>
+              {{/if}}
+              {{#if organization}}
+              <span class="detail-chip"><i class="bi bi-building"></i> {{#if organization.user}}{{organization.user.name}}{{else}}{{organization.programName}}{{/if}}</span>
+              {{/if}}
+            </div>
+
+            {{#ifEq status "pending"}}
+            <form method="POST" action="/mentee/session/{{_id}}/cancel" style="display:inline-block; margin-top:4px;">
+              <button type="submit" class="btn btn-sm btn-outline-danger px-3 py-2">Cancel Session</button>
+            </form>
+            {{/ifEq}}
+          </div>
+          {{/each}}
+        {{else}}
+          <div class="empty-state">
+            <i class="bi bi-calendar2-x"></i>
+            <h5>No sessions yet</h5>
+            <p>Your upcoming and completed mentorship sessions will appear here once you start making requests.</p>
+          </div>
+        {{/if}}
+      </div>
+    </section>
+
+    <footer>
+      <div class="container">
+        &copy; 2025 MentorLink. All rights reserved.
+      </div>
+    </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MentorLink | Admin Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #003049;
+      --secondary-color: #0077b6;
+      --accent-color: #2a9d8f;
+      --surface-border: #d8e8f0;
+      --muted-text: #61727c;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: var(--primary-color);
+      background:
+        radial-gradient(circle at top right, rgba(42, 157, 143, 0.10), transparent 24%),
+        radial-gradient(circle at bottom left, rgba(0, 119, 182, 0.10), transparent 28%),
+        #fbfeff;
+      min-height: 100vh;
+    }
+
+    .page-shell {
+      width: 100%;
+      max-width: none;
+      padding-bottom: 36px;
+    }
+
+    .page-shell .container {
+      max-width: min(1820px, calc(100vw - 24px));
+    }
+
+    .navbar {
+      margin: 12px 6px 0;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid rgba(216, 232, 240, 0.95);
+      box-shadow: 0 14px 34px rgba(0, 48, 73, 0.08);
+      backdrop-filter: blur(10px);
+      border-radius: 22px;
+      padding: 14px 0;
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      color: var(--secondary-color) !important;
+      display: flex;
+      align-items: center;
+    }
+
+    .navbar-brand img {
+      margin-right: 10px;
+      border-radius: 14px !important;
+      box-shadow: 0 8px 18px rgba(0, 48, 73, 0.12);
+    }
+
+    .nav-link {
+      color: var(--primary-color) !important;
+      font-weight: 500;
+      margin: 0 6px;
+      padding: 8px 14px !important;
+      border-radius: 999px;
+      transition: all 0.25s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: var(--secondary-color) !important;
+      background: rgba(0, 119, 182, 0.08);
+    }
+
+    .btn-logout {
+      border-radius: 999px;
+      font-weight: 600;
+      border: none;
+      color: #fff;
+      background: linear-gradient(135deg, var(--secondary-color), #005f89);
+      box-shadow: 0 12px 22px rgba(0, 119, 182, 0.18);
+      transition: all 0.25s ease;
+    }
+
+    .btn-logout:hover {
+      transform: translateY(-2px);
+    }
+
+    .page-hero {
+      margin-top: 26px;
+      padding: 42px 0;
+      border-radius: 30px;
+      background:
+        radial-gradient(circle at top right, rgba(42, 157, 143, 0.16), transparent 22%),
+        linear-gradient(135deg, rgba(0, 119, 182, 0.08) 0%, rgba(232, 246, 252, 0.9) 48%, rgba(255, 255, 255, 0.98) 100%);
+      border: 1px solid rgba(216, 232, 240, 0.95);
+      box-shadow: 0 24px 60px rgba(0, 48, 73, 0.10);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      right: -70px;
+      top: -80px;
+      background: rgba(0, 119, 182, 0.08);
+      border-radius: 34px;
+      transform: rotate(16deg);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-grid {
+      align-items: center;
+      gap: 24px 0;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(216, 232, 240, 0.95);
+      padding: 10px 16px;
+      color: var(--muted-text);
+      font-size: 0.92rem;
+      box-shadow: 0 10px 20px rgba(0, 48, 73, 0.06);
+    }
+
+    .page-hero h1 {
+      margin: 16px 0 14px;
+      font-weight: 700;
+      font-size: 3rem;
+      line-height: 1.08;
+    }
+
+    .page-hero h1 span {
+      color: var(--secondary-color);
+    }
+
+    .hero-copy p {
+      color: var(--muted-text);
+      line-height: 1.8;
+      font-size: 1.02rem;
+      margin-bottom: 0;
+      max-width: 920px;
+    }
+
+    .hero-aside {
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid rgba(216, 232, 240, 0.95);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 16px 32px rgba(0, 48, 73, 0.06);
+    }
+
+    .hero-aside h5 {
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .hero-aside-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .hero-aside-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      color: var(--muted-text);
+      margin-bottom: 12px;
+    }
+
+    .hero-aside-list i {
+      color: var(--accent-color);
+      margin-top: 2px;
+    }
+
+    .stats-section,
+    .management-section {
+      margin-top: 24px;
+    }
+
+    .stat-card,
+    .management-card,
+    .filter-card {
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid rgba(216, 232, 240, 0.95);
+      border-radius: 28px;
+      box-shadow: 0 18px 40px rgba(0, 48, 73, 0.08);
+    }
+
+    .stat-card {
+      padding: 26px 22px;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      inset: 0 auto auto 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+    }
+
+    .stat-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 16px;
+    }
+
+    .stat-label {
+      color: var(--muted-text);
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .stat-card h4 {
+      font-weight: 700;
+      font-size: 2.2rem;
+      margin-bottom: 8px;
+    }
+
+    .stat-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.55rem;
+      color: #fff;
+      box-shadow: 0 14px 28px rgba(0, 48, 73, 0.10);
+    }
+
+    .stat-icon.green { background: linear-gradient(135deg, #2a9d8f, #1f877b); }
+    .stat-icon.blue { background: linear-gradient(135deg, #0077b6, #005f89); }
+    .stat-icon.yellow { background: linear-gradient(135deg, #d9b240, #c89200); }
+    .stat-icon.orange { background: linear-gradient(135deg, #ff9a56, #ff7c3e); }
+
+    .management-card {
+      padding: 28px;
+    }
+
+    .section-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .section-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 119, 182, 0.08);
+      color: var(--secondary-color);
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .section-top h3 {
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .section-top p {
+      color: var(--muted-text);
+      margin: 0;
+    }
+
+    .filter-card {
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .form-control,
+    .form-select,
+    .input-group-text {
+      border-radius: 18px;
+      border: 1px solid var(--surface-border);
+      background: #fbfeff;
+    }
+
+    .input-group-text {
+      border-right: none;
+      color: var(--secondary-color);
+    }
+
+    .input-group .form-control {
+      border-left: none;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+      border-color: rgba(0, 119, 182, 0.45);
+      box-shadow: 0 0 0 0.2rem rgba(0, 119, 182, 0.12);
+      background: #fff;
+    }
+
+    .btn-filter {
+      border-radius: 999px;
+      font-weight: 600;
+      border: none;
+      color: #fff;
+      background: linear-gradient(135deg, var(--secondary-color), #005f89);
+      box-shadow: 0 12px 22px rgba(0, 119, 182, 0.18);
+    }
+
+    .table-wrap {
+      background: white;
+      border-radius: 22px;
+      border: 1px solid rgba(216, 232, 240, 0.95);
+      overflow: hidden;
+      box-shadow: 0 10px 24px rgba(0, 48, 73, 0.06);
+    }
+
+    .table {
+      margin-bottom: 0;
+      vertical-align: middle;
+    }
+
+    .table thead {
+      background: linear-gradient(135deg, var(--secondary-color), #005f89);
+      color: white;
+    }
+
+    .table tbody tr:hover {
+      background-color: rgba(0, 119, 182, 0.05);
+    }
+
+    .user-avatar {
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      overflow: hidden;
+      box-shadow: 0 10px 18px rgba(0, 48, 73, 0.10);
+      background: linear-gradient(135deg, rgba(0, 119, 182, 0.16), rgba(42, 157, 143, 0.16));
+    }
+
+    .user-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .btn-action {
+      border-radius: 999px;
+      padding: 8px 16px;
+      font-size: 0.85rem;
+      margin-right: 5px;
+      transition: all 0.25s ease;
+    }
+
+    .btn-action:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    footer {
+      background: rgba(255, 255, 255, 0.88);
+      border-top: 1px solid rgba(216, 232, 240, 0.95);
+      text-align: center;
+      padding: 20px 0;
+      font-size: 0.92rem;
+      color: var(--muted-text);
+      margin-top: 42px;
+    }
+
+    @media (max-width: 768px) {
+      .page-shell .container {
+        max-width: calc(100vw - 12px);
+      }
+
+      .navbar {
+        border-radius: 18px;
+        margin: 8px 4px 0;
+      }
+
+      .page-hero {
+        border-radius: 24px;
+        padding: 34px 0;
+      }
+
+      .page-hero h1 {
+        font-size: 2rem;
+      }
+
+      .management-card {
+        padding: 20px;
+      }
+
+      .section-top {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+      <div class="container-fluid px-3 px-lg-4 px-xl-5">
+        <a class="navbar-brand d-flex align-items-center" href="/admin/dashboard">
+          <img src="/images/Logo 1.png" alt="MentorLink Logo" width="40" height="40" class="me-2">
+          MentorLink
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="menu">
+          <ul class="navbar-nav align-items-lg-center mb-2 mb-lg-0">
+            <li class="nav-item"><a href="/admin/dashboard" class="nav-link active">Dashboard</a></li>
+          </ul>
+          <form method="POST" action="/auth/logout" style="display:inline;">
+            <button type="submit" class="btn btn-logout ms-lg-3 mt-2 mt-lg-0">Log out</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <section class="container page-hero">
+      <div class="hero-content">
+        <div class="row hero-grid">
+          <div class="col-lg-8 hero-copy">
+            <div class="hero-badge">
+              <i class="bi bi-shield-lock-fill"></i>
+              Admin Workspace
+            </div>
+            <h1>Manage the platform with a <span>clearer operational view.</span></h1>
+            <p>This dashboard helps you monitor user growth, filter accounts quickly, and review platform roles with a cleaner management experience while keeping the same admin actions in place.</p>
+          </div>
+          <div class="col-lg-4">
+            <div class="hero-aside">
+              <h5>What you can do here</h5>
+              <ul class="hero-aside-list">
+                <li><i class="bi bi-people-fill"></i><span>See user totals across mentors, mentees, and organizations.</span></li>
+                <li><i class="bi bi-funnel-fill"></i><span>Filter the full user list by name, email, and role.</span></li>
+                <li><i class="bi bi-person-vcard-fill"></i><span>Open profiles or remove accounts with the same working actions.</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container stats-section">
+      <div class="row g-4">
+        <div class="col-md-3">
+          <div class="stat-card">
+            <div class="stat-top">
+              <div>
+                <div class="stat-label">Total Users</div>
+                <h4>{{stats.totalUsers}}</h4>
+                <p class="mb-0 text-muted">All active user accounts on the platform.</p>
+              </div>
+              <div class="stat-icon green"><i class="bi bi-people-fill"></i></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="stat-card">
+            <div class="stat-top">
+              <div>
+                <div class="stat-label">Mentors</div>
+                <h4>{{stats.mentors}}</h4>
+                <p class="mb-0 text-muted">Guides currently registered in the system.</p>
+              </div>
+              <div class="stat-icon blue"><i class="bi bi-person-video3"></i></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="stat-card">
+            <div class="stat-top">
+              <div>
+                <div class="stat-label">Mentees</div>
+                <h4>{{stats.mentees}}</h4>
+                <p class="mb-0 text-muted">Learners participating in mentorship.</p>
+              </div>
+              <div class="stat-icon yellow"><i class="bi bi-person"></i></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="stat-card">
+            <div class="stat-top">
+              <div>
+                <div class="stat-label">Organizations</div>
+                <h4>{{stats.organizations}}</h4>
+                <p class="mb-0 text-muted">Programs and institutions on the platform.</p>
+              </div>
+              <div class="stat-icon orange"><i class="bi bi-building"></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container management-section">
+      <div class="management-card">
+        <div class="section-top">
+          <div>
+            <div class="section-kicker"><i class="bi bi-table"></i> User Management</div>
+            <h3>Review and manage platform users</h3>
+            <p>Search and filter accounts, then open full user details or remove users using the same admin controls already in place.</p>
+          </div>
+        </div>
+
+        <div class="filter-card">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                <input type="text" id="searchInput" class="form-control" placeholder="Search users by name or email...">
+              </div>
+            </div>
+            <div class="col-md-3">
+              <select class="form-select" id="roleFilter">
+                <option value="" selected>All Roles</option>
+                <option value="mentor">Mentor</option>
+                <option value="mentee">Mentee</option>
+                <option value="organization">Organization</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <button class="btn btn-filter w-100" onclick="filterUsers()">
+                <i class="bi bi-funnel me-2"></i>Filter
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-responsive table-wrap">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Joined</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#if users}}
+                {{#each users}}
+                <tr data-role="{{this.role}}" data-name="{{this.name}}" data-email="{{this.email}}">
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <div class="user-avatar me-3">
+                        {{#if this.profilePicture}}
+                          <img src="{{this.profilePicture}}" alt="{{this.name}}">
+                        {{else}}
+                          <i class="bi bi-person-fill"></i>
+                        {{/if}}
+                      </div>
+                      <div>
+                        <strong>{{this.name}}</strong>
+                      </div>
+                    </div>
+                  </td>
+                  <td>{{this.email}}</td>
+                  <td>
+                    {{#ifEq this.role "mentor"}}
+                      <span class="badge bg-success">Mentor</span>
+                    {{else}}{{#ifEq this.role "mentee"}}
+                      <span class="badge bg-primary">Mentee</span>
+                    {{else}}{{#ifEq this.role "organization"}}
+                      <span class="badge bg-warning text-dark">Organization</span>
+                    {{else}}
+                      <span class="badge bg-secondary">{{this.role}}</span>
+                    {{/ifEq}}{{/ifEq}}{{/ifEq}}
+                  </td>
+                  <td>{{formatDate this.createdAt}}</td>
+                  <td>
+                    <a href="/admin/user/{{this._id}}" class="btn btn-outline-primary btn-action">
+                      <i class="bi bi-eye me-1"></i>View
+                    </a>
+                    <form method="POST" action="/admin/user/{{this._id}}/delete" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this user?');">
+                      <button type="submit" class="btn btn-outline-danger btn-action">
+                        <i class="bi bi-trash me-1"></i>Delete
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+                {{/each}}
+              {{else}}
+                <tr>
+                  <td colspan="5" class="text-center text-muted">No users found</td>
+                </tr>
+              {{/if}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      &copy; 2025 MentorLink. All rights reserved.
+    </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function filterUsers() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      const roleFilter = document.getElementById('roleFilter').value.toLowerCase();
+      const rows = document.querySelectorAll('tbody tr[data-role]');
+
+      rows.forEach(row => {
+        const name = row.getAttribute('data-name').toLowerCase();
+        const email = row.getAttribute('data-email').toLowerCase();
+        const role = row.getAttribute('data-role').toLowerCase();
+
+        const matchesSearch = name.includes(searchTerm) || email.includes(searchTerm);
+        const matchesRole = roleFilter === '' || role === roleFilter;
+
+        if (matchesSearch && matchesRole) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    }
+
+    document.getElementById('searchInput').addEventListener('input', filterUsers);
+    document.getElementById('roleFilter').addEventListener('change', filterUsers);
+  </script>
+</body>
+</html>
