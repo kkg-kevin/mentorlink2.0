@@ -188,6 +188,16 @@
       box-shadow: 0 16px 32px rgba(0, 48, 73, 0.10);
     }
 
+    .avatar-upload {
+      display: block;
+      cursor: pointer;
+      transition: transform 0.25s ease;
+    }
+
+    .avatar-upload:hover {
+      transform: translateY(-2px);
+    }
+
     .profile-icon {
       width: 100%;
       height: 100%;
@@ -208,6 +218,25 @@
       object-position: center;
       display: block;
       transform: scale(1.12);
+    }
+
+    .avatar-upload-note {
+      margin-top: 10px;
+      color: var(--secondary-color);
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .visually-hidden-file-input {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
     }
 
     .profile-name {
@@ -390,17 +419,21 @@
 
     <section class="container">
       <div class="profile-card">
-        <div class="profile-grid">
+        <form method="POST" action="/org/profile/update" enctype="multipart/form-data">
+          <div class="profile-grid">
           <aside class="profile-sidebar">
-            <div class="avatar-frame">
+            <label for="profilePictureInput" class="avatar-frame avatar-upload" aria-label="Choose profile picture">
               <div class="profile-icon">
                 {{#if user.profilePicture}}
-                  <img src="{{user.profilePicture}}" alt="{{user.name}}">
+                  <img src="{{user.profilePicture}}" alt="{{user.name}}" id="profilePicturePreview">
                 {{else}}
-                  <i class="bi bi-building"></i>
+                  <i class="bi bi-building" id="profilePicturePlaceholder"></i>
+                  <img src="" alt="{{user.name}}" id="profilePicturePreview" style="display: none;">
                 {{/if}}
               </div>
-            </div>
+            </label>
+            <input id="profilePictureInput" type="file" name="profilePicture" class="visually-hidden-file-input" accept="image/*">
+            <div class="avatar-upload-note">Click the photo area to upload</div>
             <div class="profile-name">{{user.name}}</div>
             <div class="profile-email">{{user.email}}</div>
             <div class="info-chip"><i class="bi bi-buildings-fill"></i> Organization Account</div>
@@ -411,12 +444,6 @@
             <div class="section-kicker"><i class="bi bi-pencil-square"></i> Update Details</div>
             <h3>Organization information</h3>
             <p class="section-subtitle">Refine your public-facing program details without changing the existing profile workflow.</p>
-
-            <form method="POST" action="/org/profile/update" enctype="multipart/form-data">
-              <div class="field-group">
-                <label class="form-label">Profile Picture</label>
-                <input type="file" name="profilePicture" class="form-control" accept="image/*">
-              </div>
 
               <div class="row">
                 <div class="col-md-6 field-group">
@@ -445,9 +472,9 @@
               </div>
 
               <button type="submit" class="btn btn-primary px-4 py-3">Save Profile</button>
-            </form>
           </div>
-        </div>
+          </div>
+        </form>
       </div>
     </section>
 
@@ -457,5 +484,27 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const organizationProfileInput = document.getElementById('profilePictureInput');
+    const organizationProfilePreview = document.getElementById('profilePicturePreview');
+    const organizationProfilePlaceholder = document.getElementById('profilePicturePlaceholder');
+
+    if (organizationProfileInput && organizationProfilePreview) {
+      organizationProfileInput.addEventListener('change', (event) => {
+        const [file] = event.target.files;
+
+        if (!file) {
+          return;
+        }
+
+        organizationProfilePreview.src = URL.createObjectURL(file);
+        organizationProfilePreview.style.display = 'block';
+
+        if (organizationProfilePlaceholder) {
+          organizationProfilePlaceholder.style.display = 'none';
+        }
+      });
+    }
+  </script>
 </body>
 </html>

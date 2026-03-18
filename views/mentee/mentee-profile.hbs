@@ -187,6 +187,16 @@
       box-shadow: 0 16px 32px rgba(0, 48, 73, 0.10);
     }
 
+    .avatar-upload {
+      display: block;
+      cursor: pointer;
+      transition: transform 0.25s ease;
+    }
+
+    .avatar-upload:hover {
+      transform: translateY(-2px);
+    }
+
     .avatar {
       width: 100%;
       height: 100%;
@@ -204,6 +214,25 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+    }
+
+    .avatar-upload-note {
+      margin-top: 10px;
+      color: var(--secondary-color);
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .visually-hidden-file-input {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
     }
 
     .profile-name {
@@ -386,17 +415,21 @@
 
     <section class="container">
       <div class="profile-card">
-        <div class="profile-grid">
+        <form method="POST" action="/mentee/profile/update" enctype="multipart/form-data">
+          <div class="profile-grid">
           <aside class="profile-sidebar">
-            <div class="avatar-frame">
+            <label for="profilePictureInput" class="avatar-frame avatar-upload" aria-label="Choose profile picture">
               <div class="avatar">
                 {{#if user.profilePicture}}
-                  <img src="{{user.profilePicture}}" alt="{{user.name}}" />
+                  <img src="{{user.profilePicture}}" alt="{{user.name}}" id="profilePicturePreview" />
                 {{else}}
-                  <i class="bi bi-person"></i>
+                  <i class="bi bi-person" id="profilePicturePlaceholder"></i>
+                  <img src="" alt="{{user.name}}" id="profilePicturePreview" style="display: none;" />
                 {{/if}}
               </div>
-            </div>
+            </label>
+            <input id="profilePictureInput" type="file" name="profilePicture" class="visually-hidden-file-input" accept="image/*" />
+            <div class="avatar-upload-note">Click the photo area to upload</div>
             <div class="profile-name">{{user.name}}</div>
             <div class="profile-email">{{user.email}}</div>
             <div class="info-chip"><i class="bi bi-mortarboard-fill"></i> Mentee Account</div>
@@ -407,12 +440,6 @@
             <div class="section-kicker"><i class="bi bi-pencil-square"></i> Update Details</div>
             <h3>Mentee information</h3>
             <p class="subtext">This keeps your public-facing information clear without changing any of your existing profile workflow.</p>
-
-            <form method="POST" action="/mentee/profile/update" enctype="multipart/form-data">
-              <div class="field-group">
-                <label class="form-label">Profile Picture</label>
-                <input type="file" name="profilePicture" class="form-control" accept="image/*" />
-              </div>
 
               <div class="row">
                 <div class="col-md-6 field-group">
@@ -452,9 +479,9 @@
               </div>
 
               <button type="submit" class="btn btn-save px-4 py-3">Save Profile</button>
-            </form>
           </div>
-        </div>
+          </div>
+        </form>
       </div>
     </section>
 
@@ -464,5 +491,27 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const menteeProfileInput = document.getElementById('profilePictureInput');
+    const menteeProfilePreview = document.getElementById('profilePicturePreview');
+    const menteeProfilePlaceholder = document.getElementById('profilePicturePlaceholder');
+
+    if (menteeProfileInput && menteeProfilePreview) {
+      menteeProfileInput.addEventListener('change', (event) => {
+        const [file] = event.target.files;
+
+        if (!file) {
+          return;
+        }
+
+        menteeProfilePreview.src = URL.createObjectURL(file);
+        menteeProfilePreview.style.display = 'block';
+
+        if (menteeProfilePlaceholder) {
+          menteeProfilePlaceholder.style.display = 'none';
+        }
+      });
+    }
+  </script>
 </body>
 </html>
