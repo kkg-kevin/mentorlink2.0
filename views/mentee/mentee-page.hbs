@@ -397,15 +397,23 @@
 
     .mentor-rating-value {
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      gap: 8px;
+      gap: 6px;
       font-weight: 700;
       color: var(--primary-color);
       margin-bottom: 4px;
     }
 
-    .mentor-rating-value i {
+    .mentor-rating-stars {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 1.05rem;
+      color: #c5cfda;
+    }
+
+    .mentor-rating-stars .is-active {
       color: #f4b400;
     }
 
@@ -659,13 +667,12 @@
               <div class="mentor-rating">
                 {{#if ratingCount}}
                   <div class="mentor-rating-value">
-                    <i class="bi bi-star-fill"></i>
-                    <span>{{avgRating}} / 5</span>
+                    <div class="mentor-rating-stars">{{{renderStarIcons avgRating}}}</div>
                   </div>
                   <p class="mentor-rating-meta">{{ratingCount}} total reviews from mentees</p>
                 {{else}}
                   <div class="mentor-rating-value">
-                    <i class="bi bi-star"></i>
+                    <div class="mentor-rating-stars">{{{renderStarIcons 0}}}</div>
                     <span>No ratings yet</span>
                   </div>
                   <p class="mentor-rating-meta">Be the first mentee to leave feedback after a completed session.</p>

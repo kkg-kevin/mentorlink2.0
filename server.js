@@ -74,6 +74,16 @@ hbs.registerHelper('renderStars', function(rating) {
   return stars;
 });
 
+hbs.registerHelper('renderStarIcons', function(rating) {
+  var numericRating = Number(rating) || 0;
+  var activeStars = Math.max(0, Math.min(5, Math.round(numericRating)));
+  var stars = '';
+  for (var i = 0; i < 5; i++) {
+    stars += '<i class="bi ' + (i < activeStars ? 'bi-star-fill is-active' : 'bi-star') + '"></i>';
+  }
+  return new hbs.handlebars.SafeString(stars);
+});
+
 app.use(express.static(path.join(__dirname,'public')));
 app.use(bodyParser.urlencoded({ extended:true }));
 app.use(bodyParser.json());

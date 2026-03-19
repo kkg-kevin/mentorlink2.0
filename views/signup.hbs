@@ -250,6 +250,34 @@
       box-shadow: 0 0 0 0.2rem rgba(0, 119, 182, 0.12);
       background: white;
     }
+    .password-field {
+      position: relative;
+    }
+    .password-field .form-control {
+      padding-right: 48px;
+    }
+    .password-toggle {
+      position: absolute;
+      top: 50%;
+      right: 14px;
+      transform: translateY(-50%);
+      border: none;
+      background: transparent;
+      color: #60717a;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      line-height: 1;
+    }
+    .password-toggle:hover {
+      color: var(--secondary-color);
+    }
+    .password-toggle:focus {
+      outline: none;
+      color: var(--secondary-color);
+    }
     .btn-primary,
     .btn-success {
       border: none;
@@ -372,7 +400,12 @@
                 </div>
                 <div class="mb-3">
                   <label for="registerPassword" class="form-label">Password</label>
-                  <input type="password" class="form-control" id="registerPassword" name="password" placeholder="Create a password" required>
+                  <div class="password-field">
+                    <input type="password" class="form-control" id="registerPassword" name="password" placeholder="Create a password" required>
+                    <button type="button" class="password-toggle" data-target="registerPassword" aria-label="Show password" aria-pressed="false">
+                      <i class="bi bi-eye"></i>
+                    </button>
+                  </div>
                 </div>
 
                 <div class="d-flex gap-2 mt-4">
@@ -445,6 +478,23 @@
     continueButton.addEventListener('click', showDetailsStep);
     backButton.addEventListener('click', showRoleStep);
     changeRoleButton.addEventListener('click', showRoleStep);
+
+    document.querySelectorAll('.password-toggle').forEach((toggle) => {
+      toggle.addEventListener('click', () => {
+        const targetInput = document.getElementById(toggle.dataset.target);
+        if (!targetInput) return;
+        const isVisible = targetInput.type === 'text';
+        const icon = toggle.querySelector('i');
+
+        targetInput.type = isVisible ? 'password' : 'text';
+        toggle.setAttribute('aria-label', isVisible ? 'Show password' : 'Hide password');
+        toggle.setAttribute('aria-pressed', String(!isVisible));
+
+        if (icon) {
+          icon.className = isVisible ? 'bi bi-eye' : 'bi bi-eye-slash';
+        }
+      });
+    });
   </script>
 </body>
 </html>
