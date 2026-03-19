@@ -272,15 +272,23 @@
 
     .rating-summary-value {
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      gap: 8px;
+      gap: 6px;
       font-weight: 700;
       font-size: 1.15rem;
       margin-bottom: 4px;
     }
 
-    .rating-summary-value i {
+    .rating-stars {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 1.1rem;
+      color: #c5cfda;
+    }
+
+    .rating-stars .is-active {
       color: #f4b400;
     }
 
@@ -408,9 +416,16 @@
     }
 
     .review-rating {
-      color: #f4b400;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #c5cfda;
       font-weight: 700;
       margin-bottom: 6px;
+    }
+
+    .review-rating .is-active {
+      color: #f4b400;
     }
 
     .review-empty {
@@ -533,13 +548,12 @@
             <div class="rating-summary">
               {{#if mentorRating.ratingCount}}
                 <div class="rating-summary-value">
-                  <i class="bi bi-star-fill"></i>
-                  <span>{{mentorRating.avgRating}} / 5</span>
+                  <div class="rating-stars">{{{renderStarIcons mentorRating.avgRating}}}</div>
                 </div>
                 <p class="rating-summary-meta">{{mentorRating.ratingCount}} total reviews from mentees</p>
               {{else}}
                 <div class="rating-summary-value">
-                  <i class="bi bi-star"></i>
+                  <div class="rating-stars">{{{renderStarIcons 0}}}</div>
                   <span>No ratings yet</span>
                 </div>
                 <p class="rating-summary-meta">Your mentee feedback will appear here after completed sessions are reviewed.</p>
@@ -563,7 +577,9 @@
                         <div class="review-author">{{#if from}}{{from.name}}{{else}}Mentee{{/if}}</div>
                         <div class="review-date">{{formatDate createdAt}}</div>
                       </div>
-                      <div class="review-rating">{{rating}} / 5</div>
+                      <div class="review-rating">
+                        <span>{{{renderStarIcons rating}}}</span>
+                      </div>
                       <div>{{comment}}</div>
                     </div>
                   {{/each}}
