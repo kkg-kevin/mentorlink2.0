@@ -302,7 +302,66 @@
       margin-top: 20px;
       color: var(--muted-text);
       line-height: 1.7;
-      font-size: 0.94rem;
+      font-size: 0.92rem;
+    }
+
+    .profile-progress {
+      margin-top: 22px;
+      padding: 20px;
+      background: linear-gradient(135deg, rgba(0,119,182,0.06), rgba(42,157,143,0.04));
+      border-radius: 18px;
+      border: 1px solid rgba(216,232,240,0.7);
+      text-align: center;
+    }
+
+    .circular-progress {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 16px;
+    }
+
+    .circular-progress svg {
+      transform: rotate(-90deg);
+    }
+
+    .progress-circle-bg {
+      fill: none;
+      stroke: rgba(216,232,240,0.6);
+      stroke-width: 8;
+    }
+
+    .progress-circle-fill {
+      fill: none;
+      stroke: url(#gradient);
+      stroke-width: 8;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 0.6s ease;
+    }
+
+    .progress-percentage {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--secondary-color);
+    }
+
+    .progress-label {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--primary-color);
+      margin-bottom: 8px;
+    }
+
+    .progress-hint {
+      margin-top: 12px;
+      font-size: 0.8rem;
+      color: var(--muted-text);
+      line-height: 1.5;
+      margin-bottom: 0;
     }
 
     .form-panel {
@@ -545,6 +604,31 @@
             <div class="profile-name">{{user.name}}</div>
             <div class="profile-email">{{user.email}}</div>
             <div class="info-chip"><i class="bi bi-lightbulb-fill"></i> Mentor Account</div>
+            
+            {{#if profileCompleteness}}
+            <div class="profile-progress">
+              <div class="progress-label">Profile Complete</div>
+              <div class="circular-progress">
+                <svg width="120" height="120">
+                  <defs>
+                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style="stop-color:var(--secondary-color);stop-opacity:1" />
+                      <stop offset="100%" style="stop-color:var(--accent-color);stop-opacity:1" />
+                    </linearGradient>
+                  </defs>
+                  <circle class="progress-circle-bg" cx="60" cy="60" r="52"></circle>
+                  <circle class="progress-circle-fill" cx="60" cy="60" r="52"
+                    stroke-dasharray="326.73"
+                    stroke-dashoffset="326.73"></circle>
+                </svg>
+                <div class="progress-percentage">{{profileCompleteness}}%</div>
+              </div>
+              {{#if profileIncomplete}}
+                <p class="progress-hint">Complete your profile to attract more mentees and showcase your expertise.</p>
+              {{/if}}
+            </div>
+            {{/if}}
+            
             <div class="rating-summary">
               {{#if mentorRating.ratingCount}}
                 <div class="rating-summary-value">
@@ -566,30 +650,6 @@
             <div class="section-kicker"><i class="bi bi-pencil-square"></i> Update Details</div>
             <h3>Mentor information</h3>
             <p class="section-subtitle">Refine your professional details and biography without changing the existing profile flow.</p>
-            <div class="review-panel">
-              <h4>Recent mentee feedback</h4>
-              <p>These are the latest comments and ratings submitted after completed sessions.</p>
-              {{#if hasRecentReviews}}
-                <div class="review-list">
-                  {{#each recentReviews}}
-                    <div class="review-item">
-                      <div class="review-item-header">
-                        <div class="review-author">{{#if from}}{{from.name}}{{else}}Mentee{{/if}}</div>
-                        <div class="review-date">{{formatDate createdAt}}</div>
-                      </div>
-                      <div class="review-rating">
-                        <span>{{{renderStarIcons rating}}}</span>
-                      </div>
-                      <div>{{comment}}</div>
-                    </div>
-                  {{/each}}
-                </div>
-              {{else}}
-                <div class="review-empty">
-                  No reviews yet. Once mentees submit feedback after completed sessions, their comments will show here.
-                </div>
-              {{/if}}
-            </div>
 
               <div class="row">
                 <div class="col-md-6 field-group">
@@ -638,6 +698,128 @@
                 <textarea name="bio" class="form-control" placeholder="Write a short bio...">{{mentor.bio}}</textarea>
               </div>
 
+              <!-- Professional Details Section -->
+              <div class="row mt-4">
+                <div class="col-12">
+                  <h5 class="mb-3"><i class="bi bi-briefcase me-2"></i>Professional Details</h5>
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col-md-6 field-group">
+                  <label class="form-label">Company</label>
+                  <input type="text" name="company" class="form-control" value="{{mentor.company}}" placeholder="e.g. Google, Microsoft, Startup">
+                </div>
+                <div class="col-md-6 field-group">
+                  <label class="form-label">Position</label>
+                  <input type="text" name="position" class="form-control" value="{{mentor.position}}" placeholder="e.g. Senior Developer, Manager">
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 field-group">
+                  <label class="form-label">LinkedIn Profile</label>
+                  <input type="url" name="linkedinProfile" class="form-control" value="{{mentor.linkedinProfile}}" placeholder="https://linkedin.com/in/yourprofile">
+                </div>
+                <div class="col-md-6 field-group">
+                  <label class="form-label">Website</label>
+                  <input type="url" name="website" class="form-control" value="{{mentor.website}}" placeholder="https://yourwebsite.com">
+                </div>
+              </div>
+
+              <!-- Expertise Section -->
+              <div class="row mt-4">
+                <div class="col-12">
+                  <h5 class="mb-3"><i class="bi bi-star me-2"></i>Expertise Areas</h5>
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label class="form-label">Industries (comma-separated)</label>
+                <input type="text" name="industries" class="form-control" value="{{#if mentor.industries}}{{#each mentor.industries}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}" placeholder="e.g. Technology, Finance, Healthcare">
+              </div>
+
+              <div class="field-group">
+                <label class="form-label">Specialties (comma-separated)</label>
+                <input type="text" name="specialties" class="form-control" value="{{#if mentor.specialties}}{{#each mentor.specialties}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}" placeholder="e.g. JavaScript, Leadership, Data Science">
+              </div>
+
+              <div class="field-group">
+                <label class="form-label">Languages (comma-separated)</label>
+                <input type="text" name="languages" class="form-control" value="{{#if mentor.languages}}{{#each mentor.languages}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}" placeholder="e.g. English, Spanish, French">
+              </div>
+
+              <!-- Mentorship Preferences Section -->
+              <div class="row mt-4">
+                <div class="col-12">
+                  <h5 class="mb-3"><i class="bi bi-gear me-2"></i>Mentorship Preferences</h5>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 field-group">
+                  <label class="form-label">Preferred Mentee Level</label>
+                  <select name="menteeLevel" class="form-select">
+                    <option value="">Select level</option>
+                    <option value="beginner" {{#ifEq mentor.menteeLevel "beginner"}}selected{{/ifEq}}>Beginner</option>
+                    <option value="intermediate" {{#ifEq mentor.menteeLevel "intermediate"}}selected{{/ifEq}}>Intermediate</option>
+                    <option value="advanced" {{#ifEq mentor.menteeLevel "advanced"}}selected{{/ifEq}}>Advanced</option>
+                    <option value="all-levels" {{#ifEq mentor.menteeLevel "all-levels"}}selected{{/ifEq}}>All Levels</option>
+                  </select>
+                </div>
+                <div class="col-md-6 field-group">
+                  <label class="form-label">Session Format</label>
+                  <select name="sessionFormat" class="form-select">
+                    <option value="">Select format</option>
+                    <option value="online" {{#ifEq mentor.sessionFormat "online"}}selected{{/ifEq}}>Online</option>
+                    <option value="in-person" {{#ifEq mentor.sessionFormat "in-person"}}selected{{/ifEq}}>In-Person</option>
+                    <option value="hybrid" {{#ifEq mentor.sessionFormat "hybrid"}}selected{{/ifEq}}>Hybrid</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 field-group">
+                  <label class="form-label">Response Time</label>
+                  <select name="responseTime" class="form-select">
+                    <option value="">Select response time</option>
+                    <option value="within-24h" {{#ifEq mentor.responseTime "within-24h"}}selected{{/ifEq}}>Within 24 hours</option>
+                    <option value="within-48h" {{#ifEq mentor.responseTime "within-48h"}}selected{{/ifEq}}>Within 48 hours</option>
+                    <option value="within-week" {{#ifEq mentor.responseTime "within-week"}}selected{{/ifEq}}>Within a week</option>
+                  </select>
+                </div>
+                <div class="col-md-6 field-group">
+                  <label class="form-label">Mentorship Capacity</label>
+                  <input type="number" name="mentorshipCapacity" class="form-control" value="{{mentor.mentorshipCapacity}}" placeholder="Number of mentees" min="1" max="20">
+                </div>
+              </div>
+
+              <!-- Profile Settings Section -->
+              <div class="row mt-4">
+                <div class="col-12">
+                  <h5 class="mb-3"><i class="bi bi-gear me-2"></i>Profile Settings</h5>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 field-group">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="isProfilePublic" id="isProfilePublic" {{#if mentor.isProfilePublic}}checked{{/if}}>
+                    <label class="form-check-label" for="isProfilePublic">
+                      Make profile public
+                    </label>
+                  </div>
+                </div>
+                <div class="col-md-6 field-group">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="openToNewMentees" id="openToNewMentees" {{#if mentor.openToNewMentees}}checked{{/if}}>
+                    <label class="form-check-label" for="openToNewMentees">
+                      Open to new mentees
+                    </label>
+                  </div>
+                </div>
+              </div>
+
               <button type="submit" class="btn btn-save px-4 py-3">Save Profile</button>
           </div>
           </div>
@@ -652,6 +834,24 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
+    // Animate circular progress bar
+    document.addEventListener('DOMContentLoaded', function() {
+      const progressFill = document.querySelector('.progress-circle-fill');
+      const percentageText = document.querySelector('.progress-percentage');
+      
+      if (progressFill && percentageText) {
+        const percentage = parseInt(percentageText.textContent);
+        const circumference = 2 * Math.PI * 52; // radius = 52
+        const offset = circumference - (percentage / 100) * circumference;
+        
+        // Animate the progress bar
+        setTimeout(() => {
+          progressFill.style.strokeDashoffset = offset;
+        }, 300);
+      }
+    });
+
+    // Profile picture preview
     const mentorProfileInput = document.getElementById('profilePictureInput');
     const mentorProfilePreview = document.getElementById('profilePicturePreview');
     const mentorProfilePlaceholder = document.getElementById('profilePicturePlaceholder');

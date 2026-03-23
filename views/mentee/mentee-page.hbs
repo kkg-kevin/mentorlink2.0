@@ -663,6 +663,21 @@
               <div class="card-meta"><i class="bi bi-stars"></i> Mentor Profile</div>
               <h5 class="card-title">{{name}}</h5>
               <p class="detail-line"><strong>Expertise:</strong> {{expertise}}</p>
+              {{#if company}}
+                <p class="detail-line"><strong>Company:</strong> {{company}}</p>
+              {{/if}}
+              {{#if position}}
+                <p class="detail-line"><strong>Position:</strong> {{position}}</p>
+              {{/if}}
+              {{#if industries}}
+                <p class="detail-line"><strong>Industries:</strong> {{#each industries}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}</p>
+              {{/if}}
+              {{#if specialties}}
+                <p class="detail-line"><strong>Specialties:</strong> {{#each specialties}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}</p>
+              {{/if}}
+              {{#if sessionFormat}}
+                <p class="detail-line"><strong>Format:</strong> {{sessionFormat}}</p>
+              {{/if}}
               <p>{{bio}}</p>
               <div class="mentor-rating">
                 {{#if ratingCount}}
@@ -743,6 +758,65 @@
         <form method="POST" action="/mentee/session/request">
           <div class="modal-body">
             <input type="hidden" name="mentorId" value="{{id}}">
+            
+            <!-- Mentor Information Section -->
+            <div class="mb-4 p-3 bg-light rounded">
+              <h6 class="mb-3"><i class="bi bi-person-badge me-2"></i>About {{name}}</h6>
+              <div class="row">
+                {{#if company}}
+                <div class="col-md-6 mb-2">
+                  <strong><i class="bi bi-building me-1"></i>Company:</strong> {{company}}
+                </div>
+                {{/if}}
+                {{#if position}}
+                <div class="col-md-6 mb-2">
+                  <strong><i class="bi bi-briefcase me-1"></i>Position:</strong> {{position}}
+                </div>
+                {{/if}}
+                {{#if experienceYears}}
+                <div class="col-md-6 mb-2">
+                  <strong><i class="bi bi-clock me-1"></i>Experience:</strong> {{experienceYears}} years
+                </div>
+                {{/if}}
+                {{#if sessionFormat}}
+                <div class="col-md-6 mb-2">
+                  <strong><i class="bi bi-camera-video me-1"></i>Format:</strong> {{sessionFormat}}
+                </div>
+                {{/if}}
+              </div>
+              {{#if industries}}
+              <div class="mb-2">
+                <strong><i class="bi bi-diagram-3 me-1"></i>Industries:</strong> {{#each industries}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}
+              </div>
+              {{/if}}
+              {{#if specialties}}
+              <div class="mb-2">
+                <strong><i class="bi bi-star me-1"></i>Specialties:</strong> {{#each specialties}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}
+              </div>
+              {{/if}}
+              {{#if responseTime}}
+              <div class="mb-2">
+                <strong><i class="bi bi-envelope me-1"></i>Response Time:</strong> {{responseTime}}
+              </div>
+              {{/if}}
+              {{#if mentorshipCapacity}}
+              <div class="mb-2">
+                <strong><i class="bi bi-people me-1"></i>Capacity:</strong> {{mentorshipCapacity}} mentees
+              </div>
+              {{/if}}
+              {{#if linkedinProfile}}
+              <div class="mb-2">
+                <strong><i class="bi bi-linkedin me-1"></i>LinkedIn:</strong> <a href="{{linkedinProfile}}" target="_blank">View Profile</a>
+              </div>
+              {{/if}}
+              {{#if website}}
+              <div class="mb-2">
+                <strong><i class="bi bi-globe me-1"></i>Website:</strong> <a href="{{website}}" target="_blank">Visit Website</a>
+              </div>
+              {{/if}}
+            </div>
+            
+            <!-- Request Form Section -->
             <div class="mb-3">
               <label for="scheduledAt{{@index}}" class="form-label"><i class="bi bi-calendar-event me-2"></i>Select Date & Time</label>
               <input type="datetime-local" class="form-control" id="scheduledAt{{@index}}" name="scheduledAt" required>

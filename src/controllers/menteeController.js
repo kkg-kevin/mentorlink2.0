@@ -243,13 +243,47 @@ exports.cancelSession = async (req,res)=>{
 exports.profile = async (req,res)=>{
   if(!req.user || req.user.role !== 'mentee') return res.redirect('/auth/login');
   const mentee = await Mentee.findOne({ user: req.user._id }).lean().catch(()=>null);
-  res.render('mentee/mentee-profile', { user: req.user, mentee });
+  
+  // Calculate profile completeness safely
+  let profileCompleteness = 0;
+  let profileIncomplete = true;
+  if (mentee) {
+    const profileFields = [
+      'phone', 'educationLevel', 'goals', 'skills',
+      'location', 'currentRole', 'institution', 'learningStyle',
+      'communicationPreference', 'mentorshipExperience', 'sessionFrequency'
+    ];
+    let filledFields = 0;
+    profileFields.forEach(field => {
+      if (mentee[field] && (Array.isArray(mentee[field]) ? mentee[field].length > 0 : mentee[field].toString().trim() !== '')) {
+        filledFields++;
+      }
+    });
+    profileCompleteness = Math.round((filledFields / profileFields.length) * 100);
+    profileIncomplete = profileCompleteness < 100;
+  }
+  
+  res.render('mentee/mentee-profile', { user: req.user, mentee, profileCompleteness, profileIncomplete });
 };
 
 exports.updateProfile = async (req,res)=>{
   if(!req.user || req.user.role !== 'mentee') return res.redirect('/auth/login');
   try {
-    const data = { phone:req.body.phone, educationLevel:req.body.education, goals:req.body.goal, skills:(req.body.skills||'').split(',').map(s=>s.trim()).filter(Boolean) };
+    const data = { 
+      phone: req.body.phone, 
+      educationLevel: req.body.education, 
+      goals: req.body.goal, 
+      skills: (req.body.skills||'').split(',').map(s=>s.trim()).filter(Boolean),
+      location: req.body.location,
+      currentRole: req.body.currentRole,
+      institution: req.body.institution,
+      learningStyle: req.body.learningStyle,
+      communicationPreference: req.body.communicationPreference,
+      mentorshipExperience: req.body.mentorshipExperience,
+      sessionFrequency: req.body.sessionFrequency,
+      isProfilePublic: req.body.isProfilePublic === 'true',
+      openToMentorship: req.body.openToMentorship === 'true'
+    };
     await Mentee.findOneAndUpdate({ user: req.user._id }, data, { upsert:true, new:true });
     if(req.file) {
       await User.findByIdAndUpdate(req.user._id, { profilePicture: `/uploads/profiles/${req.file.filename}` });
