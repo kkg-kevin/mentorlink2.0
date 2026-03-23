@@ -522,6 +522,12 @@
 
                   <div class="mentee-info">
                     <p><span class="info-label"><i class="bi bi-book me-1"></i>Education:</span> {{#if this.mentee.educationLevel}}{{this.mentee.educationLevel}}{{else}}Not specified{{/if}}</p>
+                    {{#if this.mentee.currentRole}}
+                    <p><span class="info-label"><i class="bi bi-briefcase me-1"></i>Current Role:</span> {{this.mentee.currentRole}}</p>
+                    {{/if}}
+                    {{#if this.mentee.location}}
+                    <p><span class="info-label"><i class="bi bi-geo-alt me-1"></i>Location:</span> {{this.mentee.location}}</p>
+                    {{/if}}
                     {{#if this.mentee.goals}}
                     <p><span class="info-label"><i class="bi bi-bullseye me-1"></i>Goals:</span> {{this.mentee.goals}}</p>
                     {{/if}}
@@ -588,6 +594,21 @@
               <div class="col-md-6 mb-2">
                 <strong><i class="bi bi-book me-2"></i>Education:</strong> {{#if this.mentee.educationLevel}}{{this.mentee.educationLevel}}{{else}}Not specified{{/if}}
               </div>
+              {{#if this.mentee.institution}}
+              <div class="col-md-6 mb-2">
+                <strong><i class="bi bi-building me-2"></i>Institution:</strong> {{this.mentee.institution}}
+              </div>
+              {{/if}}
+              {{#if this.mentee.currentRole}}
+              <div class="col-md-6 mb-2">
+                <strong><i class="bi bi-briefcase me-2"></i>Current Role:</strong> {{this.mentee.currentRole}}
+              </div>
+              {{/if}}
+              {{#if this.mentee.location}}
+              <div class="col-md-6 mb-2">
+                <strong><i class="bi bi-geo-alt me-2"></i>Location:</strong> {{this.mentee.location}}
+              </div>
+              {{/if}}
             </div>
           </div>
 
@@ -608,6 +629,42 @@
             </div>
           </div>
           {{/if}}
+
+          <div class="mb-4">
+            <h6 class="text-primary mb-3"><i class="bi bi-gear me-2"></i>Learning & Communication Preferences</h6>
+            <div class="row">
+              {{#if this.mentee.learningStyle}}
+              <div class="col-md-6 mb-2">
+                <strong><i class="bi bi-lightbulb me-2"></i>Learning Style:</strong> {{this.mentee.learningStyle}}
+              </div>
+              {{/if}}
+              {{#if this.mentee.communicationPreference}}
+              <div class="col-md-6 mb-2">
+                <strong><i class="bi bi-chat-dots me-2"></i>Communication:</strong> {{this.mentee.communicationPreference}}
+              </div>
+              {{/if}}
+              {{#if this.mentee.mentorshipExperience}}
+              <div class="col-md-6 mb-2">
+                <strong><i class="bi bi-award me-2"></i>Mentorship Experience:</strong> {{this.mentee.mentorshipExperience}}
+              </div>
+              {{/if}}
+              {{#if this.mentee.sessionFrequency}}
+              <div class="col-md-6 mb-2">
+                <strong><i class="bi bi-calendar-check me-2"></i>Preferred Frequency:</strong> {{this.mentee.sessionFrequency}}
+              </div>
+              {{/if}}
+              {{#if this.mentee.isProfilePublic}}
+              <div class="col-md-6 mb-2">
+                <strong><i class="bi bi-globe me-2"></i>Profile Public:</strong> {{#if this.mentee.isProfilePublic}}Yes{{else}}No{{/if}}
+              </div>
+              {{/if}}
+              {{#if this.mentee.openToMentorship}}
+              <div class="col-md-6 mb-2">
+                <strong><i class="bi bi-handshake me-2"></i>Open to Mentorship:</strong> {{#if this.mentee.openToMentorship}}Yes{{else}}No{{/if}}
+              </div>
+              {{/if}}
+            </div>
+          </div>
 
           <div class="mb-2">
             <h6 class="text-primary mb-3"><i class="bi bi-calendar-check me-2"></i>Session Details</h6>

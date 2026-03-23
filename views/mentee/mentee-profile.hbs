@@ -266,6 +266,65 @@
       font-size: 0.94rem;
     }
 
+    .profile-progress {
+      margin-top: 22px;
+      padding: 20px;
+      background: linear-gradient(135deg, rgba(0,119,182,0.06), rgba(42,157,143,0.04));
+      border-radius: 18px;
+      border: 1px solid rgba(216,232,240,0.7);
+      text-align: center;
+    }
+
+    .circular-progress {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 16px;
+    }
+
+    .circular-progress svg {
+      transform: rotate(-90deg);
+    }
+
+    .progress-circle-bg {
+      fill: none;
+      stroke: rgba(216,232,240,0.6);
+      stroke-width: 8;
+    }
+
+    .progress-circle-fill {
+      fill: none;
+      stroke: url(#gradient);
+      stroke-width: 8;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 0.6s ease;
+    }
+
+    .progress-percentage {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--secondary-color);
+    }
+
+    .progress-label {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--primary-color);
+      margin-bottom: 8px;
+    }
+
+    .progress-hint {
+      margin-top: 12px;
+      font-size: 0.8rem;
+      color: var(--muted-text);
+      line-height: 1.5;
+      margin-bottom: 0;
+    }
+
     .form-panel {
       padding: 34px 34px 30px;
     }
@@ -433,6 +492,31 @@
             <div class="profile-name">{{user.name}}</div>
             <div class="profile-email">{{user.email}}</div>
             <div class="info-chip"><i class="bi bi-mortarboard-fill"></i> Mentee Account</div>
+            
+            {{#if profileCompleteness}}
+            <div class="profile-progress">
+              <div class="progress-label">Profile Complete</div>
+              <div class="circular-progress">
+                <svg width="120" height="120">
+                  <defs>
+                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style="stop-color:var(--secondary-color);stop-opacity:1" />
+                      <stop offset="100%" style="stop-color:var(--accent-color);stop-opacity:1" />
+                    </linearGradient>
+                  </defs>
+                  <circle class="progress-circle-bg" cx="60" cy="60" r="52"></circle>
+                  <circle class="progress-circle-fill" cx="60" cy="60" r="52"
+                    stroke-dasharray="326.73"
+                    stroke-dashoffset="326.73"></circle>
+                </svg>
+                <div class="progress-percentage">{{profileCompleteness}}%</div>
+              </div>
+              {{#if profileIncomplete}}
+                <p class="progress-hint">Fill in more details to improve your chances of matching with a great mentor.</p>
+              {{/if}}
+            </div>
+            {{/if}}
+            
             <p class="sidebar-note">A strong profile makes it easier to get useful mentorship, better context, and more relevant guidance.</p>
           </aside>
 
@@ -478,6 +562,96 @@
                 <textarea name="skills" class="form-control" rows="3" placeholder="List your skills or interests....">{{mentee.skills}}</textarea>
               </div>
 
+              <hr style="margin: 32px 0; border-color: rgba(216,232,240,0.7);">
+              <div class="section-kicker"><i class="bi bi-sliders"></i> Optional Details</div>
+              <p class="subtext" style="margin-bottom: 24px;">These fields help mentors better understand and connect with you (all optional).</p>
+
+              <div class="row">
+                <div class="col-md-6 field-group">
+                  <label class="form-label">Current Role / Occupation</label>
+                  <input type="text" name="currentRole" class="form-control" value="{{mentee.currentRole}}" placeholder="e.g. Student, Developer, Designer" />
+                </div>
+                <div class="col-md-6 field-group">
+                  <label class="form-label">Institution / Company</label>
+                  <input type="text" name="institution" class="form-control" value="{{mentee.institution}}" placeholder="e.g. USIU, Google, Freelance" />
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label class="form-label">Location / Timezone</label>
+                <input type="text" name="location" class="form-control" value="{{mentee.location}}" placeholder="e.g. Nairobi, Kenya (EAT)" />
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 field-group">
+                  <label class="form-label">Learning Style</label>
+                  <select name="learningStyle" class="form-select">
+                    <option value="">Select style (optional)</option>
+                    <option value="visual" {{#ifEq mentee.learningStyle "visual"}}selected{{/ifEq}}>Visual (diagrams, videos)</option>
+                    <option value="hands-on" {{#ifEq mentee.learningStyle "hands-on"}}selected{{/ifEq}}>Hands-on (projects, practice)</option>
+                    <option value="reading" {{#ifEq mentee.learningStyle "reading"}}selected{{/ifEq}}>Reading (articles, documentation)</option>
+                    <option value="discussion" {{#ifEq mentee.learningStyle "discussion"}}selected{{/ifEq}}>Discussion (conversations, Q&A)</option>
+                  </select>
+                </div>
+                <div class="col-md-6 field-group">
+                  <label class="form-label">Preferred Communication</label>
+                  <select name="communicationPreference" class="form-select">
+                    <option value="">Select preference (optional)</option>
+                    <option value="video" {{#ifEq mentee.communicationPreference "video"}}selected{{/ifEq}}>Video calls</option>
+                    <option value="chat" {{#ifEq mentee.communicationPreference "chat"}}selected{{/ifEq}}>Chat / Messaging</option>
+                    <option value="email" {{#ifEq mentee.communicationPreference "email"}}selected{{/ifEq}}>Email</option>
+                    <option value="in-person" {{#ifEq mentee.communicationPreference "in-person"}}selected{{/ifEq}}>In-person meetings</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 field-group">
+                  <label class="form-label">Mentorship Experience</label>
+                  <select name="mentorshipExperience" class="form-select">
+                    <option value="">Select experience (optional)</option>
+                    <option value="first-time" {{#ifEq mentee.mentorshipExperience "first-time"}}selected{{/ifEq}}>First-time mentee</option>
+                    <option value="some" {{#ifEq mentee.mentorshipExperience "some"}}selected{{/ifEq}}>Some experience</option>
+                    <option value="experienced" {{#ifEq mentee.mentorshipExperience "experienced"}}selected{{/ifEq}}>Experienced mentee</option>
+                  </select>
+                </div>
+                <div class="col-md-6 field-group">
+                  <label class="form-label">Preferred Session Frequency</label>
+                  <select name="sessionFrequency" class="form-select">
+                    <option value="">Select frequency (optional)</option>
+                    <option value="weekly" {{#ifEq mentee.sessionFrequency "weekly"}}selected{{/ifEq}}>Weekly</option>
+                    <option value="biweekly" {{#ifEq mentee.sessionFrequency "biweekly"}}selected{{/ifEq}}>Bi-weekly</option>
+                    <option value="monthly" {{#ifEq mentee.sessionFrequency "monthly"}}selected{{/ifEq}}>Monthly</option>
+                    <option value="as-needed" {{#ifEq mentee.sessionFrequency "as-needed"}}selected{{/ifEq}}>As-needed</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row" style="margin-top: 16px;">
+                <div class="col-md-6 field-group">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="isProfilePublic" name="isProfilePublic" value="true" {{#if mentee.isProfilePublic}}checked{{/if}} style="width: 3em; height: 1.5em; margin-right: 12px;">
+                    <label class="form-check-label" for="isProfilePublic" style="font-weight: 600; color: var(--primary-color);">
+                      Profile visible to mentors
+                    </label>
+                    <div style="font-size: 0.85rem; color: var(--muted-text); margin-top: 4px;">
+                      Allow mentors to find and view your profile
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 field-group">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="openToMentorship" name="openToMentorship" value="true" {{#if mentee.openToMentorship}}checked{{/if}} style="width: 3em; height: 1.5em; margin-right: 12px;">
+                    <label class="form-check-label" for="openToMentorship" style="font-weight: 600; color: var(--primary-color);">
+                      Open to mentorship
+                    </label>
+                    <div style="font-size: 0.85rem; color: var(--muted-text); margin-top: 4px;">
+                      Signal that you're actively seeking a mentor
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <button type="submit" class="btn btn-save px-4 py-3">Save Profile</button>
           </div>
           </div>
@@ -492,6 +666,24 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
+    // Animate circular progress bar
+    document.addEventListener('DOMContentLoaded', function() {
+      const progressFill = document.querySelector('.progress-circle-fill');
+      const percentageText = document.querySelector('.progress-percentage');
+      
+      if (progressFill && percentageText) {
+        const percentage = parseInt(percentageText.textContent);
+        const circumference = 2 * Math.PI * 52; // radius = 52
+        const offset = circumference - (percentage / 100) * circumference;
+        
+        // Animate the progress bar
+        setTimeout(() => {
+          progressFill.style.strokeDashoffset = offset;
+        }, 300);
+      }
+    });
+
+    // Profile picture preview
     const menteeProfileInput = document.getElementById('profilePictureInput');
     const menteeProfilePreview = document.getElementById('profilePicturePreview');
     const menteeProfilePlaceholder = document.getElementById('profilePicturePlaceholder');

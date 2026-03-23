@@ -480,7 +480,37 @@
             <div class="session-item-details">
               <span class="detail-chip"><i class="bi bi-calendar-event"></i> {{formatDate this.scheduledAt}}</span>
               <span class="detail-chip"><i class="bi bi-clock"></i> {{formatTime this.scheduledAt}}</span>
+              {{#if this.mentee.educationLevel}}
+                <span class="detail-chip"><i class="bi bi-mortarboard"></i> {{this.mentee.educationLevel}}</span>
+              {{/if}}
+              {{#if this.mentee.location}}
+                <span class="detail-chip"><i class="bi bi-geo-alt"></i> {{this.mentee.location}}</span>
+              {{/if}}
+              {{#if this.mentee.currentRole}}
+                <span class="detail-chip"><i class="bi bi-briefcase"></i> {{this.mentee.currentRole}}</span>
+              {{/if}}
             </div>
+            {{#if this.mentee.goals}}
+              <div class="session-goals" style="background: rgba(0,119,182,0.04); padding: 12px; border-radius: 12px; margin: 8px 0; font-size: 0.9rem; color: var(--muted-text);">
+                <strong style="color: var(--primary-color);">Goals:</strong> {{this.mentee.goals}}
+              </div>
+            {{/if}}
+            {{#if this.mentee.skills}}
+              <div class="session-skills" style="margin-top: 8px;">
+                <strong style="font-size: 0.85rem; color: var(--muted-text);">Skills:</strong>
+                {{#each this.mentee.skills}}
+                  <span class="badge" style="background: rgba(0,119,182,0.1); color: var(--secondary-color); margin-left: 6px; font-size: 0.75rem;">{{this}}</span>
+                {{/each}}
+              </div>
+            {{/if}}
+            {{#if this.mentee.communicationPreference}}
+              <div class="session-preferences" style="margin-top: 8px; font-size: 0.8rem; color: var(--muted-text);">
+                <i class="bi bi-chat-dots"></i> Prefers: {{this.mentee.communicationPreference}} communication
+                {{#if this.mentee.sessionFrequency}}
+                  | <i class="bi bi-calendar-check"></i> {{this.mentee.sessionFrequency}} sessions
+                {{/if}}
+              </div>
+            {{/if}}
             {{#ifEq this.status "accepted"}}
             <form method="POST" action="/mentor/session/{{this._id}}/complete" style="display:inline-block; margin-top:10px;">
               <button type="submit" class="btn btn-sm btn-success" style="border-radius:999px;">Mark as Completed</button>

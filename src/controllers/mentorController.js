@@ -105,7 +105,35 @@ exports.profile = async (req,res)=> {
   const mentorRatingMap = await getMentorRatingMap([req.user._id]);
   const mentorRating = mentorRatingMap.get(req.user._id.toString()) || { avgRating: 0, ratingCount: 0 };
   const recentReviews = await getMentorReviews(req.user._id, 4);
-  res.render('mentor/mentor-profile', { user: req.user, mentor, mentorRating, recentReviews, hasRecentReviews: recentReviews.length > 0 });
+  
+  // Calculate profile completeness safely
+  let profileCompleteness = 0;
+  let profileIncomplete = true;
+  if (mentor) {
+    const profileFields = [
+      'phone', 'industry', 'experienceYears', 'specialization', 'availability', 'bio',
+      'company', 'position', 'linkedinProfile', 'website', 'industries', 'specialties', 
+      'languages', 'menteeLevel', 'sessionFormat', 'responseTime'
+    ];
+    let filledFields = 0;
+    profileFields.forEach(field => {
+      if (mentor[field] && (Array.isArray(mentor[field]) ? mentor[field].length > 0 : mentor[field].toString().trim() !== '')) {
+        filledFields++;
+      }
+    });
+    profileCompleteness = Math.round((filledFields / profileFields.length) * 100);
+    profileIncomplete = profileCompleteness < 100;
+  }
+  
+  res.render('mentor/mentor-profile', { 
+    user: req.user, 
+    mentor, 
+    mentorRating, 
+    recentReviews, 
+    hasRecentReviews: recentReviews.length > 0,
+    profileCompleteness,
+    profileIncomplete
+  });
 };
 
 exports.updateProfile = async (req,res)=>{
@@ -117,7 +145,21 @@ exports.updateProfile = async (req,res)=>{
       experienceYears: parseInt(req.body.experienceYears) || 0,
       specialization: req.body.specialization,
       availability: req.body.availability,
-      bio: req.body.bio
+      bio: req.body.bio,
+      // New optional fields
+      company: req.body.company,
+      position: req.body.position,
+      linkedinProfile: req.body.linkedinProfile,
+      website: req.body.website,
+      industries: (req.body.industries||'').split(',').map(s=>s.trim()).filter(Boolean),
+      specialties: (req.body.specialties||'').split(',').map(s=>s.trim()).filter(Boolean),
+      languages: (req.body.languages||'').split(',').map(s=>s.trim()).filter(Boolean),
+      menteeLevel: req.body.menteeLevel,
+      sessionFormat: req.body.sessionFormat,
+      responseTime: req.body.responseTime,
+      isProfilePublic: req.body.isProfilePublic === 'true',
+      openToNewMentees: req.body.openToNewMentees === 'true',
+      mentorshipCapacity: parseInt(req.body.mentorshipCapacity) || 5
     };
     await Mentor.findOneAndUpdate({ user: req.user._id }, data, { upsert:true, new:true });
     if(req.file) {
