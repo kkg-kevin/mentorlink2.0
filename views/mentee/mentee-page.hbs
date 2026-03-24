@@ -555,6 +555,153 @@
         width: 100%;
       }
     }
+
+    /* ── Full Profile Modal ── */
+    .fp-hero {
+      background: linear-gradient(135deg, rgba(0,119,182,0.06), rgba(42,157,143,0.06));
+      border-bottom: 1px solid var(--surface-border);
+    }
+    .fp-hero-inner {
+      padding: 2rem 2rem 1.5rem;
+    }
+    .fp-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 5px solid #fff;
+      box-shadow: 0 10px 28px rgba(0,48,73,0.14);
+      margin-bottom: 1rem;
+    }
+    .fp-avatar-wrap {
+      display: inline-block;
+    }
+    .fp-name {
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 4px;
+    }
+    .fp-role {
+      color: var(--muted-text);
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+    .fp-rating {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,193,7,0.12);
+      border: 1px solid rgba(255,193,7,0.28);
+      border-radius: 999px;
+      padding: 6px 14px;
+      margin-bottom: 1rem;
+    }
+    .fp-rating-text {
+      font-size: 0.88rem;
+      color: var(--muted-text);
+    }
+    .fp-badges {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 1.25rem;
+    }
+    .fp-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.84rem;
+      font-weight: 600;
+    }
+    .fp-badge-green  { background: rgba(40,167,69,0.12);  color: #1a7a32; border: 1px solid rgba(40,167,69,0.25); }
+    .fp-badge-blue   { background: rgba(0,119,182,0.10);  color: var(--secondary-color); border: 1px solid rgba(0,119,182,0.22); }
+    .fp-badge-amber  { background: rgba(255,193,7,0.14);  color: #856404; border: 1px solid rgba(255,193,7,0.28); }
+    .fp-badge-teal   { background: rgba(42,157,143,0.12); color: #1a6b60; border: 1px solid rgba(42,157,143,0.25); }
+    .fp-body {
+      padding: 0 1.5rem 1.5rem;
+    }
+    .fp-section {
+      padding: 1.25rem 0;
+      border-bottom: 1px solid var(--surface-border);
+    }
+    .fp-section:last-child {
+      border-bottom: none;
+    }
+    .fp-section-title {
+      font-weight: 700;
+      color: var(--secondary-color);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .fp-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px;
+    }
+    .fp-item {
+      background: var(--surface-soft);
+      border: 1px solid var(--surface-border);
+      border-radius: 14px;
+      padding: 12px 14px;
+    }
+    .fp-label {
+      display: block;
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--muted-text);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 4px;
+    }
+    .fp-value {
+      font-weight: 600;
+      color: var(--primary-color);
+      font-size: 0.92rem;
+    }
+    .fp-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .fp-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.84rem;
+      font-weight: 500;
+    }
+    .fp-tag-muted { background: rgba(0,48,73,0.07); color: var(--primary-color); }
+    .fp-tag-blue  { background: rgba(0,119,182,0.10); color: var(--secondary-color); border: 1px solid rgba(0,119,182,0.18); }
+    .fp-tag-teal  { background: rgba(42,157,143,0.10); color: #1a6b60; border: 1px solid rgba(42,157,143,0.20); }
+    .fp-bio {
+      color: var(--muted-text);
+      line-height: 1.8;
+      margin: 0;
+    }
+    .fp-link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 16px;
+      border-radius: 999px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      text-decoration: none;
+      margin-top: 12px;
+      margin-right: 8px;
+      transition: opacity 0.2s;
+    }
+    .fp-link-btn:hover { opacity: 0.82; }
+    .fp-link-linkedin { background: #0077b5; color: #fff; }
+    .fp-link-web      { background: var(--accent-color); color: #fff; }
   </style>
 </head>
 <body>
@@ -660,24 +807,13 @@
               <div class="profile-frame">
                 <img src="{{photo}}" alt="{{name}}">
               </div>
-              <div class="card-meta"><i class="bi bi-stars"></i> Mentor Profile</div>
+              <div class="card-meta">
+                <button type="button" class="text-decoration-none" style="color: inherit; background: none; border: none; padding: 0; font: inherit; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#mentorFullProfileModal{{@index}}">
+                  <i class="bi bi-stars"></i> Mentor Profile
+                </button>
+              </div>
               <h5 class="card-title">{{name}}</h5>
               <p class="detail-line"><strong>Expertise:</strong> {{expertise}}</p>
-              {{#if company}}
-                <p class="detail-line"><strong>Company:</strong> {{company}}</p>
-              {{/if}}
-              {{#if position}}
-                <p class="detail-line"><strong>Position:</strong> {{position}}</p>
-              {{/if}}
-              {{#if industries}}
-                <p class="detail-line"><strong>Industries:</strong> {{#each industries}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}</p>
-              {{/if}}
-              {{#if specialties}}
-                <p class="detail-line"><strong>Specialties:</strong> {{#each specialties}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}</p>
-              {{/if}}
-              {{#if sessionFormat}}
-                <p class="detail-line"><strong>Format:</strong> {{sessionFormat}}</p>
-              {{/if}}
               <p>{{bio}}</p>
               <div class="mentor-rating">
                 {{#if ratingCount}}
@@ -728,11 +864,15 @@
             <div class="profile-frame">
               <img src="{{logo}}" alt="{{name}}">
             </div>
-            <div class="card-meta"><i class="bi bi-diagram-3-fill"></i> Partner Organization</div>
+            <div class="card-meta">
+              <button type="button" style="color: inherit; background: none; border: none; padding: 0; font: inherit; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#orgFullProfileModal{{@index}}">
+                <i class="bi bi-diagram-3-fill"></i> Partner Organization
+              </button>
+            </div>
             <h5 class="card-title">{{name}}</h5>
-            <p class="detail-line"><strong>Area:</strong> {{field}}</p>
             <p>{{description}}</p>
             <div class="card-actions">
+              <button type="button" class="btn btn-request" data-bs-toggle="modal" data-bs-target="#orgFullProfileModal{{@index}}">View Profile</button>
               <button type="button" class="btn btn-available" data-bs-toggle="modal" data-bs-target="#orgModal{{@index}}">Join Program</button>
             </div>
           </div>
@@ -866,6 +1006,269 @@
   </div>
   {{/each}}
 
+  <!-- Org Full Profile Modals -->
+  {{#each companies}}
+  <div class="modal fade" id="orgFullProfileModal{{@index}}" tabindex="-1" aria-labelledby="orgFullProfileModalLabel{{@index}}" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="orgFullProfileModalLabel{{@index}}">
+            <i class="bi bi-buildings-fill me-2"></i>{{name}}
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-0">
+
+          <!-- Org Hero -->
+          <div class="fp-hero">
+            <div class="fp-hero-inner text-center">
+              <div class="fp-avatar-wrap">
+                <img src="{{logo}}" alt="{{name}}" class="fp-avatar">
+              </div>
+              <h3 class="fp-name">{{name}}</h3>
+              {{#if field}}<p class="fp-role">{{field}}</p>{{/if}}
+
+              <!-- Badges -->
+              <div class="fp-badges">
+                {{#if openToNewMembers}}
+                  <span class="fp-badge fp-badge-green"><i class="bi bi-check-circle me-1"></i>Open to New Members</span>
+                {{else}}
+                  <span class="fp-badge fp-badge-amber"><i class="bi bi-x-circle me-1"></i>Program Full</span>
+                {{/if}}
+                {{#if sessionFormat}}
+                  <span class="fp-badge fp-badge-blue"><i class="bi bi-camera-video me-1"></i>{{sessionFormat}}</span>
+                {{/if}}
+                {{#if targetLevel}}
+                  <span class="fp-badge fp-badge-teal"><i class="bi bi-person me-1"></i>{{targetLevel}}</span>
+                {{/if}}
+                {{#if memberCapacity}}
+                  <span class="fp-badge fp-badge-teal"><i class="bi bi-people me-1"></i>{{memberCapacity}} slots</span>
+                {{/if}}
+              </div>
+            </div>
+          </div>
+
+          <!-- Org Body -->
+          <div class="fp-body">
+
+            <!-- Program Details -->
+            <div class="fp-section">
+              <div class="fp-section-title"><i class="bi bi-diagram-3-fill"></i> Program Details</div>
+              <div class="fp-grid">
+                {{#if programType}}
+                  <div class="fp-item"><span class="fp-label">Program Type</span><span class="fp-value"><i class="bi bi-collection me-1"></i>{{programType}}</span></div>
+                {{/if}}
+                {{#if sessionFormat}}
+                  <div class="fp-item"><span class="fp-label">Session Format</span><span class="fp-value"><i class="bi bi-camera-video me-1"></i>{{sessionFormat}}</span></div>
+                {{/if}}
+                {{#if targetLevel}}
+                  <div class="fp-item"><span class="fp-label">Target Level</span><span class="fp-value"><i class="bi bi-person me-1"></i>{{targetLevel}}</span></div>
+                {{/if}}
+                {{#if programDuration}}
+                  <div class="fp-item"><span class="fp-label">Duration</span><span class="fp-value"><i class="bi bi-clock me-1"></i>{{programDuration}}</span></div>
+                {{/if}}
+                {{#if location}}
+                  <div class="fp-item"><span class="fp-label">Location</span><span class="fp-value"><i class="bi bi-geo-alt me-1"></i>{{location}}</span></div>
+                {{/if}}
+                {{#if memberCapacity}}
+                  <div class="fp-item"><span class="fp-label">Capacity</span><span class="fp-value"><i class="bi bi-people me-1"></i>{{memberCapacity}} members</span></div>
+                {{/if}}
+              </div>
+              {{#if website}}
+                <a href="{{website}}" target="_blank" class="fp-link-btn fp-link-web"><i class="bi bi-globe me-1"></i>Visit Website</a>
+              {{/if}}
+              {{#if linkedinProfile}}
+                <a href="{{linkedinProfile}}" target="_blank" class="fp-link-btn fp-link-linkedin"><i class="bi bi-linkedin me-1"></i>LinkedIn</a>
+              {{/if}}
+            </div>
+
+            <!-- Focus Areas -->
+            {{#if focusAreas}}
+            <div class="fp-section">
+              <div class="fp-section-title"><i class="bi bi-stars"></i> Focus Areas</div>
+              <div class="fp-tags">
+                {{#each focusAreas}}<span class="fp-tag fp-tag-blue">{{this}}</span>{{/each}}
+              </div>
+            </div>
+            {{/if}}
+
+            <!-- Description -->
+            {{#if description}}
+            <div class="fp-section">
+              <div class="fp-section-title"><i class="bi bi-file-text-fill"></i> About this Program</div>
+              <p class="fp-bio">{{description}}</p>
+            </div>
+            {{/if}}
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-modal-secondary" data-bs-dismiss="modal">
+            <i class="bi bi-x-circle me-1"></i>Close
+          </button>
+          <button type="button" class="btn btn-modal-primary" data-bs-toggle="modal" data-bs-target="#orgModal{{@index}}" data-bs-dismiss="modal">
+            <i class="bi bi-person-plus me-1"></i>Join Program
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{/each}}
+
+  <!-- Full Profile Modals -->
+  {{#each mentors}}
+  <div class="modal fade" id="mentorFullProfileModal{{@index}}" tabindex="-1" aria-labelledby="mentorFullProfileModalLabel{{@index}}" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="mentorFullProfileModalLabel{{@index}}">
+            <i class="bi bi-person-badge me-2"></i>{{name}}
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-0">
+
+          <!-- Profile Hero -->
+          <div class="fp-hero">
+            <div class="fp-hero-inner text-center">
+              <div class="fp-avatar-wrap">
+                <img src="{{photo}}" alt="{{name}}" class="fp-avatar">
+              </div>
+              <h3 class="fp-name">{{name}}</h3>
+              <p class="fp-role">{{expertise}}</p>
+
+              <!-- Rating -->
+              <div class="fp-rating">
+                <div class="mentor-rating-stars">{{{renderStarIcons avgRating}}}</div>
+                {{#if ratingCount}}
+                  <span class="fp-rating-text">{{avgRating}} &middot; {{ratingCount}} review{{#if ratingCount}}s{{/if}}</span>
+                {{else}}
+                  <span class="fp-rating-text">No reviews yet</span>
+                {{/if}}
+              </div>
+
+              <!-- Badges -->
+              <div class="fp-badges">
+                <span class="fp-badge fp-badge-green"><i class="bi bi-check-circle me-1"></i>{{availability}}</span>
+                {{#if openToNewMentees}}
+                  <span class="fp-badge fp-badge-blue"><i class="bi bi-person-plus me-1"></i>Open to New Mentees</span>
+                {{else}}
+                  <span class="fp-badge fp-badge-amber"><i class="bi bi-person-x me-1"></i>Not Accepting</span>
+                {{/if}}
+                {{#if mentorshipCapacity}}
+                  <span class="fp-badge fp-badge-teal"><i class="bi bi-people me-1"></i>{{mentorshipCapacity}} slots</span>
+                {{/if}}
+              </div>
+            </div>
+          </div>
+
+          <!-- Profile Body -->
+          <div class="fp-body">
+
+            <!-- Professional Background -->
+            {{#if company}}{{else}}{{#if position}}{{else}}{{#if industry}}{{else}}{{#if specialization}}{{else}}{{#if experienceYears}}{{else}}{{#if linkedinProfile}}{{else}}{{#if website}}{{else}}{{#if phone}}{{else}}{{#if responseTime}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}
+            <div class="fp-section">
+              <div class="fp-section-title"><i class="bi bi-briefcase-fill"></i> Professional Background</div>
+              <div class="fp-grid">
+                {{#if company}}
+                  <div class="fp-item"><span class="fp-label">Company</span><span class="fp-value"><i class="bi bi-building me-1"></i>{{company}}</span></div>
+                {{/if}}
+                {{#if position}}
+                  <div class="fp-item"><span class="fp-label">Position</span><span class="fp-value"><i class="bi bi-briefcase me-1"></i>{{position}}</span></div>
+                {{/if}}
+                {{#if industry}}
+                  <div class="fp-item"><span class="fp-label">Industry</span><span class="fp-value"><i class="bi bi-diagram-3 me-1"></i>{{industry}}</span></div>
+                {{/if}}
+                {{#if specialization}}
+                  <div class="fp-item"><span class="fp-label">Specialization</span><span class="fp-value"><i class="bi bi-star me-1"></i>{{specialization}}</span></div>
+                {{/if}}
+                {{#if experienceYears}}
+                  <div class="fp-item"><span class="fp-label">Experience</span><span class="fp-value"><i class="bi bi-calendar-check me-1"></i>{{experienceYears}} years</span></div>
+                {{/if}}
+                {{#if responseTime}}
+                  <div class="fp-item"><span class="fp-label">Response Time</span><span class="fp-value"><i class="bi bi-clock me-1"></i>{{responseTime}}</span></div>
+                {{/if}}
+                {{#if phone}}
+                  <div class="fp-item"><span class="fp-label">Phone</span><span class="fp-value"><i class="bi bi-telephone me-1"></i>{{phone}}</span></div>
+                {{/if}}
+              </div>
+              {{#if linkedinProfile}}
+                <a href="{{linkedinProfile}}" target="_blank" class="fp-link-btn fp-link-linkedin"><i class="bi bi-linkedin me-1"></i>LinkedIn</a>
+              {{/if}}
+              {{#if website}}
+                <a href="{{website}}" target="_blank" class="fp-link-btn fp-link-web"><i class="bi bi-globe me-1"></i>Website</a>
+              {{/if}}
+            </div>
+
+            <!-- Expertise -->
+            {{#if industries}}
+            <div class="fp-section">
+              <div class="fp-section-title"><i class="bi bi-stars"></i> Industries</div>
+              <div class="fp-tags">
+                {{#each industries}}<span class="fp-tag fp-tag-muted">{{this}}</span>{{/each}}
+              </div>
+            </div>
+            {{/if}}
+
+            {{#if specialties}}
+            <div class="fp-section">
+              <div class="fp-section-title"><i class="bi bi-award"></i> Specialties</div>
+              <div class="fp-tags">
+                {{#each specialties}}<span class="fp-tag fp-tag-blue">{{this}}</span>{{/each}}
+              </div>
+            </div>
+            {{/if}}
+
+            {{#if languages}}
+            <div class="fp-section">
+              <div class="fp-section-title"><i class="bi bi-translate"></i> Languages</div>
+              <div class="fp-tags">
+                {{#each languages}}<span class="fp-tag fp-tag-teal">{{this}}</span>{{/each}}
+              </div>
+            </div>
+            {{/if}}
+
+            <!-- Mentorship Preferences -->
+            <div class="fp-section">
+              <div class="fp-section-title"><i class="bi bi-gear-fill"></i> Mentorship Preferences</div>
+              <div class="fp-grid">
+                {{#if menteeLevel}}
+                  <div class="fp-item"><span class="fp-label">Mentee Level</span><span class="fp-value"><i class="bi bi-person me-1"></i>{{menteeLevel}}</span></div>
+                {{/if}}
+                {{#if sessionFormat}}
+                  <div class="fp-item"><span class="fp-label">Session Format</span><span class="fp-value"><i class="bi bi-camera-video me-1"></i>{{sessionFormat}}</span></div>
+                {{/if}}
+                {{#if mentorshipCapacity}}
+                  <div class="fp-item"><span class="fp-label">Capacity</span><span class="fp-value"><i class="bi bi-people me-1"></i>{{mentorshipCapacity}} mentees</span></div>
+                {{/if}}
+                {{#if availability}}
+                  <div class="fp-item"><span class="fp-label">Availability</span><span class="fp-value"><i class="bi bi-calendar me-1"></i>{{availability}}</span></div>
+                {{/if}}
+              </div>
+            </div>
+
+            <!-- Bio -->
+            {{#if bio}}
+            <div class="fp-section">
+              <div class="fp-section-title"><i class="bi bi-person-fill"></i> About {{name}}</div>
+              <p class="fp-bio">{{bio}}</p>
+            </div>
+            {{/if}}
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-modal-secondary" data-bs-dismiss="modal">
+            <i class="bi bi-x-circle me-1"></i>Close
+          </button>
+          <button type="button" class="btn btn-modal-primary" data-bs-toggle="modal" data-bs-target="#mentorModal{{@index}}" data-bs-dismiss="modal">
+            <i class="bi bi-calendar-check me-1"></i>Request Session
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{/each}}
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function() {

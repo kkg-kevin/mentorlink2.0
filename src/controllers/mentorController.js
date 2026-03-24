@@ -146,7 +146,6 @@ exports.updateProfile = async (req,res)=>{
       specialization: req.body.specialization,
       availability: req.body.availability,
       bio: req.body.bio,
-      // New optional fields
       company: req.body.company,
       position: req.body.position,
       linkedinProfile: req.body.linkedinProfile,
@@ -157,8 +156,8 @@ exports.updateProfile = async (req,res)=>{
       menteeLevel: req.body.menteeLevel,
       sessionFormat: req.body.sessionFormat,
       responseTime: req.body.responseTime,
-      isProfilePublic: req.body.isProfilePublic === 'true',
-      openToNewMentees: req.body.openToNewMentees === 'true',
+      isProfilePublic: req.body.isProfilePublic === 'on' || req.body.isProfilePublic === 'true',
+      openToNewMentees: req.body.openToNewMentees === 'on' || req.body.openToNewMentees === 'true',
       mentorshipCapacity: parseInt(req.body.mentorshipCapacity) || 5
     };
     await Mentor.findOneAndUpdate({ user: req.user._id }, data, { upsert:true, new:true });
