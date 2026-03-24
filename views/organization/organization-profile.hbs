@@ -270,6 +270,65 @@
       font-size: 0.94rem;
     }
 
+    .profile-progress {
+      margin-top: 22px;
+      padding: 20px;
+      background: linear-gradient(135deg, rgba(0,119,182,0.06), rgba(42,157,143,0.04));
+      border-radius: 18px;
+      border: 1px solid rgba(216,232,240,0.7);
+      text-align: center;
+    }
+
+    .circular-progress {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 16px;
+    }
+
+    .circular-progress svg {
+      transform: rotate(-90deg);
+    }
+
+    .progress-circle-bg {
+      fill: none;
+      stroke: rgba(216,232,240,0.6);
+      stroke-width: 8;
+    }
+
+    .progress-circle-fill {
+      fill: none;
+      stroke: url(#orgGradient);
+      stroke-width: 8;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 0.6s ease;
+    }
+
+    .progress-percentage {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--secondary-color);
+    }
+
+    .progress-label {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--primary-color);
+      margin-bottom: 8px;
+    }
+
+    .progress-hint {
+      margin-top: 12px;
+      font-size: 0.8rem;
+      color: var(--muted-text);
+      line-height: 1.5;
+      margin-bottom: 0;
+    }
+
     .form-panel {
       padding: 34px 34px 30px;
     }
@@ -437,6 +496,31 @@
             <div class="profile-name">{{user.name}}</div>
             <div class="profile-email">{{user.email}}</div>
             <div class="info-chip"><i class="bi bi-buildings-fill"></i> Organization Account</div>
+
+            {{#if profileCompleteness}}
+            <div class="profile-progress">
+              <div class="progress-label">Profile Complete</div>
+              <div class="circular-progress">
+                <svg width="120" height="120">
+                  <defs>
+                    <linearGradient id="orgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style="stop-color:var(--secondary-color);stop-opacity:1" />
+                      <stop offset="100%" style="stop-color:var(--accent-color);stop-opacity:1" />
+                    </linearGradient>
+                  </defs>
+                  <circle class="progress-circle-bg" cx="60" cy="60" r="52"></circle>
+                  <circle class="progress-circle-fill" cx="60" cy="60" r="52"
+                    stroke-dasharray="326.73"
+                    stroke-dashoffset="326.73"></circle>
+                </svg>
+                <div class="progress-percentage">{{profileCompleteness}}%</div>
+              </div>
+              {{#if profileIncomplete}}
+                <p class="progress-hint">Complete your profile so mentees can find and understand your program.</p>
+              {{/if}}
+            </div>
+            {{/if}}
+
             <p class="sidebar-note">A polished organization profile makes your mentorship program easier to understand and more trustworthy to new participants.</p>
           </aside>
 
@@ -471,6 +555,76 @@
                 <textarea name="description" class="form-control" rows="4" placeholder="Describe your mentorship program">{{organization.description}}</textarea>
               </div>
 
+              <div class="row">
+                <div class="col-md-6 field-group">
+                  <label class="form-label">Location</label>
+                  <input type="text" name="location" class="form-control" value="{{organization.location}}" placeholder="e.g. New York, Remote">
+                </div>
+                <div class="col-md-6 field-group">
+                  <label class="form-label">LinkedIn Profile</label>
+                  <input type="url" name="linkedinProfile" class="form-control" value="{{organization.linkedinProfile}}" placeholder="https://linkedin.com/company/...">
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label class="form-label">Focus Areas <span style="font-weight:400;color:var(--muted-text);">(comma-separated)</span></label>
+                <input type="text" name="focusAreas" class="form-control" value="{{#each organization.focusAreas}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}" placeholder="e.g. Technology, Finance, Healthcare">
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 field-group">
+                  <label class="form-label">Program Type</label>
+                  <select name="programType" class="form-control">
+                    <option value="">Select type...</option>
+                    <option value="bootcamp" {{#ifEq organization.programType "bootcamp"}}selected{{/ifEq}}>Bootcamp</option>
+                    <option value="internship" {{#ifEq organization.programType "internship"}}selected{{/ifEq}}>Internship</option>
+                    <option value="mentorship-circle" {{#ifEq organization.programType "mentorship-circle"}}selected{{/ifEq}}>Mentorship Circle</option>
+                    <option value="one-on-one" {{#ifEq organization.programType "one-on-one"}}selected{{/ifEq}}>One-on-One</option>
+                    <option value="workshop" {{#ifEq organization.programType "workshop"}}selected{{/ifEq}}>Workshop</option>
+                  </select>
+                </div>
+                <div class="col-md-6 field-group">
+                  <label class="form-label">Session Format</label>
+                  <select name="sessionFormat" class="form-control">
+                    <option value="">Select format...</option>
+                    <option value="online" {{#ifEq organization.sessionFormat "online"}}selected{{/ifEq}}>Online</option>
+                    <option value="in-person" {{#ifEq organization.sessionFormat "in-person"}}selected{{/ifEq}}>In-Person</option>
+                    <option value="hybrid" {{#ifEq organization.sessionFormat "hybrid"}}selected{{/ifEq}}>Hybrid</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 field-group">
+                  <label class="form-label">Target Level</label>
+                  <select name="targetLevel" class="form-control">
+                    <option value="">Select level...</option>
+                    <option value="beginner" {{#ifEq organization.targetLevel "beginner"}}selected{{/ifEq}}>Beginner</option>
+                    <option value="intermediate" {{#ifEq organization.targetLevel "intermediate"}}selected{{/ifEq}}>Intermediate</option>
+                    <option value="advanced" {{#ifEq organization.targetLevel "advanced"}}selected{{/ifEq}}>Advanced</option>
+                    <option value="all-levels" {{#ifEq organization.targetLevel "all-levels"}}selected{{/ifEq}}>All Levels</option>
+                  </select>
+                </div>
+                <div class="col-md-6 field-group">
+                  <label class="form-label">Program Duration</label>
+                  <input type="text" name="programDuration" class="form-control" value="{{organization.programDuration}}" placeholder="e.g. 3 months, Ongoing">
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 field-group">
+                  <label class="form-label">Member Capacity</label>
+                  <input type="number" name="memberCapacity" class="form-control" value="{{organization.memberCapacity}}" placeholder="Max number of members" min="0">
+                </div>
+                <div class="col-md-6 field-group">
+                  <label class="form-label">Open to New Members</label>
+                  <select name="openToNewMembers" class="form-control">
+                    <option value="on" {{#if organization.openToNewMembers}}selected{{/if}}>Yes — accepting new members</option>
+                    <option value="false" {{#unless organization.openToNewMembers}}selected{{/unless}}>No — program is full</option>
+                  </select>
+                </div>
+              </div>
+
               <button type="submit" class="btn btn-primary px-4 py-3">Save Profile</button>
           </div>
           </div>
@@ -485,6 +639,21 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
+    // Animate circular progress bar
+    document.addEventListener('DOMContentLoaded', function() {
+      const progressFill = document.querySelector('.progress-circle-fill');
+      const percentageText = document.querySelector('.progress-percentage');
+
+      if (progressFill && percentageText) {
+        const percentage = parseInt(percentageText.textContent);
+        const circumference = 2 * Math.PI * 52;
+        const offset = circumference - (percentage / 100) * circumference;
+        setTimeout(() => {
+          progressFill.style.strokeDashoffset = offset;
+        }, 300);
+      }
+    });
+
     const organizationProfileInput = document.getElementById('profilePictureInput');
     const organizationProfilePreview = document.getElementById('profilePicturePreview');
     const organizationProfilePlaceholder = document.getElementById('profilePicturePlaceholder');
