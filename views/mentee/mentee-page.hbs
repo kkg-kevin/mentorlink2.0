@@ -7,26 +7,16 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/theme.css">
+  <script src="/js/theme.js"></script>
   <style>
-    :root {
-      --primary-color: #003049;
-      --secondary-color: #0077b6;
-      --accent-color: #2a9d8f;
-      --surface-color: #ffffff;
-      --surface-soft: #f5fbfd;
-      --surface-border: #d8e8f0;
-      --muted-text: #61727c;
-      --shadow-soft: 0 18px 40px rgba(0, 48, 73, 0.08);
-      --shadow-card: 0 16px 32px rgba(0, 48, 73, 0.06);
-    }
-
     body {
       font-family: 'Poppins', sans-serif;
-      color: var(--primary-color);
+      color: var(--text-primary);
       background:
         radial-gradient(circle at top right, rgba(42, 157, 143, 0.10), transparent 24%),
         radial-gradient(circle at bottom left, rgba(0, 119, 182, 0.10), transparent 28%),
-        #fbfeff;
+        var(--bg-base);
       min-height: 100vh;
     }
 
@@ -42,9 +32,9 @@
 
     .navbar {
       margin: 18px auto 0;
-      background: rgba(255, 255, 255, 0.92);
-      border: 1px solid rgba(216, 232, 240, 0.95);
-      box-shadow: 0 14px 34px rgba(0, 48, 73, 0.08);
+      background: var(--navbar-bg);
+      border: 1px solid var(--border-color);
+      box-shadow: var(--navbar-shadow);
       backdrop-filter: blur(10px);
       border-radius: 22px;
       padding: 14px 0;
@@ -64,7 +54,7 @@
     }
 
     .nav-link {
-      color: var(--primary-color) !important;
+      color: var(--text-primary) !important;
       font-weight: 500;
       margin: 0 6px;
       padding: 8px 14px !important;
@@ -75,7 +65,7 @@
     .nav-link:hover,
     .nav-link.active {
       color: var(--secondary-color) !important;
-      background: rgba(0, 119, 182, 0.08);
+      background: var(--bg-chip);
     }
 
     .btn-logout,
@@ -116,7 +106,7 @@
 
     .btn-modal-secondary {
       color: var(--primary-color);
-      background: rgba(233, 244, 249, 0.95);
+      background: var(--bg-surface-alt);
       border: 1px solid var(--surface-border);
     }
 
@@ -126,11 +116,9 @@
       position: relative;
       overflow: hidden;
       border-radius: 30px;
-      background:
-        radial-gradient(circle at top right, rgba(42, 157, 143, 0.16), transparent 22%),
-        linear-gradient(135deg, rgba(0, 119, 182, 0.08) 0%, rgba(232, 246, 252, 0.9) 48%, rgba(255, 255, 255, 0.98) 100%);
-      border: 1px solid rgba(216, 232, 240, 0.95);
-      box-shadow: 0 24px 60px rgba(0, 48, 73, 0.10);
+      background: var(--bg-hero);
+      border: 1px solid var(--border-color);
+      box-shadow: var(--card-shadow);
     }
 
     .page-hero::before {
@@ -160,8 +148,8 @@
       align-items: center;
       gap: 10px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.9);
-      border: 1px solid rgba(216, 232, 240, 0.95);
+      background: var(--bg-surface-alt);
+      border: 1px solid var(--border-color);
       padding: 10px 16px;
       color: var(--muted-text);
       font-size: 0.92rem;
@@ -188,11 +176,11 @@
     }
 
     .hero-aside {
-      background: rgba(255, 255, 255, 0.88);
-      border: 1px solid rgba(216, 232, 240, 0.95);
+      background: var(--bg-surface-alt);
+      border: 1px solid var(--border-color);
       border-radius: 24px;
       padding: 24px;
-      box-shadow: var(--shadow-card);
+      box-shadow: var(--card-shadow);
     }
 
     .hero-aside h5 {
@@ -222,10 +210,10 @@
     .section-card,
     .directory-card,
     .empty-state {
-      background: rgba(255, 255, 255, 0.92);
-      border: 1px solid rgba(216, 232, 240, 0.95);
+      background: var(--bg-surface-alt);
+      border: 1px solid var(--border-color);
       border-radius: 26px;
-      box-shadow: var(--shadow-card);
+      box-shadow: var(--card-shadow);
     }
 
     .filters-wrap {
@@ -271,9 +259,10 @@
     .modal .form-control,
     .modal textarea {
       border-radius: 18px;
-      border: 1px solid var(--surface-border);
+      border: 1px solid var(--border-input);
       padding: 13px 16px;
-      background: #fbfeff;
+      background: var(--bg-input);
+      color: var(--text-primary);
       transition: all 0.25s ease;
     }
 
@@ -281,9 +270,9 @@
     .filters .form-select:focus,
     .modal .form-control:focus,
     .modal textarea:focus {
-      border-color: rgba(0, 119, 182, 0.45);
-      box-shadow: 0 0 0 0.2rem rgba(0, 119, 182, 0.12);
-      background: #fff;
+      border-color: var(--secondary-color);
+      box-shadow: 0 0 0 0.2rem var(--card-glow);
+      background: var(--bg-surface);
     }
 
     #resultsCount {
@@ -329,7 +318,7 @@
     .directory-card:hover {
       transform: translateY(-8px);
       box-shadow: 0 22px 40px rgba(0, 48, 73, 0.12);
-      border-color: #bfdbe9;
+      border-color: var(--border-input);
     }
 
     .profile-frame {
@@ -349,7 +338,7 @@
       object-fit: cover;
       object-position: center;
       display: block;
-      background: #fff;
+      background: var(--bg-surface);
     }
 
     .card-meta {
@@ -358,7 +347,7 @@
       gap: 8px;
       padding: 7px 12px;
       border-radius: 999px;
-      background: rgba(0, 119, 182, 0.07);
+      background: var(--bg-chip);
       color: var(--secondary-color);
       font-size: 0.82rem;
       font-weight: 600;
@@ -391,8 +380,8 @@
       margin-top: 14px;
       padding: 14px 16px;
       border-radius: 18px;
-      background: linear-gradient(135deg, rgba(255, 193, 7, 0.16), rgba(255, 255, 255, 0.96));
-      border: 1px solid rgba(255, 193, 7, 0.32);
+      background: var(--bg-surface-soft);
+      border: 1px solid var(--border-color);
     }
 
     .mentor-rating-value {
@@ -458,20 +447,21 @@
 
     .modal-content {
       border-radius: 26px;
-      border: 1px solid rgba(216, 232, 240, 0.95);
+      border: 1px solid var(--border-color);
       box-shadow: 0 22px 50px rgba(0, 48, 73, 0.15);
       overflow: hidden;
+      background: var(--bg-surface);
     }
 
     .modal-header {
       border-bottom: none;
       padding: 22px 24px 12px;
-      background: linear-gradient(135deg, rgba(0, 119, 182, 0.09), rgba(42, 157, 143, 0.08));
+      background: var(--bg-chip);
     }
 
     .modal-title {
       font-weight: 700;
-      color: var(--primary-color);
+      color: var(--text-primary);
     }
 
     .modal-body {
@@ -486,17 +476,17 @@
 
     .form-label {
       font-weight: 600;
-      color: var(--primary-color);
+      color: var(--text-primary);
       margin-bottom: 8px;
     }
 
     footer {
-      background: rgba(255, 255, 255, 0.88);
-      border-top: 1px solid rgba(216, 232, 240, 0.95);
+      background: var(--navbar-bg);
+      border-top: 1px solid var(--border-color);
       text-align: center;
       padding: 20px 0;
       font-size: 0.92rem;
-      color: var(--muted-text);
+      color: var(--text-muted);
       margin-top: 42px;
     }
 
@@ -558,7 +548,7 @@
 
     /* ── Full Profile Modal ── */
     .fp-hero {
-      background: linear-gradient(135deg, rgba(0,119,182,0.06), rgba(42,157,143,0.06));
+      background: var(--bg-progress);
       border-bottom: 1px solid var(--surface-border);
     }
     .fp-hero-inner {
@@ -569,7 +559,7 @@
       height: 120px;
       border-radius: 50%;
       object-fit: cover;
-      border: 5px solid #fff;
+      border: 5px solid var(--bg-surface);
       box-shadow: 0 10px 28px rgba(0,48,73,0.14);
       margin-bottom: 1rem;
     }
@@ -590,8 +580,8 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: rgba(255,193,7,0.12);
-      border: 1px solid rgba(255,193,7,0.28);
+      background: var(--bg-chip);
+      border: 1px solid var(--border-color);
       border-radius: 999px;
       padding: 6px 14px;
       margin-bottom: 1rem;
@@ -678,7 +668,7 @@
       font-size: 0.84rem;
       font-weight: 500;
     }
-    .fp-tag-muted { background: rgba(0,48,73,0.07); color: var(--primary-color); }
+    .fp-tag-muted { background: var(--bg-chip); color: var(--primary-color); }
     .fp-tag-blue  { background: rgba(0,119,182,0.10); color: var(--secondary-color); border: 1px solid rgba(0,119,182,0.18); }
     .fp-tag-teal  { background: rgba(42,157,143,0.10); color: #1a6b60; border: 1px solid rgba(42,157,143,0.20); }
     .fp-bio {
@@ -1397,5 +1387,8 @@
       }
     }
   </script>
+  <button id="themeToggle" class="theme-toggle" aria-label="Switch to dark mode">
+    <i class="bi bi-moon-fill"></i>
+  </button>
 </body>
 </html>
