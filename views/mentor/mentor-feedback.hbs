@@ -347,15 +347,15 @@
             <a href="/mentor/sessions" class="btn btn-back">Back to Sessions</a>
           </div>
         {{else}}
-          <form method="POST" action="/mentor/feedback/submit">
+          <form method="POST" action="/mentor/feedback/submit" id="mentorFeedbackForm">
             <input type="hidden" name="sessionId" value="{{session._id}}">
             <div class="mb-3">
               <label for="mentorComment" class="form-label">Feedback Notes</label>
               <textarea class="form-control" id="mentorComment" name="comment" rows="6" required placeholder="Share strengths, progress, and next steps for the mentee."></textarea>
-              <div class="helper-text mt-2">Keep it clear and actionable. This feedback is visible to the mentee only.</div>
+              <div class="helper-text mt-2">Keep it clear and actionable. This feedback is visible to the mentee only and mentees cannot reply.</div>
             </div>
             <div class="form-actions">
-              <button type="submit" class="btn btn-submit">Send Feedback</button>
+              <button type="submit" class="btn btn-submit" id="mentorFeedbackSubmitBtn">Send Feedback</button>
               <a href="/mentor/sessions" class="btn btn-back">Cancel</a>
             </div>
           </form>
@@ -372,5 +372,15 @@
     <i class="bi bi-moon-fill"></i>
   </button>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const mentorFeedbackForm = document.getElementById('mentorFeedbackForm');
+    const mentorFeedbackSubmitBtn = document.getElementById('mentorFeedbackSubmitBtn');
+    if (mentorFeedbackForm && mentorFeedbackSubmitBtn) {
+      mentorFeedbackForm.addEventListener('submit', function() {
+        mentorFeedbackSubmitBtn.disabled = true;
+        mentorFeedbackSubmitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Sending...';
+      });
+    }
+  </script>
 </body>
 </html>
