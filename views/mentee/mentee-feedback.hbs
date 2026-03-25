@@ -539,7 +539,7 @@
               <div class="form-text mt-2"><i class="bi bi-lightbulb me-1"></i>Your feedback helps improve the mentorship experience for everyone.</div>
             </div>
 
-            <button type="submit" class="btn btn-submit px-4 py-3">
+            <button type="submit" class="btn btn-submit px-4 py-3" id="feedbackSubmitBtn">
               <i class="bi bi-send me-2"></i>Submit Feedback
             </button>
           </form>
@@ -686,6 +686,15 @@
           </div>
         `;
         document.getElementById('feedbackForm').style.display = 'none';
+      }
+
+      const feedbackForm = document.getElementById('feedbackForm');
+      const feedbackSubmitBtn = document.getElementById('feedbackSubmitBtn');
+      if (feedbackForm && feedbackSubmitBtn) {
+        feedbackForm.addEventListener('submit', function() {
+          feedbackSubmitBtn.disabled = true;
+          feedbackSubmitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Submitting...';
+        });
       }
     });
   </script>
