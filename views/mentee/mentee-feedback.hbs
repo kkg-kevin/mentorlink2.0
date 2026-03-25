@@ -552,6 +552,7 @@
             <div class="section-kicker"><i class="bi bi-send-check"></i> From You</div>
             <h4 class="mb-2">Your submitted feedback</h4>
             <p class="intro-copy mb-4">A quick view of what you shared with mentors and organizations.</p>
+            <p class="section-helper mb-4">Submitted feedback is final and can’t be edited after sending.</p>
             {{#each feedbacks}}
             <div class="feedback-item">
               <div class="feedback-header">
@@ -592,6 +593,7 @@
             <div class="section-kicker"><i class="bi bi-chat-square-quote"></i> From Mentors</div>
             <h4 class="mb-2">Mentor feedback</h4>
             <p class="intro-copy mb-4">Notes and guidance shared by mentors after sessions.</p>
+            <p class="section-helper mb-4">Mentor feedback is read-only for mentees.</p>
             {{#each mentorFeedbacks}}
             <div class="mentor-feedback-item">
               <img src="{{this.mentorAvatar}}" alt="{{this.mentorName}}" class="mentor-avatar">
