@@ -4,6 +4,15 @@
    data-theme="dark" on <html>.
    ============================================================ */
 
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+}
+
 /* ── Light (default) ── */
 :root {
   --primary-color: #003049;
