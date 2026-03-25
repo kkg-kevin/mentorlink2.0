@@ -445,6 +445,16 @@
                 <div class="info-value">{{viewUser.role}}</div>
               </div>
               <div class="info-row">
+                <div class="info-label">Status</div>
+                <div class="info-value">
+                  {{#ifEq viewUser.status "suspended"}}
+                    <span class="badge bg-danger">Suspended</span>
+                  {{else}}
+                    <span class="badge bg-success">Active</span>
+                  {{/ifEq}}
+                </div>
+              </div>
+              <div class="info-row">
                 <div class="info-label">Joined</div>
                 <div class="info-value">{{formatDate viewUser.createdAt}}</div>
               </div>
@@ -543,6 +553,39 @@
                 {{/ifEq}}
               </div>
             {{/if}}
+
+            <div class="info-section">
+              <div class="section-kicker"><i class="bi bi-shield-lock"></i> Access Controls</div>
+              <h4>Role & Status</h4>
+              <p class="info-intro">Update account access and role assignments for this user.</p>
+
+              <div class="info-row">
+                <div class="info-label">Change Role</div>
+                <div class="info-value">
+                  <form method="POST" action="/admin/user/{{viewUser._id}}/role" class="d-flex gap-2 flex-wrap">
+                    <select name="role" class="form-select" style="min-width: 180px;">
+                      <option value="mentor" {{#ifEq viewUser.role "mentor"}}selected{{/ifEq}}>Mentor</option>
+                      <option value="mentee" {{#ifEq viewUser.role "mentee"}}selected{{/ifEq}}>Mentee</option>
+                      <option value="organization" {{#ifEq viewUser.role "organization"}}selected{{/ifEq}}>Organization</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">Update Role</button>
+                  </form>
+                </div>
+              </div>
+
+              <div class="info-row">
+                <div class="info-label">Account Status</div>
+                <div class="info-value">
+                  <form method="POST" action="/admin/user/{{viewUser._id}}/status" class="d-flex gap-2 flex-wrap">
+                    <select name="status" class="form-select" style="min-width: 180px;">
+                      <option value="active" {{#ifEq viewUser.status "active"}}selected{{/ifEq}}>Active</option>
+                      <option value="suspended" {{#ifEq viewUser.status "suspended"}}selected{{/ifEq}}>Suspended</option>
+                    </select>
+                    <button type="submit" class="btn btn-warning">Update Status</button>
+                  </form>
+                </div>
+              </div>
+            </div>
 
             <div class="action-buttons">
               <a href="/admin/dashboard" class="btn btn-back flex-fill">

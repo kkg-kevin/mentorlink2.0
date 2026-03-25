@@ -204,6 +204,26 @@
       box-shadow: var(--card-shadow);
     }
 
+    .announcement-card {
+      background: var(--bg-surface-alt);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      box-shadow: var(--card-shadow);
+      padding: 22px;
+      margin-top: 20px;
+    }
+
+    .announcement-card h4 {
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .announcement-card p {
+      color: var(--muted-text);
+      margin-bottom: 0;
+      line-height: 1.7;
+    }
+
     .sessions-panel {
       margin-top: 24px;
       padding: 28px;
@@ -478,6 +498,16 @@
         </div>
       </div>
     </section>
+
+    {{#if activeAnnouncement}}
+    <section class="container">
+      <div class="announcement-card">
+        <div class="section-kicker"><i class="bi bi-megaphone"></i> Announcement</div>
+        <h4>{{activeAnnouncement.title}}</h4>
+        <p>{{activeAnnouncement.message}}</p>
+      </div>
+    </section>
+    {{/if}}
 
     <section class="container">
       <div class="sessions-panel">

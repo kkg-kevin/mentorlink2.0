@@ -9,6 +9,7 @@ const Mentee = require('../models/Mentee');
 const Session = require('../models/Session');
 
 const Feedback = require('../models/Feedback');
+const MentorFeedback = require('../models/MentorFeedback');
 
 const User = require('../models/User');
 
@@ -237,7 +238,7 @@ exports.feedback = async (req,res)=> {
 
   const mentee = await Mentee.findOne({ user: req.user._id });
 
-  if(!mentee) return res.render('mentee/mentee-feedback', { user: req.user, sessions: [], feedbacks: [] });
+  if(!mentee) return res.render('mentee/mentee-feedback', { user: req.user, sessions: [], feedbacks: [], mentorFeedbacks: [] });
 
   const sessions = await Session.find({ mentee: mentee._id, status: 'completed' })
 
@@ -254,6 +255,24 @@ exports.feedback = async (req,res)=> {
     .catch(()=>[]);
 
   const feedbacks = await Feedback.find({ from: req.user._id }).populate('to').lean().catch(()=>[]);
+  const mentorFeedbacksRaw = await MentorFeedback.find({ to: req.user._id, isHidden: { $ne: true } })
+    .populate({
+      path: 'session',
+      populate: { path: 'mentor', populate: { path: 'user' } }
+    })
+    .lean()
+    .catch(()=>[]);
+
+  const mentorFeedbacks = mentorFeedbacksRaw
+    .sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt))
+    .map(feedback => ({
+      id: feedback._id,
+      comment: feedback.comment,
+      createdAt: feedback.createdAt,
+      sessionDate: feedback.session?.scheduledAt,
+      mentorName: feedback.session?.mentor?.user?.name || 'Mentor',
+      mentorAvatar: feedback.session?.mentor?.user?.profilePicture || '/images/Logo 1.png'
+    }));
 
   
 
@@ -273,7 +292,7 @@ exports.feedback = async (req,res)=> {
 
   
 
-  res.render('mentee/mentee-feedback', { user: req.user, sessions: sessionsWithFeedbackStatus, feedbacks });
+  res.render('mentee/mentee-feedback', { user: req.user, sessions: sessionsWithFeedbackStatus, feedbacks, mentorFeedbacks });
 
 };
 
@@ -345,6 +364,34 @@ exports.submitFeedback = async (req,res)=>{
 
   }
 
+};
+
+exports.mentorFeedback = async (req,res)=> {
+  if(!req.user || req.user.role !== 'mentee') return res.redirect('/auth/login');
+  const mentee = await Mentee.findOne({ user: req.user._id });
+  if(!mentee) return res.render('mentee/mentee-mentor-feedback', { user: req.user, feedbacks: [] });
+
+  const feedbacks = await MentorFeedback.find({ to: req.user._id, isHidden: { $ne: true } })
+    .populate({
+      path: 'session',
+      populate: { path: 'mentor', populate: { path: 'user' } }
+    })
+    .lean()
+    .catch(()=>[]);
+
+  const feedbackCards = feedbacks
+    .sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt))
+    .map(feedback => ({
+      id: feedback._id,
+      comment: feedback.comment,
+      createdAt: feedback.createdAt,
+      sessionDate: feedback.session?.scheduledAt,
+      mentorName: feedback.session?.mentor?.user?.name || 'Mentor',
+      mentorAvatar: feedback.session?.mentor?.user?.profilePicture || '/images/Logo 1.png',
+      sessionId: feedback.session?._id
+    }));
+
+  res.render('mentee/mentee-mentor-feedback', { user: req.user, feedbacks: feedbackCards });
 };
 
 

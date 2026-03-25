@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mentor Feedback - MentorLink</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/theme.css">
+  <script src="/js/theme.js"></script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: var(--text-primary);
+      background:
+        radial-gradient(circle at top right, rgba(42, 157, 143, 0.10), transparent 24%),
+        radial-gradient(circle at bottom left, rgba(0, 119, 182, 0.10), transparent 28%),
+        var(--bg-base);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page-shell {
+      width: 100%;
+      max-width: none;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page-shell .container {
+      max-width: min(1680px, calc(100vw - 24px));
+    }
+
+    .navbar {
+      margin: 12px 6px 0;
+      background: var(--navbar-bg);
+      border: 1px solid var(--border-color);
+      box-shadow: var(--navbar-shadow);
+      backdrop-filter: blur(10px);
+      border-radius: 22px;
+      padding: 14px 0;
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      color: var(--secondary-color) !important;
+      display: flex;
+      align-items: center;
+    }
+
+    .navbar-brand img {
+      margin-right: 10px;
+      border-radius: 14px !important;
+      box-shadow: 0 8px 18px rgba(0, 48, 73, 0.12);
+    }
+
+    .nav-link {
+      color: var(--text-primary) !important;
+      font-weight: 500;
+      margin: 0 6px;
+      padding: 8px 14px !important;
+      border-radius: 999px;
+      transition: all 0.25s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: var(--secondary-color) !important;
+      background: var(--bg-chip);
+    }
+
+    .btn-logout {
+      border-radius: 999px;
+      font-weight: 600;
+      border: none;
+      color: #fff;
+      background: linear-gradient(135deg, var(--secondary-color), #005f89);
+      box-shadow: 0 12px 22px rgba(0, 119, 182, 0.18);
+      transition: all 0.25s ease;
+    }
+
+    .btn-logout:hover {
+      transform: translateY(-2px);
+    }
+
+    .page-hero {
+      margin-top: 26px;
+      padding: 38px 0;
+      border-radius: 30px;
+      background: var(--bg-hero);
+      border: 1px solid var(--border-color);
+      box-shadow: var(--card-shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      width: 250px;
+      height: 250px;
+      right: -70px;
+      top: -90px;
+      background: rgba(0, 119, 182, 0.08);
+      border-radius: 36px;
+      transform: rotate(18deg);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border-radius: 999px;
+      background: var(--bg-surface-alt);
+      border: 1px solid var(--border-color);
+      padding: 10px 16px;
+      color: var(--muted-text);
+      font-size: 0.92rem;
+      box-shadow: 0 10px 20px rgba(0, 48, 73, 0.06);
+    }
+
+    .page-hero h1 {
+      margin: 16px 0 12px;
+      font-weight: 700;
+      font-size: 2.8rem;
+      line-height: 1.08;
+    }
+
+    .page-hero h1 span {
+      color: var(--secondary-color);
+    }
+
+    .page-hero p {
+      color: var(--muted-text);
+      max-width: 900px;
+      line-height: 1.8;
+      margin: 0;
+    }
+
+    .feedback-section {
+      margin-top: 24px;
+    }
+
+    .feedback-card {
+      background: var(--bg-surface-alt);
+      border: 1px solid var(--border-color);
+      border-radius: 28px;
+      box-shadow: var(--card-shadow);
+      padding: 24px;
+      margin-bottom: 18px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(200px, 0.4fr);
+      gap: 16px;
+      align-items: start;
+    }
+
+    .mentor-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .mentor-avatar {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      object-fit: cover;
+      box-shadow: 0 10px 18px rgba(0, 48, 73, 0.12);
+    }
+
+    .mentor-name {
+      font-weight: 700;
+    }
+
+    .feedback-comment {
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 0;
+    }
+
+    .feedback-meta {
+      background: var(--bg-surface-soft);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .meta-label {
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 6px;
+    }
+
+    .meta-value {
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .empty-state {
+      background: var(--bg-surface-alt);
+      border: 1px solid var(--border-color);
+      border-radius: 28px;
+      box-shadow: var(--card-shadow);
+      padding: 40px;
+      text-align: center;
+      color: var(--text-muted);
+    }
+
+    .empty-state i {
+      font-size: 2rem;
+      color: var(--secondary-color);
+      margin-bottom: 12px;
+    }
+
+    footer {
+      background: var(--navbar-bg);
+      border-top: 1px solid var(--border-color);
+      text-align: center;
+      padding: 20px 0;
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      margin-top: auto;
+    }
+
+    @media (max-width: 992px) {
+      .feedback-card {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .page-shell .container {
+        max-width: calc(100vw - 12px);
+      }
+
+      .navbar {
+        border-radius: 18px;
+        margin: 8px 4px 0;
+      }
+
+      .page-hero {
+        border-radius: 24px;
+        padding: 32px 0;
+      }
+
+      .page-hero h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+      <div class="container-fluid px-3 px-lg-4 px-xl-5">
+        <a class="navbar-brand d-flex align-items-center" href="/mentee/dashboard">
+          <img src="/images/Logo 1.png" alt="MentorLink Logo" width="40" height="40" class="me-2">
+          MentorLink
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="menu">
+          <ul class="navbar-nav align-items-lg-center mb-2 mb-lg-0">
+            <li class="nav-item"><a href="/mentee/dashboard" class="nav-link">Dashboard</a></li>
+            <li class="nav-item"><a href="/mentee/sessions" class="nav-link">Sessions</a></li>
+            <li class="nav-item"><a href="/mentee/feedback" class="nav-link">Feedback</a></li>
+            <li class="nav-item"><a href="/mentee/mentor-feedback" class="nav-link active">Mentor Feedback</a></li>
+            <li class="nav-item"><a href="/mentee/profile" class="nav-link">Profile</a></li>
+          </ul>
+          <form method="POST" action="/auth/logout" style="display:inline;">
+            <button type="submit" class="btn btn-logout ms-lg-3 mt-2 mt-lg-0">Log out</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <section class="container page-hero">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <i class="bi bi-chat-square-quote-fill"></i>
+          Mentor Feedback
+        </div>
+        <h1>Review the feedback your <span>mentors have shared.</span></h1>
+        <p>Each completed session can include mentor feedback with next steps and guidance. Keep track of notes and progress here.</p>
+      </div>
+    </section>
+
+    <section class="container feedback-section">
+      {{#if feedbacks.length}}
+        {{#each feedbacks}}
+        <div class="feedback-card">
+          <div>
+            <div class="mentor-info">
+              <img src="{{this.mentorAvatar}}" alt="{{this.mentorName}}" class="mentor-avatar">
+              <div>
+                <div class="mentor-name">{{this.mentorName}}</div>
+                <div class="text-muted">Mentor feedback</div>
+              </div>
+            </div>
+            <p class="feedback-comment">{{this.comment}}</p>
+          </div>
+          <div class="feedback-meta">
+            <div class="meta-label">Session Date</div>
+            <div class="meta-value">{{formatDate this.sessionDate}}</div>
+            <div class="meta-label">Session Time</div>
+            <div class="meta-value">{{formatTime this.sessionDate}}</div>
+            <div class="meta-label">Feedback Given</div>
+            <div class="meta-value">{{formatDate this.createdAt}}</div>
+          </div>
+        </div>
+        {{/each}}
+      {{else}}
+        <div class="empty-state">
+          <i class="bi bi-chat-dots"></i>
+          <h5>No mentor feedback yet</h5>
+          <p>Your mentor feedback will appear here after completed sessions are reviewed.</p>
+        </div>
+      {{/if}}
+    </section>
+
+    <footer>
+      &copy; 2025 MentorLink. All rights reserved.
+    </footer>
+  </div>
+
+  <button id="themeToggle" class="theme-toggle" aria-label="Switch to dark mode">
+    <i class="bi bi-moon-fill"></i>
+  </button>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -7,6 +7,7 @@ router.get('/dashboard', mentee.dashboard);
 router.get('/sessions', mentee.sessions);
 router.get('/sessions/:id', mentee.sessionDetails);
 router.get('/feedback', mentee.feedback);
+router.get('/mentor-feedback', (req,res)=> res.redirect('/mentee/feedback'));
 router.post('/feedback/submit', mentee.submitFeedback);
 router.post('/session/request', mentee.requestSession);
 router.post('/session/organization/request', mentee.requestOrganizationSession);
