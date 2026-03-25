@@ -11,7 +11,7 @@ async function getMentorRatingMap(mentorUserIds = []) {
     return new Map();
   }
 
-  const feedbacks = await Feedback.find({ to: { $in: ids } })
+  const feedbacks = await Feedback.find({ to: { $in: ids }, isHidden: { $ne: true } })
     .select('to rating')
     .lean()
     .catch(() => []);
@@ -42,7 +42,7 @@ async function getMentorReviews(mentorUserId, limit = 5) {
     return [];
   }
 
-  return Feedback.find({ to: mentorUserId })
+  return Feedback.find({ to: mentorUserId, isHidden: { $ne: true } })
     .sort({ createdAt: -1 })
     .limit(limit)
     .populate('from', 'name role profilePicture')

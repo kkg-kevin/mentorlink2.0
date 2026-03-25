@@ -14,6 +14,7 @@ const UserSchema = new Schema({
   passwordResetToken: { type: String, default: null },
   passwordResetExpiresAt: { type: Date, default: null },
   role: { type: String, enum: ['mentee', 'mentor', 'organization', 'admin'], default: 'mentee' },
+  status: { type: String, enum: ['active', 'suspended'], default: 'active' },
   createdAt: { type: Date, default: Date.now }
 });
 

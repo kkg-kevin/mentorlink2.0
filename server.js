@@ -12,6 +12,7 @@ const hbs = require('hbs');
 dotenv.config();
 const app = express();
 const User = require('./src/models/User');
+const Announcement = require('./src/models/Announcement');
 
 const dbUri = process.env.MONGO_URI || 'mongodb://localhost:27017/mentorlink';
 
@@ -109,6 +110,30 @@ app.use(async (req,res,next)=>{
       const user = await User.findById(req.session.userId).lean();
       if(user){ res.locals.currentUser = user; req.user = user; }
     }catch(e){ console.error(e); }
+  }
+  next();
+});
+
+app.use((req, res, next) => {
+  if (req.user && req.user.status === 'suspended' && req.user.role !== 'admin') {
+    return req.session.destroy(() => res.redirect('/auth/login?error=suspended'));
+  }
+  next();
+});
+
+app.use(async (req, res, next) => {
+  res.locals.activeAnnouncement = null;
+  if (!req.user) return next();
+  try {
+    const roles = ['all', req.user.role];
+    const announcement = await Announcement.findOne({ isActive: true, targetRole: { $in: roles } })
+      .sort({ createdAt: -1 })
+      .lean();
+    if (announcement) {
+      res.locals.activeAnnouncement = announcement;
+    }
+  } catch (error) {
+    console.error('Announcement load error:', error);
   }
   next();
 });

@@ -97,7 +97,7 @@ exports.analytics = async (req,res)=> {
   
   const sessions = await Session.find({ organization: org._id }).lean().catch(()=>[]);
   const menteeIds = [...new Set(sessions.map(s=>s.mentee?.toString()).filter(Boolean))];
-  const sessionFeedbacks = await Feedback.find({ session: { $in: sessions.map(s=>s._id) } }).lean().catch(()=>[]);
+  const sessionFeedbacks = await Feedback.find({ session: { $in: sessions.map(s=>s._id) }, isHidden: { $ne: true } }).lean().catch(()=>[]);
   
   const rangeDays = [7, 30, 90].includes(parseInt(req.query.range, 10)) ? parseInt(req.query.range, 10) : 30;
   const compareEnabled = req.query.compare === '1' || req.query.compare === 'true';

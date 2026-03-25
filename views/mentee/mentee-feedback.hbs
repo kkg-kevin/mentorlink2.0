@@ -155,10 +155,45 @@
 
     .feedback-layout {
       margin-top: 24px;
-      display: grid;
-      grid-template-columns: minmax(0, 1.25fr) minmax(360px, 0.95fr);
+      display: flex;
+      flex-direction: column;
       gap: 24px;
+    }
+
+    .history-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
       align-items: start;
+    }
+
+    .feedback-stack {
+      display: contents;
+    }
+
+    .feedback-stack > div {
+      height: 100%;
+    }
+
+    .recent-feedback,
+    .empty-history {
+      height: 100%;
+    }
+
+    .column-divider {
+      border: 1px dashed rgba(0, 119, 182, 0.18);
+      border-radius: 22px;
+      padding: 18px;
+      background: linear-gradient(180deg, rgba(0, 119, 182, 0.03), transparent);
+    }
+
+    .column-divider .section-kicker {
+      background: rgba(0, 119, 182, 0.12);
+    }
+
+    .column-divider .feedback-item,
+    .column-divider .mentor-feedback-item {
+      border-color: rgba(0, 119, 182, 0.22);
     }
 
     .feedback-card,
@@ -275,6 +310,62 @@
       margin-bottom: 0;
     }
 
+    .mentor-feedback-item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 14px;
+      align-items: start;
+      background: var(--bg-surface-soft);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 14px;
+    }
+
+    .mentor-feedback-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .mentor-avatar {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      object-fit: cover;
+      box-shadow: 0 10px 18px rgba(0, 48, 73, 0.12);
+    }
+
+    .mentor-feedback-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .mentor-name {
+      font-weight: 600;
+    }
+
+    .mentor-feedback-meta {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      margin-bottom: 10px;
+    }
+
+    .meta-chip {
+      background: var(--bg-chip);
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-weight: 600;
+      color: var(--secondary-color);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
     .feedback-header {
       display: flex;
       justify-content: space-between;
@@ -315,8 +406,12 @@
     }
 
     @media (max-width: 992px) {
-      .feedback-layout {
+      .history-grid {
         grid-template-columns: 1fr;
+      }
+
+      .column-divider {
+        padding: 16px;
       }
     }
 
@@ -382,8 +477,8 @@
           <i class="bi bi-chat-heart-fill"></i>
           Feedback Center
         </div>
-        <h1>Reflect on mentorship sessions and <span>share what helped.</span></h1>
-        <p>Submit thoughtful feedback after completed sessions so mentors and organizations can keep improving the experience around your growth.</p>
+        <h1>Share feedback and review the <span>guidance you receive.</span></h1>
+        <p>Submit feedback after completed sessions and keep track of mentor notes in one place.</p>
       </div>
     </section>
 
@@ -450,12 +545,13 @@
           </form>
         </div>
 
-        <div>
-          {{#if feedbacks}}
-          <div class="recent-feedback">
-            <div class="section-kicker"><i class="bi bi-clock-history"></i> History</div>
-            <h4 class="mb-2">Your recent feedback</h4>
-            <p class="intro-copy mb-4">A quick view of what you have already shared with mentors and organizations.</p>
+        <div class="history-grid">
+          <div class="feedback-stack">
+          {{#if feedbacks.length}}
+          <div class="recent-feedback column-divider">
+            <div class="section-kicker"><i class="bi bi-send-check"></i> From You</div>
+            <h4 class="mb-2">Your submitted feedback</h4>
+            <p class="intro-copy mb-4">A quick view of what you shared with mentors and organizations.</p>
             {{#each feedbacks}}
             <div class="feedback-item">
               <div class="feedback-header">
@@ -482,12 +578,47 @@
             {{/each}}
           </div>
           {{else}}
-          <div class="empty-history">
+          <div class="empty-history column-divider">
             <i class="bi bi-chat-left-dots"></i>
-            <h5>No feedback history yet</h5>
-            <p>Your submitted feedback will appear here after you review a completed session.</p>
+            <h5>No feedback submitted yet</h5>
+            <p>Your feedback will appear here after you review a completed session.</p>
           </div>
           {{/if}}
+          </div>
+
+          <div class="feedback-stack">
+          {{#if mentorFeedbacks.length}}
+          <div class="recent-feedback column-divider">
+            <div class="section-kicker"><i class="bi bi-chat-square-quote"></i> From Mentors</div>
+            <h4 class="mb-2">Mentor feedback</h4>
+            <p class="intro-copy mb-4">Notes and guidance shared by mentors after sessions.</p>
+            {{#each mentorFeedbacks}}
+            <div class="mentor-feedback-item">
+              <img src="{{this.mentorAvatar}}" alt="{{this.mentorName}}" class="mentor-avatar">
+              <div>
+                <div class="mentor-feedback-header">
+                  <span class="mentor-name">{{this.mentorName}}</span>
+                  <span class="feedback-date">{{formatDate this.createdAt}}</span>
+                </div>
+                <div class="mentor-feedback-meta">
+                  <span class="meta-chip"><i class="bi bi-calendar-event"></i> {{formatDate this.sessionDate}}</span>
+                  <span class="meta-chip"><i class="bi bi-clock"></i> {{formatTime this.sessionDate}}</span>
+                </div>
+                <div class="feedback-comment">
+                  {{this.comment}}
+                </div>
+              </div>
+            </div>
+            {{/each}}
+          </div>
+          {{else}}
+          <div class="empty-history column-divider">
+            <i class="bi bi-chat-square-text"></i>
+            <h5>No mentor feedback yet</h5>
+            <p>Mentor feedback will appear here after completed sessions are reviewed.</p>
+          </div>
+          {{/if}}
+          </div>
         </div>
       </div>
     </section>

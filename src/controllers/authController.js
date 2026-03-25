@@ -1,7 +1,12 @@
 
 const crypto = require('crypto');
 const User = require('../models/User');
-exports.showLogin = (req,res)=> res.render('login');
+exports.showLogin = (req,res)=> {
+  const error = req.query.error === 'suspended'
+    ? 'Your account has been suspended. Contact support for help.'
+    : null;
+  res.render('login', { error });
+};
 exports.showSignup = (req,res)=> res.render('signup');
 exports.showForgotPassword = (req,res)=> res.render('forgot-password');
 exports.showResetPassword = async (req,res)=>{
@@ -47,6 +52,10 @@ exports.login = async (req,res)=>{
     const normalizedEmail = (email || '').trim().toLowerCase();
     const user = await User.findOne({email: normalizedEmail});
     if(!user) return res.redirect('/auth/login');
+
+    if (user.status === 'suspended') {
+      return res.render('login', { error: 'Your account has been suspended. Contact support for help.' });
+    }
 
     const isPasswordValid = await user.comparePassword(password || '');
     if(!isPasswordValid) return res.redirect('/auth/login');

@@ -3,6 +3,7 @@ const Mentor = require('../models/Mentor');
 const Mentee = require('../models/Mentee');
 const Session = require('../models/Session');
 const Feedback = require('../models/Feedback');
+const MentorFeedback = require('../models/MentorFeedback');
 const User = require('../models/User');
 const { getMentorRatingMap, getMentorReviews } = require('../utils/mentorRatings');
 
@@ -29,16 +30,77 @@ exports.sessions = async (req,res)=> {
     .populate({path:'mentee', populate:{path:'user'}})
     .lean()
     .catch(()=>[]);
+
+  const feedbacks = sessions.length > 0
+    ? await MentorFeedback.find({ from: req.user._id, session: { $in: sessions.map(s => s._id) } }).lean().catch(()=>[])
+    : [];
+  const feedbackSet = new Set(feedbacks.map(f => f.session?.toString()).filter(Boolean));
+  const sessionsWithFeedback = sessions.map(session => ({
+    ...session,
+    hasMentorFeedback: feedbackSet.has(session._id.toString())
+  }));
   
   // Calculate stats
-  const uniqueMentees = [...new Set(sessions.filter(s => s.mentee).map(s => s.mentee._id.toString()))];
-  const completedSessions = sessions.filter(s => s.status === 'completed').length;
+  const uniqueMentees = [...new Set(sessionsWithFeedback.filter(s => s.mentee).map(s => s.mentee._id.toString()))];
+  const completedSessions = sessionsWithFeedback.filter(s => s.status === 'completed').length;
   const stats = {
     activeMentees: uniqueMentees.length,
     completedSessions: completedSessions
   };
   
-  res.render('mentor/mentor-session', { user: req.user, sessions, stats });
+  res.render('mentor/mentor-session', { user: req.user, sessions: sessionsWithFeedback, stats });
+};
+
+exports.feedbackForm = async (req,res)=> {
+  if(!req.user || req.user.role !== 'mentor') return res.redirect('/auth/login');
+  const mentor = await Mentor.findOne({ user: req.user._id });
+  if(!mentor) return res.redirect('/mentor/sessions');
+
+  const session = await Session.findOne({ _id: req.params.id, mentor: mentor._id, status: 'completed' })
+    .populate({ path: 'mentee', populate: { path: 'user' } })
+    .lean()
+    .catch(()=>null);
+
+  if(!session) return res.redirect('/mentor/sessions');
+
+  const existingFeedback = await MentorFeedback.findOne({ session: session._id, from: req.user._id }).lean().catch(()=>null);
+  res.render('mentor/mentor-feedback', { user: req.user, session, hasFeedback: !!existingFeedback });
+};
+
+exports.submitMentorFeedback = async (req,res)=> {
+  if(!req.user || req.user.role !== 'mentor') return res.redirect('/auth/login');
+  try {
+    const { sessionId, comment } = req.body;
+    const trimmedComment = typeof comment === 'string' ? comment.trim() : '';
+    if(!sessionId || !trimmedComment) return res.redirect('/mentor/sessions?feedback=failed');
+
+    const mentor = await Mentor.findOne({ user: req.user._id });
+    if(!mentor) return res.redirect('/mentor/sessions?feedback=failed');
+
+    const session = await Session.findOne({ _id: sessionId, mentor: mentor._id, status: 'completed' })
+      .populate({ path: 'mentee', populate: { path: 'user' } })
+      .lean()
+      .catch(()=>null);
+    if(!session) return res.redirect('/mentor/sessions?feedback=failed');
+
+    const existingFeedback = await MentorFeedback.findOne({ session: session._id, from: req.user._id }).lean().catch(()=>null);
+    if(existingFeedback) return res.redirect('/mentor/sessions?feedback=duplicate');
+
+    const recipientId = session.mentee?.user?._id;
+    if(!recipientId) return res.redirect('/mentor/sessions?feedback=failed');
+
+    const feedback = new MentorFeedback({
+      session: session._id,
+      from: req.user._id,
+      to: recipientId,
+      comment: trimmedComment
+    });
+    await feedback.save();
+    res.redirect('/mentor/sessions?feedback=success');
+  } catch (e) {
+    console.error(e);
+    res.redirect('/mentor/sessions?feedback=failed');
+  }
 };
 
 exports.acceptSession = async (req,res)=>{
@@ -118,7 +180,7 @@ exports.analytics = async (req,res)=> {
   
   const sessions = await Session.find({ mentor: mentor._id }).lean().catch(()=>[]);
   const menteeIds = [...new Set(sessions.map(s=>s.mentee?.toString()).filter(Boolean))];
-  const feedbacks = await Feedback.find({ to: req.user._id }).lean().catch(()=>[]);
+  const feedbacks = await Feedback.find({ to: req.user._id, isHidden: { $ne: true } }).lean().catch(()=>[]);
   
   const rangeDays = [7, 30, 90].includes(parseInt(req.query.range, 10)) ? parseInt(req.query.range, 10) : 30;
   const compareEnabled = req.query.compare === '1' || req.query.compare === 'true';

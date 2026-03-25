@@ -326,6 +326,71 @@
       box-shadow: var(--card-shadow);
     }
 
+    .health-section .section-top {
+      margin-bottom: 14px;
+    }
+
+    .flag-card {
+      background: var(--bg-surface-alt);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      padding: 20px;
+      box-shadow: var(--card-shadow);
+      height: 100%;
+    }
+
+    .flag-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 90, 90, 0.12);
+      color: #c82333;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-right: 6px;
+      margin-bottom: 6px;
+    }
+
+    .moderation-table td {
+      vertical-align: top;
+    }
+
+    .comment-preview {
+      color: var(--muted-text);
+      font-size: 0.88rem;
+    }
+
+    .export-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+    }
+
+    .export-button {
+      border-radius: 999px;
+      font-weight: 600;
+      padding: 10px 16px;
+    }
+
+    .announcement-card {
+      background: var(--bg-surface-alt);
+      border: 1px solid var(--border-color);
+      border-radius: 22px;
+      padding: 18px;
+      margin-bottom: 12px;
+    }
+
+    .announcement-meta {
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
     .table {
       margin-bottom: 0;
       vertical-align: middle;
@@ -521,6 +586,373 @@
       </div>
     </section>
 
+    <section class="container stats-section health-section">
+      <div class="section-top">
+        <div>
+          <div class="section-kicker"><i class="bi bi-pulse"></i> Platform Health</div>
+          <h3>Session flow and completion signals</h3>
+          <p>Track the current health of sessions across the platform.</p>
+        </div>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-3">
+          <div class="stat-card">
+            <div class="stat-top">
+              <div>
+                <div class="stat-label">Total Sessions</div>
+                <h4>{{platformStats.totalSessions}}</h4>
+                <p class="mb-0 text-muted">All requests recorded.</p>
+              </div>
+              <div class="stat-icon green"><i class="bi bi-calendar2-check"></i></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="stat-card">
+            <div class="stat-top">
+              <div>
+                <div class="stat-label">Acceptance Rate</div>
+                <h4>{{platformStats.acceptanceRate}}%</h4>
+                <p class="mb-0 text-muted">Accepted or completed sessions.</p>
+              </div>
+              <div class="stat-icon blue"><i class="bi bi-check-circle"></i></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="stat-card">
+            <div class="stat-top">
+              <div>
+                <div class="stat-label">Completion Rate</div>
+                <h4>{{platformStats.completionRate}}%</h4>
+                <p class="mb-0 text-muted">Completed out of accepted.</p>
+              </div>
+              <div class="stat-icon yellow"><i class="bi bi-flag"></i></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="stat-card">
+            <div class="stat-top">
+              <div>
+                <div class="stat-label">Cancellation Rate</div>
+                <h4>{{platformStats.cancellationRate}}%</h4>
+                <p class="mb-0 text-muted">Cancelled sessions overall.</p>
+              </div>
+              <div class="stat-icon orange"><i class="bi bi-x-circle"></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container stats-section health-section">
+      <div class="section-top">
+        <div>
+          <div class="section-kicker"><i class="bi bi-graph-up"></i> Cohort Analytics</div>
+          <h3>New activity trends</h3>
+          <p>Track new users and sessions created in recent periods.</p>
+        </div>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-3">
+          <div class="stat-card">
+            <div class="stat-top">
+              <div>
+                <div class="stat-label">New Users (7d)</div>
+                <h4>{{cohortStats.newUsers7d}}</h4>
+                <p class="mb-0 text-muted">Signups in the last week.</p>
+              </div>
+              <div class="stat-icon green"><i class="bi bi-people"></i></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="stat-card">
+            <div class="stat-top">
+              <div>
+                <div class="stat-label">New Users (30d)</div>
+                <h4>{{cohortStats.newUsers30d}}</h4>
+                <p class="mb-0 text-muted">Signups in the last month.</p>
+              </div>
+              <div class="stat-icon blue"><i class="bi bi-person-plus"></i></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="stat-card">
+            <div class="stat-top">
+              <div>
+                <div class="stat-label">Sessions (7d)</div>
+                <h4>{{cohortStats.newSessions7d}}</h4>
+                <p class="mb-0 text-muted">Sessions scheduled this week.</p>
+              </div>
+              <div class="stat-icon yellow"><i class="bi bi-calendar-plus"></i></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="stat-card">
+            <div class="stat-top">
+              <div>
+                <div class="stat-label">Sessions (30d)</div>
+                <h4>{{cohortStats.newSessions30d}}</h4>
+                <p class="mb-0 text-muted">Sessions scheduled this month.</p>
+              </div>
+              <div class="stat-icon orange"><i class="bi bi-calendar-range"></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container management-section">
+      <div class="management-card">
+        <div class="section-top">
+          <div>
+            <div class="section-kicker"><i class="bi bi-megaphone"></i> Announcements</div>
+            <h3>Broadcast updates to the platform</h3>
+            <p>Create role-based announcements and manage active posts.</p>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-lg-5">
+            <div class="filter-card">
+              <h5 class="mb-2">New Announcement</h5>
+              <form method="POST" action="/admin/announcement">
+                <div class="mb-3">
+                  <label class="form-label">Title</label>
+                  <input type="text" name="title" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Message</label>
+                  <textarea name="message" class="form-control" rows="4" required></textarea>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Audience</label>
+                  <select name="targetRole" class="form-select">
+                    <option value="all" selected>All Users</option>
+                    <option value="mentor">Mentors</option>
+                    <option value="mentee">Mentees</option>
+                    <option value="organization">Organizations</option>
+                  </select>
+                </div>
+                <button type="submit" class="btn btn-filter w-100">
+                  <i class="bi bi-send me-2"></i>Publish Announcement
+                </button>
+              </form>
+            </div>
+          </div>
+          <div class="col-lg-7">
+            <div class="filter-card">
+              <h5 class="mb-3">Recent Announcements</h5>
+              {{#if announcements.length}}
+                {{#each announcements}}
+                <div class="announcement-card">
+                  <div class="d-flex justify-content-between align-items-start gap-3">
+                    <div>
+                      <strong>{{this.title}}</strong>
+                      <div class="comment-preview mt-2">{{this.message}}</div>
+                      <div class="announcement-meta">
+                        <span><i class="bi bi-person"></i> {{#if this.createdBy}}{{this.createdBy.name}}{{else}}Admin{{/if}}</span>
+                        <span><i class="bi bi-broadcast"></i> {{this.targetRole}}</span>
+                        <span><i class="bi bi-clock"></i> {{formatDate this.createdAt}}</span>
+                      </div>
+                    </div>
+                    <form method="POST" action="/admin/announcement/{{this._id}}/toggle">
+                      {{#if this.isActive}}
+                        <button type="submit" class="btn btn-outline-danger btn-action">Deactivate</button>
+                      {{else}}
+                        <button type="submit" class="btn btn-outline-primary btn-action">Activate</button>
+                      {{/if}}
+                    </form>
+                  </div>
+                </div>
+                {{/each}}
+              {{else}}
+                <div class="text-muted">No announcements yet.</div>
+              {{/if}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container management-section">
+      <div class="management-card">
+        <div class="section-top">
+          <div>
+            <div class="section-kicker"><i class="bi bi-download"></i> Data Exports</div>
+            <h3>Download CSV reports</h3>
+            <p>Export data for reporting and audits.</p>
+          </div>
+        </div>
+        <div class="export-grid">
+          <a href="/admin/export/users" class="btn btn-outline-primary export-button"><i class="bi bi-people me-2"></i>Users</a>
+          <a href="/admin/export/sessions" class="btn btn-outline-primary export-button"><i class="bi bi-calendar-event me-2"></i>Sessions</a>
+          <a href="/admin/export/feedback" class="btn btn-outline-primary export-button"><i class="bi bi-chat-left-text me-2"></i>Mentee Feedback</a>
+          <a href="/admin/export/mentor-feedback" class="btn btn-outline-primary export-button"><i class="bi bi-chat-square-quote me-2"></i>Mentor Feedback</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="container management-section">
+      <div class="management-card">
+        <div class="section-top">
+          <div>
+            <div class="section-kicker"><i class="bi bi-shield-exclamation"></i> Quality Flags</div>
+            <h3>Accounts needing attention</h3>
+            <p>Low ratings or high cancellations are highlighted for review.</p>
+          </div>
+        </div>
+        <div class="row g-4">
+          <div class="col-lg-6">
+            <div class="flag-card">
+              <div class="section-kicker"><i class="bi bi-person-video3"></i> Mentors</div>
+              <div class="table-responsive">
+                <table class="table mb-0">
+                  <thead>
+                    <tr>
+                      <th>Mentor</th>
+                      <th>Rating</th>
+                      <th>Cancel %</th>
+                      <th>Flags</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {{#if mentorFlags.length}}
+                      {{#each mentorFlags}}
+                      <tr>
+                        <td>
+                          <a href="/admin/user/{{this.userId}}">{{this.name}}</a>
+                          <div class="text-muted small">{{this.email}}</div>
+                        </td>
+                        <td>{{this.avgRating}} ({{this.ratingCount}})</td>
+                        <td>{{this.cancelRate}}%</td>
+                        <td>
+                          {{#each this.flags}}
+                            <span class="flag-badge">{{this}}</span>
+                          {{/each}}
+                        </td>
+                      </tr>
+                      {{/each}}
+                    {{else}}
+                      <tr>
+                        <td colspan="4" class="text-center text-muted">No mentor flags right now.</td>
+                      </tr>
+                    {{/if}}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="flag-card">
+              <div class="section-kicker"><i class="bi bi-building"></i> Organizations</div>
+              <div class="table-responsive">
+                <table class="table mb-0">
+                  <thead>
+                    <tr>
+                      <th>Organization</th>
+                      <th>Rating</th>
+                      <th>Cancel %</th>
+                      <th>Flags</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {{#if organizationFlags.length}}
+                      {{#each organizationFlags}}
+                      <tr>
+                        <td>
+                          <a href="/admin/user/{{this.userId}}">{{this.name}}</a>
+                          <div class="text-muted small">{{this.email}}</div>
+                        </td>
+                        <td>{{this.avgRating}} ({{this.ratingCount}})</td>
+                        <td>{{this.cancelRate}}%</td>
+                        <td>
+                          {{#each this.flags}}
+                            <span class="flag-badge">{{this}}</span>
+                          {{/each}}
+                        </td>
+                      </tr>
+                      {{/each}}
+                    {{else}}
+                      <tr>
+                        <td colspan="4" class="text-center text-muted">No organization flags right now.</td>
+                      </tr>
+                    {{/if}}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container management-section">
+      <div class="management-card">
+        <div class="section-top">
+          <div>
+            <div class="section-kicker"><i class="bi bi-flag"></i> Feedback Moderation</div>
+            <h3>Review recent feedback</h3>
+            <p>Hide or restore feedback that violates community guidelines.</p>
+          </div>
+        </div>
+        <div class="table-responsive table-wrap">
+          <table class="table table-hover moderation-table">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Comment</th>
+                <th>Status</th>
+                <th>Action</th>
+                <th>Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#if moderationQueue.length}}
+                {{#each moderationQueue}}
+                <tr>
+                  <td>{{this.typeLabel}}</td>
+                  <td>{{this.fromName}}</td>
+                  <td>{{this.toName}}</td>
+                  <td class="comment-preview">{{this.comment}}</td>
+                  <td>
+                    {{#if this.isHidden}}
+                      <span class="badge bg-secondary">Hidden</span>
+                    {{else}}
+                      <span class="badge bg-success">Visible</span>
+                    {{/if}}
+                  </td>
+                  <td>
+                    <form method="POST" action="/admin/feedback/{{this.type}}/{{this.id}}/visibility" style="display:inline;">
+                      {{#if this.isHidden}}
+                        <input type="hidden" name="visibility" value="restore">
+                        <button type="submit" class="btn btn-outline-primary btn-action">Restore</button>
+                      {{else}}
+                        <input type="hidden" name="visibility" value="hide">
+                        <button type="submit" class="btn btn-outline-danger btn-action">Hide</button>
+                      {{/if}}
+                    </form>
+                  </td>
+                  <td>{{formatDate this.createdAt}}</td>
+                </tr>
+                {{/each}}
+              {{else}}
+                <tr>
+                  <td colspan="7" class="text-center text-muted">No feedback to review right now.</td>
+                </tr>
+              {{/if}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
     <section class="container management-section">
       <div class="management-card">
         <div class="section-top">
@@ -533,7 +965,7 @@
 
         <div class="filter-card">
           <div class="row g-3">
-            <div class="col-md-6">
+            <div class="col-md-5">
               <div class="input-group">
                 <span class="input-group-text"><i class="bi bi-search"></i></span>
                 <input type="text" id="searchInput" class="form-control" placeholder="Search users by name or email...">
@@ -547,11 +979,50 @@
                 <option value="organization">Organization</option>
               </select>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
+              <select class="form-select" id="statusFilter">
+                <option value="" selected>All Status</option>
+                <option value="active">Active</option>
+                <option value="suspended">Suspended</option>
+              </select>
+            </div>
+            <div class="col-md-2">
               <button class="btn btn-filter w-100" onclick="filterUsers()">
                 <i class="bi bi-funnel me-2"></i>Filter
               </button>
             </div>
+          </div>
+        </div>
+
+        <div class="filter-card">
+          <div class="section-kicker"><i class="bi bi-shield-check"></i> Recent Admin Actions</div>
+          <div class="table-responsive">
+            <table class="table mb-0">
+              <thead>
+                <tr>
+                  <th>Action</th>
+                  <th>Target</th>
+                  <th>Admin</th>
+                  <th>Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                {{#if audits}}
+                  {{#each audits}}
+                  <tr>
+                    <td>{{this.actionLabel}}</td>
+                    <td>{{#if this.targetUser}}{{this.targetUser.name}}{{else}}-{{/if}}</td>
+                    <td>{{#if this.admin}}{{this.admin.name}}{{else}}Admin{{/if}}</td>
+                    <td>{{formatDate this.createdAt}}</td>
+                  </tr>
+                  {{/each}}
+                {{else}}
+                  <tr>
+                    <td colspan="4" class="text-center text-muted">No admin activity yet</td>
+                  </tr>
+                {{/if}}
+              </tbody>
+            </table>
           </div>
         </div>
 
@@ -562,6 +1033,7 @@
                 <th>User</th>
                 <th>Email</th>
                 <th>Role</th>
+                <th>Status</th>
                 <th>Joined</th>
                 <th>Actions</th>
               </tr>
@@ -569,7 +1041,7 @@
             <tbody>
               {{#if users}}
                 {{#each users}}
-                <tr data-role="{{this.role}}" data-name="{{this.name}}" data-email="{{this.email}}">
+                <tr data-role="{{this.role}}" data-status="{{this.status}}" data-name="{{this.name}}" data-email="{{this.email}}">
                   <td>
                     <div class="d-flex align-items-center">
                       <div class="user-avatar me-3">
@@ -596,6 +1068,13 @@
                       <span class="badge bg-secondary">{{this.role}}</span>
                     {{/ifEq}}{{/ifEq}}{{/ifEq}}
                   </td>
+                  <td>
+                    {{#ifEq this.status "suspended"}}
+                      <span class="badge bg-danger">Suspended</span>
+                    {{else}}
+                      <span class="badge bg-success">Active</span>
+                    {{/ifEq}}
+                  </td>
                   <td>{{formatDate this.createdAt}}</td>
                   <td>
                     <a href="/admin/user/{{this._id}}" class="btn btn-outline-primary btn-action">
@@ -611,7 +1090,7 @@
                 {{/each}}
               {{else}}
                 <tr>
-                  <td colspan="5" class="text-center text-muted">No users found</td>
+                  <td colspan="6" class="text-center text-muted">No users found</td>
                 </tr>
               {{/if}}
             </tbody>
@@ -632,17 +1111,20 @@
     function filterUsers() {
       const searchTerm = document.getElementById('searchInput').value.toLowerCase();
       const roleFilter = document.getElementById('roleFilter').value.toLowerCase();
+      const statusFilter = document.getElementById('statusFilter').value.toLowerCase();
       const rows = document.querySelectorAll('tbody tr[data-role]');
 
       rows.forEach(row => {
         const name = row.getAttribute('data-name').toLowerCase();
         const email = row.getAttribute('data-email').toLowerCase();
         const role = row.getAttribute('data-role').toLowerCase();
+        const status = row.getAttribute('data-status') || 'active';
 
         const matchesSearch = name.includes(searchTerm) || email.includes(searchTerm);
         const matchesRole = roleFilter === '' || role === roleFilter;
+        const matchesStatus = statusFilter === '' || status === statusFilter;
 
-        if (matchesSearch && matchesRole) {
+        if (matchesSearch && matchesRole && matchesStatus) {
           row.style.display = '';
         } else {
           row.style.display = 'none';
@@ -652,6 +1134,7 @@
 
     document.getElementById('searchInput').addEventListener('input', filterUsers);
     document.getElementById('roleFilter').addEventListener('change', filterUsers);
+    document.getElementById('statusFilter').addEventListener('change', filterUsers);
   </script>
 </body>
 </html>
