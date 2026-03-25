@@ -238,7 +238,7 @@
 
     .filters-wrap {
       margin-top: 24px;
-      padding: 28px;
+      padding: 20px 22px;
     }
 
     .filters-top {
@@ -246,7 +246,7 @@
       justify-content: space-between;
       gap: 20px;
       align-items: flex-start;
-      margin-bottom: 22px;
+      margin-bottom: 14px;
     }
 
     .section-kicker {
@@ -274,13 +274,35 @@
       line-height: 1.7;
     }
 
+    .filters-wrap .section-kicker {
+      padding: 6px 10px;
+      font-size: 0.78rem;
+      margin-bottom: 10px;
+    }
+
+    .filters-wrap .section-title {
+      font-size: 1.55rem;
+      margin-bottom: 6px;
+    }
+
+    .filters-wrap .section-description {
+      font-size: 0.95rem;
+      line-height: 1.55;
+      max-width: 860px;
+    }
+
+    .filters-wrap .row {
+      --bs-gutter-y: 0.7rem;
+      --bs-gutter-x: 0.9rem;
+    }
+
     .filters .form-control,
     .filters .form-select,
     .modal .form-control,
     .modal textarea {
-      border-radius: 18px;
+      border-radius: 14px;
       border: 1px solid var(--border-input);
-      padding: 13px 16px;
+      padding: 10px 14px;
       background: var(--bg-input);
       color: var(--text-primary);
       transition: all 0.25s ease;
@@ -298,6 +320,11 @@
     #resultsCount {
       color: var(--secondary-color);
       font-weight: 500;
+    }
+
+    .filters-wrap #resultsCount {
+      font-size: 0.92rem;
+      margin-top: 12px;
     }
 
     .directory-section {
