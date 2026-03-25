@@ -145,6 +145,7 @@ app.use('/mentee', require('./src/routes/menteeRoutes'));
 app.use('/mentor', require('./src/routes/mentorRoutes'));
 app.use('/org', require('./src/routes/orgRoutes'));
 app.use('/admin', require('./src/routes/adminRoutes'));
+app.use('/messages', require('./src/routes/messageRoutes'));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, ()=> console.log('Server started on port '+PORT));
