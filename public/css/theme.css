@@ -234,6 +234,19 @@
   background: var(--bg-hero) !important;
 }
 
+[data-theme="dark"] .page-hero::before {
+  background: rgba(77, 184, 255, 0.12) !important;
+}
+
+[data-theme="dark"] .avatar-frame {
+  background: linear-gradient(135deg, rgba(77, 184, 255, 0.22), rgba(62, 207, 191, 0.22)) !important;
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.35) !important;
+}
+
+[data-theme="dark"] .user-avatar {
+  background: linear-gradient(135deg, rgba(77, 184, 255, 0.22), rgba(62, 207, 191, 0.18)) !important;
+}
+
 [data-theme="dark"] .mentor-panel .panel-label,
 [data-theme="dark"] .section-kicker {
   background: var(--bg-chip) !important;

@@ -248,6 +248,405 @@
       line-height: 1.7;
     }
 
+    .trend-card {
+      position: relative;
+    }
+
+    .trend-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .trend-title h3 {
+      margin-bottom: 6px;
+    }
+
+    .trend-title p {
+      margin-bottom: 12px;
+    }
+
+    .trend-tags {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
+    .trend-stats {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .trend-stat {
+      background: var(--bg-surface-soft);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 10px 14px;
+      min-width: 140px;
+    }
+
+    .trend-stat-label {
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 4px;
+    }
+
+    .trend-stat-value {
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    .trend-stat-meta {
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      margin-top: 4px;
+    }
+
+    .trend-legend {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-bottom: 12px;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .dot-mentees { background: #2a9d8f; }
+    .dot-sessions { background: #d9b240; }
+    .dot-rating { background: #0077b6; }
+
+    .chart-shell {
+      background: var(--bg-surface-soft);
+      border: 1px solid var(--border-color);
+      border-radius: 22px;
+      padding: 18px;
+      box-shadow: inset 0 0 0 1px rgba(0, 48, 73, 0.02);
+    }
+
+    .chart-canvas {
+      height: 320px;
+    }
+
+    .controls-section,
+    .kpi-section,
+    .insights-section {
+      margin-top: 24px;
+    }
+
+    .controls-card {
+      background: var(--bg-surface-alt);
+      border: 1px solid var(--border-color);
+      border-radius: 22px;
+      padding: 18px 22px;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .controls-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .controls-label {
+      font-weight: 600;
+      color: var(--text-muted);
+      font-size: 0.92rem;
+    }
+
+    .controls-select {
+      min-width: 180px;
+      border-radius: 14px;
+    }
+
+    .compare-switch {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-apply {
+      border-radius: 999px;
+      font-weight: 600;
+      border: none;
+      color: #fff;
+      background: linear-gradient(135deg, var(--secondary-color), #005f89);
+      box-shadow: 0 12px 22px rgba(0, 119, 182, 0.18);
+      padding: 8px 18px;
+    }
+
+    .controls-meta {
+      margin-top: 12px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .range-pill {
+      background: var(--bg-chip);
+      color: var(--secondary-color);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .kpi-card {
+      background: var(--bg-surface-alt);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      padding: 22px;
+      box-shadow: var(--card-shadow);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .kpi-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .kpi-label {
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .kpi-value {
+      font-size: 2.1rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .kpi-meta {
+      color: var(--muted-text);
+      font-size: 0.88rem;
+    }
+
+    .kpi-icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      color: #fff;
+      box-shadow: 0 12px 24px rgba(0, 48, 73, 0.14);
+    }
+
+    .kpi-icon.green { background: linear-gradient(135deg, #2a9d8f, #1f877b); }
+    .kpi-icon.yellow { background: linear-gradient(135deg, #d9b240, #c89200); }
+    .kpi-icon.blue { background: linear-gradient(135deg, var(--secondary-color), #005f89); }
+    .kpi-icon.purple { background: linear-gradient(135deg, #4b9cff, #2b6fd6); }
+
+    .kpi-trend {
+      margin-top: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .kpi-trend .trend-label {
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .trend-up { color: #1f877b; }
+    .trend-down { color: #c23c2a; }
+    .trend-neutral { color: var(--text-muted); }
+
+    .rating-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .rating-label {
+      min-width: 56px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .rating-bar {
+      flex: 1;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--bg-surface-soft);
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+    }
+
+    .rating-fill {
+      height: 100%;
+      background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+    }
+
+    .rating-meta {
+      min-width: 90px;
+      text-align: right;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .response-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .response-score {
+      font-size: 2.3rem;
+      font-weight: 700;
+    }
+
+    .response-meta {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .response-status {
+      border-radius: 14px;
+      padding: 10px 14px;
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+
+    .response-bar {
+      margin-top: 16px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--bg-surface-soft);
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+    }
+
+    .response-fill {
+      height: 100%;
+    }
+
+    .status-good {
+      background: rgba(42, 157, 143, 0.15);
+      color: #1f877b;
+    }
+
+    .status-warn {
+      background: rgba(217, 178, 64, 0.18);
+      color: #c89200;
+    }
+
+    .status-bad {
+      background: rgba(220, 53, 69, 0.15);
+      color: #b02a37;
+    }
+
+    .status-good.response-fill {
+      background: linear-gradient(135deg, #2a9d8f, #1f877b);
+    }
+
+    .status-warn.response-fill {
+      background: linear-gradient(135deg, #d9b240, #c89200);
+    }
+
+    .status-bad.response-fill {
+      background: linear-gradient(135deg, #dc3545, #b02a37);
+    }
+
+    .funnel-list {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .funnel-step {
+      background: var(--bg-surface-soft);
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 16px;
+    }
+
+    .funnel-label {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .funnel-count {
+      font-size: 1.6rem;
+      font-weight: 700;
+    }
+
+    .funnel-rate {
+      margin-top: 8px;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+    }
+
+    .theme-block {
+      margin-bottom: 18px;
+    }
+
+    .theme-title {
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .theme-list {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .theme-chip {
+      background: var(--bg-chip);
+      color: var(--secondary-color);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .theme-chip.empty {
+      background: var(--bg-surface-soft);
+      color: var(--text-muted);
+    }
+
     footer {
       background: rgba(255, 255, 255, 0.88);
       border-top: 1px solid rgba(216, 232, 240, 0.95);
@@ -279,6 +678,30 @@
 
       .chart-card {
         padding: 20px;
+      }
+
+      .trend-top {
+        align-items: flex-start;
+      }
+
+      .trend-stats {
+        justify-content: flex-start;
+      }
+
+      .chart-shell {
+        padding: 14px;
+      }
+
+      .chart-canvas {
+        height: 260px;
+      }
+
+      .controls-card {
+        align-items: flex-start;
+      }
+
+      .funnel-list {
+        grid-template-columns: 1fr 1fr;
       }
     }
   </style>
@@ -319,41 +742,141 @@
       </div>
     </section>
 
-    <section class="container stats-section">
-      <div class="row text-center g-4">
-        <div class="col-md-4">
-          <div class="stat-card">
-            <div class="stat-top">
-              <div class="text-start">
-                <div class="stat-label">Mentees</div>
-                <h4>{{stats.mentees}}</h4>
-                <p class="mb-0 text-muted">Participants currently reached by your program.</p>
+    <section class="container controls-section">
+      <form class="controls-card" method="GET" action="/org/analytics">
+        <div class="controls-group">
+          <div class="controls-label">Time range</div>
+          <select class="form-select controls-select" name="range">
+            <option value="7" {{#ifEq rangeDays 7}}selected{{/ifEq}}>Last 7 days</option>
+            <option value="30" {{#ifEq rangeDays 30}}selected{{/ifEq}}>Last 30 days</option>
+            <option value="90" {{#ifEq rangeDays 90}}selected{{/ifEq}}>Last 90 days</option>
+          </select>
+        </div>
+        <div class="form-check form-switch compare-switch">
+          <input class="form-check-input" type="checkbox" id="compareToggle" name="compare" value="1" {{#if compareEnabled}}checked{{/if}}>
+          <label class="form-check-label" for="compareToggle">Compare to previous period</label>
+        </div>
+        <button type="submit" class="btn btn-apply">Apply</button>
+      </form>
+      <div class="controls-meta">
+        <span class="range-pill">{{rangeLabel}}</span>
+        {{#if compareEnabled}}
+          <span class="range-pill">Compared to {{compareLabel}}</span>
+        {{/if}}
+      </div>
+    </section>
+
+    <section class="container kpi-section">
+      <div class="row g-4">
+        {{#each kpis}}
+        <div class="col-md-6 col-xl-3">
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <div>
+                <div class="kpi-label">{{this.label}}</div>
+                <div class="kpi-value">{{this.value}}</div>
+                <div class="kpi-meta">{{this.meta}}</div>
               </div>
-              <div class="stat-icon green"><i class="bi bi-people-fill"></i></div>
+              <div class="kpi-icon {{this.iconClass}}"><i class="bi {{this.icon}}"></i></div>
+            </div>
+            <div class="kpi-trend {{this.trendClass}}">
+              <i class="bi {{this.trendIcon}}"></i>
+              <span class="trend-value">{{this.trendValue}}</span>
+              <span class="trend-label">{{this.trendLabel}}</span>
             </div>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="stat-card">
-            <div class="stat-top">
-              <div class="text-start">
-                <div class="stat-label">Sessions</div>
-                <h4>{{stats.sessions}}</h4>
-                <p class="mb-0 text-muted">Total sessions created under your organization.</p>
+        {{/each}}
+      </div>
+    </section>
+
+    <section class="container insights-section">
+      <div class="row g-4">
+        <div class="col-lg-6">
+          <div class="chart-card">
+            <div class="section-kicker"><i class="bi bi-star-fill"></i> Ratings Distribution</div>
+            <h3>Rating breakdown</h3>
+            <p>Counts and shares across the feedback collected in this range.</p>
+            <div class="rating-list">
+              {{#each ratingsBreakdown}}
+              <div class="rating-row" title="{{this.count}} feedback ({{this.percent}}%)">
+                <div class="rating-label">{{this.stars}} <i class="bi bi-star-fill"></i></div>
+                <div class="rating-bar">
+                  <div class="rating-fill" style="width: {{this.percent}}%;"></div>
+                </div>
+                <div class="rating-meta">{{this.count}} | {{this.percent}}%</div>
               </div>
-              <div class="stat-icon yellow"><i class="bi bi-calendar-event"></i></div>
+              {{/each}}
             </div>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="stat-card">
-            <div class="stat-top">
-              <div class="text-start">
-                <div class="stat-label">Avg. Rating</div>
-                <h4>{{stats.avgRating}}</h4>
-                <p class="mb-0 text-muted">Average session feedback linked to your program.</p>
+        <div class="col-lg-6">
+          <div class="chart-card">
+            <div class="section-kicker"><i class="bi bi-chat-square-heart"></i> Feedback Response Rate</div>
+            <h3>Response coverage</h3>
+            <p>How many completed sessions have feedback recorded.</p>
+            <div class="response-wrap">
+              <div>
+                <div class="response-score">{{responseRate.value}}%</div>
+                <div class="response-meta">{{responseRate.label}}</div>
               </div>
-              <div class="stat-icon blue"><i class="bi bi-star-fill"></i></div>
+              <div class="response-status {{responseRate.statusClass}}">
+                {{responseRate.target}}
+              </div>
+            </div>
+            <div class="response-bar">
+              <div class="response-fill {{responseRate.statusClass}}" style="width: {{responseRate.value}}%;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-7">
+          <div class="chart-card">
+            <div class="section-kicker"><i class="bi bi-filter-circle"></i> Session Funnel</div>
+            <h3>From request to feedback</h3>
+            <p>Conversion rates show where sessions drop off between steps.</p>
+            <div class="funnel-list">
+              {{#each funnelSteps}}
+              <div class="funnel-step">
+                <div class="funnel-label">{{this.label}}</div>
+                <div class="funnel-count">{{this.count}}</div>
+                {{#if this.isFirst}}
+                  <div class="funnel-rate">Starting point</div>
+                {{else}}
+                  <div class="funnel-rate">{{this.rate}}% conversion</div>
+                {{/if}}
+              </div>
+              {{/each}}
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-5">
+          <div class="chart-card">
+            <div class="section-kicker"><i class="bi bi-lightbulb"></i> Themes</div>
+            <h3>Strengths and improvements</h3>
+            <p>Top recurring themes pulled from recent feedback notes.</p>
+            <div class="theme-block">
+              <div class="theme-title">Strengths</div>
+              <div class="theme-list">
+                {{#if strengthThemes.length}}
+                  {{#each strengthThemes}}
+                  <span class="theme-chip" title="{{this.count}} mentions">{{this.label}}</span>
+                  {{/each}}
+                {{else}}
+                  <span class="theme-chip empty">Not enough feedback yet</span>
+                {{/if}}
+              </div>
+            </div>
+            <div class="theme-block">
+              <div class="theme-title">Improvements</div>
+              <div class="theme-list">
+                {{#if improvementThemes.length}}
+                  {{#each improvementThemes}}
+                  <span class="theme-chip" title="{{this.count}} mentions">{{this.label}}</span>
+                  {{/each}}
+                {{else}}
+                  <span class="theme-chip empty">Not enough feedback yet</span>
+                {{/if}}
+              </div>
             </div>
           </div>
         </div>
@@ -361,11 +884,45 @@
     </section>
 
     <section class="container chart-section">
-      <div class="chart-card">
-        <div class="section-kicker"><i class="bi bi-activity"></i> Trend Snapshot</div>
-        <h3>Sessions & Feedback Trends</h3>
-        <p>The chart uses the same live organization stats, now presented in a cleaner, more readable analytics layout.</p>
-        <canvas id="analyticsChart" height="100"></canvas>
+      <div class="chart-card trend-card">
+        <div class="trend-top">
+          <div class="trend-title">
+            <div class="section-kicker"><i class="bi bi-activity"></i> Trend Snapshot</div>
+            <h3>Sessions & Feedback Trends</h3>
+            <p>The chart uses the same live organization stats, now presented in a cleaner, more readable analytics layout.</p>
+            <div class="trend-tags">
+              <span class="range-pill">{{rangeLabel}}</span>
+              {{#if compareEnabled}}
+                <span class="range-pill">Compared to {{compareLabel}}</span>
+              {{/if}}
+            </div>
+          </div>
+          <div class="trend-stats">
+            <div class="trend-stat">
+              <div class="trend-stat-label">Mentees</div>
+              <div class="trend-stat-value">{{stats.mentees}}</div>
+            </div>
+            <div class="trend-stat">
+              <div class="trend-stat-label">Sessions</div>
+              <div class="trend-stat-value">{{stats.sessions}}</div>
+            </div>
+            <div class="trend-stat">
+              <div class="trend-stat-label">Avg Rating</div>
+              <div class="trend-stat-value">{{stats.avgRating}}</div>
+              <div class="trend-stat-meta">Based on {{stats.ratingCount}} feedback</div>
+            </div>
+          </div>
+        </div>
+        <div class="trend-legend">
+          <span class="legend-item"><span class="legend-dot dot-mentees"></span>Mentees</span>
+          <span class="legend-item"><span class="legend-dot dot-sessions"></span>Sessions</span>
+          <span class="legend-item"><span class="legend-dot dot-rating"></span>Avg Rating</span>
+        </div>
+        <div class="chart-shell">
+          <div class="chart-canvas">
+            <canvas id="analyticsChart"></canvas>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -380,28 +937,53 @@
   <script>
     const ctx = document.getElementById('analyticsChart');
     if (ctx) {
+      const chartValues = [
+        {{stats.mentees}},
+        {{stats.sessions}},
+        parseFloat('{{stats.avgRating}}') || 0
+      ];
       new Chart(ctx, {
         type: 'bar',
         data: {
           labels: ['Mentees', 'Sessions', 'Avg. Rating'],
           datasets: [{
             label: 'Trends',
-            data: [{{stats.mentees}}, {{stats.sessions}}, {{stats.avgRating}}],
-            backgroundColor: ['#2a9d8f', '#d9b240', '#0077b6'],
+            data: chartValues,
+            backgroundColor: ['rgba(42, 157, 143, 0.85)', 'rgba(217, 178, 64, 0.85)', 'rgba(0, 119, 182, 0.85)'],
+            hoverBackgroundColor: ['rgba(42, 157, 143, 1)', 'rgba(217, 178, 64, 1)', 'rgba(0, 119, 182, 1)'],
             borderWidth: 1,
-            borderRadius: 10
+            borderRadius: 14,
+            borderSkipped: false,
+            maxBarThickness: 72
           }]
         },
         options: {
           responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          layout: { padding: { top: 8, right: 8, bottom: 0, left: 8 } },
           scales: {
             y: {
               beginAtZero: true,
-              ticks: { stepSize: 1 }
+              ticks: { stepSize: 1, color: '#7f8f9a' },
+              grid: { color: 'rgba(0, 48, 73, 0.08)', drawBorder: false }
+            },
+            x: {
+              ticks: { color: '#7f8f9a' },
+              grid: { display: false, drawBorder: false }
             }
           },
           plugins: {
-            legend: { display: false }
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: 'rgba(13, 27, 36, 0.9)',
+              titleColor: '#ffffff',
+              bodyColor: '#ffffff',
+              padding: 12,
+              callbacks: {
+                label: (context) => ` ${context.parsed.y}`
+              }
+            }
           }
         }
       });
