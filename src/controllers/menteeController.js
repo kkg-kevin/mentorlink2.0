@@ -149,7 +149,7 @@ exports.dashboard = async (req,res)=>{
   }));
 
   
-
+  
   res.render('mentee/mentee-page', { mentors: mentorList, companies: companyList, user: req.user, sessions: sessions.slice(0, 3) });
 
 };
@@ -689,4 +689,3 @@ exports.updateProfile = async (req,res)=>{
   }
 
 };
-

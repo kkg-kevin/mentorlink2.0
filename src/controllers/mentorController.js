@@ -26,6 +26,7 @@ exports.sessions = async (req,res)=> {
   const mentor = await Mentor.findOne({ user: req.user._id });
   if(!mentor) return res.render('mentor/mentor-session', { user: req.user, sessions: [], stats: { activeMentees: 0, completedSessions: 0 } });
   const sessions = await Session.find({ mentor: mentor._id })
+    .sort({ scheduledAt: -1, createdAt: -1 })
     .populate('mentee')
     .populate({path:'mentee', populate:{path:'user'}})
     .lean()
@@ -96,6 +97,7 @@ exports.submitMentorFeedback = async (req,res)=> {
       comment: trimmedComment
     });
     await feedback.save();
+
     res.redirect('/mentor/sessions?feedback=success');
   } catch (e) {
     console.error(e);
@@ -134,7 +136,13 @@ exports.completeSession = async (req,res)=>{
   try {
     const mentor = await Mentor.findOne({ user: req.user._id });
     if(!mentor) return res.redirect('/mentor/sessions');
-    await Session.findOneAndUpdate({ _id: req.params.id, mentor: mentor._id, status: 'accepted' }, { status: 'completed' });
+    const session = await Session.findOneAndUpdate(
+      { _id: req.params.id, mentor: mentor._id, status: 'accepted' },
+      { status: 'completed' },
+      { new: true }
+    ).lean();
+    if (session) {
+    }
     res.redirect('/mentor/sessions');
   } catch(e) {
     console.error(e);
